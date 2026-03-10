@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>빅브라우니 - 공부 관리</title>
+  <style>
+    :root {
+      --color-primary: #8B5E3C;
+      --color-golden: #D4A96A;
+      --color-bg: #FFF8F0;
+      --color-school: #4A90D9;
+      --color-academy: #7B68EE;
+      --color-self: #3CB371;
+      --color-leisure: #FF8C69;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      background-color: var(--color-bg);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      max-width: 720px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      background: linear-gradient(135deg, #8B5E3C, #D4A96A);
+      color: #fff;
+      padding: 28px 20px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    header .subtitle {
+      font-size: 0.85rem;
+      font-style: italic;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    header .date {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .mascot-area {
+      text-align: center;
+      padding: 20px 20px 8px;
+    }
+
+    .mascot-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--color-golden);
+      box-shadow: 0 4px 16px rgba(139, 94, 60, 0.2);
+      background: #fff;
+    }
+
+    .mascot-msg {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* ── 진행률 ── */
+    #progress-area {
+      padding: 18px 20px 10px;
+    }
+
+    .progress-text {
+      font-size: 0.95rem;
+      color: var(--color-primary);
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-bg {
+      background: #E0D5C8;
+      border-radius: 999px;
+      height: 12px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+
+    .congrats {
+      text-align: center;
+      padding: 10px 0 2px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      animation: fadeInDown 0.4s ease;
+    }
+
+    /* ── 필터 탭 ── */
+    #filter-area {
+      padding: 10px 20px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #filter-area::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border: 1.5px solid #DDD;
+      border-radius: 20px;
+      background: transparent;
+      color: #888;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .filter-tab:hover {
+      background: #f5ece3;
+      border-color: var(--color-golden);
+      color: #666;
+    }
+
+    .filter-tab.active {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    /* ── 입력 영역 ── */
+    #input-area {
+      padding: 12px 20px;
+      display: flex;
+      gap: 8px;
+    }
+
+    #task-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid #E0D5C8;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s ease;
+    }
+
+    #task-input:focus {
+      border-color: var(--color-golden);
+      box-shadow: 0 0 0 3px rgba(212, 169, 106, 0.15);
+    }
+
+    #category-select {
+      width: 140px;
+      padding: 10px 8px;
+      border: 2px solid #E0D5C8;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    #category-select:focus {
+      border-color: var(--color-golden);
+    }
+
+    #add-btn {
+      padding: 10px 22px;
+      background-color: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    #add-btn:hover {
+      background-color: #744E32;
+    }
+
+    #add-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* ── 할 일 카드 ── */
+    #task-list {
+      flex: 1;
+      padding: 8px 20px 20px;
+    }
+
+    .task-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .task-card:hover {
+      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+      transform: translateY(-1px);
+    }
+
+    .task-card.completed {
+      background: #F5F5F5;
+    }
+
+    .task-card.new-card {
+      animation: fadeInDown 0.25s ease;
+    }
+
+    .task-check {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    .task-title {
+      flex: 1;
+      font-size: 1rem;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .task-title.done {
+      text-decoration: line-through;
+      opacity: 0.45;
+    }
+
+    .category-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: bold;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      font-size: 1.05rem;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.2s ease, background 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .task-card:hover .delete-btn {
+      opacity: 1;
+    }
+
+    .delete-btn:hover {
+      background: #fee;
+    }
+
+    /* ── 빈 상태 ── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: #bbb;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* ── 푸터 ── */
+    footer {
+      background: linear-gradient(135deg, #8B5E3C, #74502F);
+      color: #fff;
+      padding: 18px 20px;
+      font-size: 0.85rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .category-summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cat-label {
+      min-width: 60px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    .mini-bar-bg {
+      flex: 1;
+      background: rgba(255,255,255,0.2);
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .cat-count {
+      min-width: 50px;
+      text-align: right;
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    /* ── 공유 버튼 ── */
+    .share-area {
+      padding: 8px 20px 16px;
+      text-align: center;
+    }
+
+    .share-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #8B5E3C, #D4A96A);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(139, 94, 60, 0.3);
+    }
+
+    .share-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(139, 94, 60, 0.4);
+    }
+
+    .share-btn:active {
+      transform: scale(0.97);
+    }
+
+    .share-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #333;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .share-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── 애니메이션 ── */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── 반응형 ── */
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.6rem; }
+
+      #input-area {
+        flex-direction: column;
+      }
+
+      #category-select {
+        width: 100%;
+      }
+
+      #add-btn {
+        width: 100%;
+      }
+
+      .delete-btn {
+        opacity: 1;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <h1>🐾 빅브라우니</h1>
+      <p class="subtitle">Big Brownie Study Manager</p>
+      <p class="date" id="today-date"></p>
+    </header>
+
+    <div class="mascot-area">
+      <img class="mascot-img"
+           src="https://www.ikea.com/kr/ko/images/products/gosig-golden-soft-toy-dog-golden-retriever__0710169_pe727372_s5.jpg?f=u"
+           alt="빅브라우니 골든리트리버">
+      <div class="mascot-msg" id="mascot-msg">오늘도 화이팅! 빅브라우니가 응원해요!</div>
+    </div>
+
+    <section id="progress-area">
+      <!-- 진행률 표시 영역 -->
+    </section>
+
+    <section id="filter-area">
+      <!-- 카테고리 탭 -->
+    </section>
+
+    <section id="input-area">
+      <input type="text" id="task-input" placeholder="오늘 할 일을 입력하세요 🐾">
+      <select id="category-select">
+        <option value="학교공부">학교공부</option>
+        <option value="학원공부">학원공부</option>
+        <option value="개인공부">개인공부</option>
+        <option value="여가시간">여가시간</option>
+      </select>
+      <button id="add-btn">추가</button>
+    </section>
+
+    <main id="task-list">
+      <!-- 할 일 목록 -->
+    </main>
+
+    <div class="share-area">
+      <button class="share-btn" id="share-btn">📤 오늘의 학습 현황 공유하기</button>
+    </div>
+
+    <footer>
+      <!-- 카테고리별 요약 -->
+    </footer>
+  </div>
+
+  <div class="share-toast" id="share-toast"></div>
+
+  <script>
+    // ── 데이터 ──
+    let tasks = [];
+    let activeFilter = '전체';
+    let lastAddedId = null;
+    const STORAGE_KEY = 'bigbrownie_tasks';
+
+    const CATEGORIES = ['학교공부', '학원공부', '개인공부', '여가시간'];
+
+    const CATEGORY_COLOR_MAP = {
+      '학교공부': 'var(--color-school)',
+      '학원공부': 'var(--color-academy)',
+      '개인공부': 'var(--color-self)',
+      '여가시간': 'var(--color-leisure)'
+    };
+
+    // ── LocalStorage 함수 ──
+    function loadTasks() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }
+
+    function saveTasks() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    // ── CRUD 함수 ──
+    function addTask() {
+      const input = document.getElementById('task-input');
+      const title = input.value.trim();
+      if (!title) return;
+
+      const category = document.getElementById('category-select').value;
+      const task = {
+        id: Date.now().toString(),
+        title,
+        category,
+        completed: false,
+        createdAt: new Date().toISOString(),
+        order: tasks.length
+      };
+
+      tasks.push(task);
+      lastAddedId = task.id;
+      saveTasks();
+      renderTasks();
+
+      input.value = '';
+      input.focus();
+    }
+
+    function toggleComplete(id) {
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.completed = !task.completed;
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    function deleteTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      if (!confirm(`'${task.title}' 을(를) 삭제할까요? 🗑️`)) return;
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    // ── 필터 탭 ──
+    function renderFilters() {
+      const area = document.getElementById('filter-area');
+      const tabs = ['전체', ...CATEGORIES];
+
+      area.innerHTML = tabs.map(tab => {
+        const count = tab === '전체' ? tasks.length : tasks.filter(t => t.category === tab).length;
+        const activeClass = activeFilter === tab ? 'active' : '';
+        return `<button class="filter-tab ${activeClass}" data-filter="${tab}">${tab} (${count})</button>`;
+      }).join('');
+    }
+
+    // ── 진행률 ──
+    function updateProgress() {
+      const area = document.getElementById('progress-area');
+      const total = tasks.length;
+      const done = tasks.filter(t => t.completed).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+      let barColor;
+      if (pct >= 80) barColor = '#4CAF50';
+      else if (pct >= 40) barColor = 'var(--color-golden)';
+      else barColor = 'var(--color-leisure)';
+
+      let congratsHtml = '';
+      if (done > 0 && done === total) {
+        congratsHtml = '<div class="congrats">🎉 오늘 할 일 모두 완료! 빅브라우니 최고! 🐾</div>';
+      }
+
+      area.innerHTML = `
+        <div class="progress-text">오늘 ${done} / ${total} 완료 (${pct}%)</div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: ${pct}%; background: ${barColor}"></div>
+        </div>
+        ${congratsHtml}
+      `;
+    }
+
+    // ── 푸터 카테고리별 요약 ──
+    function updateFooter() {
+      const footer = document.querySelector('footer');
+      const items = CATEGORIES.map(cat => {
+        const catTasks = tasks.filter(t => t.category === cat);
+        const total = catTasks.length;
+        const done = catTasks.filter(t => t.completed).length;
+        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+        const color = CATEGORY_COLOR_MAP[cat];
+
+        if (total === 0) {
+          return `
+            <div class="category-summary">
+              <span class="cat-label">${cat}</span>
+              <span class="cat-count">항목 없음</span>
+            </div>`;
+        }
+
+        return `
+          <div class="category-summary">
+            <span class="cat-label">${cat}</span>
+            <div class="mini-bar-bg">
+              <div class="mini-bar-fill" style="width: ${pct}%; background: ${color}"></div>
+            </div>
+            <span class="cat-count">${done}/${total}</span>
+          </div>`;
+      }).join('');
+
+      footer.innerHTML = `<div class="footer-grid">${items}</div>`;
+    }
+
+    // ── 렌더링 ──
+    function renderTasks() {
+      const list = document.getElementById('task-list');
+      const filtered = activeFilter === '전체'
+        ? tasks
+        : tasks.filter(t => t.category === activeFilter);
+
+      if (filtered.length === 0) {
+        const msg = tasks.length === 0
+          ? '🐶 오늘 할 일을 추가해봐요!\n빅브라우니 파이팅! 🐾'
+          : '이 카테고리에 할 일이 없어요 😴';
+        list.innerHTML = `<div class="empty-state">${msg.replace('\n', '<br>')}</div>`;
+      } else {
+        list.innerHTML = filtered.map(task => {
+          const isNew = task.id === lastAddedId;
+          const cardClass = `task-card${task.completed ? ' completed' : ''}${isNew ? ' new-card' : ''}`;
+          return `
+            <div class="${cardClass}" data-id="${task.id}">
+              <input type="checkbox" class="task-check" ${task.completed ? 'checked' : ''}>
+              <span class="task-title ${task.completed ? 'done' : ''}">${task.title}</span>
+              <span class="category-tag" style="background: ${CATEGORY_COLOR_MAP[task.category]}">${task.category}</span>
+              <button class="delete-btn" data-id="${task.id}">🗑️</button>
+            </div>`;
+        }).join('');
+      }
+
+      lastAddedId = null;
+      renderFilters();
+      updateProgress();
+      updateFooter();
+      updateMascot();
+    }
+
+    // ── 마스코트 메시지 ──
+    function updateMascot() {
+      const total = tasks.length;
+      const done = tasks.filter(t => t.completed).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+      const el = document.getElementById('mascot-msg');
+
+      if (total === 0) el.textContent = '오늘도 화이팅! 빅브라우니가 응원해요!';
+      else if (pct === 100) el.textContent = '대단해요! 오늘 할 일을 모두 끝냈어요! 🎉';
+      else if (pct >= 70) el.textContent = '거의 다 했어요! 조금만 더 힘내요! 💪';
+      else if (pct >= 40) el.textContent = '잘 하고 있어요! 계속 가보자! 🔥';
+      else el.textContent = '아직 할 일이 많아요, 시작해볼까요? 📚';
+    }
+
+    // ── 공유 기능 ──
+    function buildShareText() {
+      const dateStr = new Date().toLocaleDateString('ko-KR', {
+        year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+      });
+      const total = tasks.length;
+      const done = tasks.filter(t => t.completed).length;
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+      let text = `🐾 빅브라우니 학습 현황\n📅 ${dateStr}\n\n`;
+      text += `📊 전체 진행률: ${done}/${total} (${pct}%)\n\n`;
+
+      CATEGORIES.forEach(cat => {
+        const catTasks = tasks.filter(t => t.category === cat);
+        if (catTasks.length === 0) return;
+        const catDone = catTasks.filter(t => t.completed).length;
+        text += `📌 ${cat} (${catDone}/${catTasks.length})\n`;
+        catTasks.forEach(t => {
+          text += `  ${t.completed ? '✅' : '⬜'} ${t.title}\n`;
+        });
+        text += '\n';
+      });
+
+      if (done > 0 && done === total) {
+        text += '🎉 오늘 할 일 모두 완료! 빅브라우니 최고!\n';
+      }
+
+      return text.trim();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('share-toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    async function shareProgress() {
+      const text = buildShareText();
+
+      // Web Share API 지원 시 (모바일 카카오톡/문자 등 공유 가능)
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: '🐾 빅브라우니 학습 현황',
+            text: text
+          });
+          showToast('✅ 공유 완료!');
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+        }
+      }
+
+      // 미지원 시 클립보드 복사
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('📋 학습 현황이 복사되었어요! 부모님께 붙여넣기로 보내주세요');
+      } catch (e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('📋 학습 현황이 복사되었어요! 부모님께 붙여넣기로 보내주세요');
+      }
+    }
+
+    // ── 초기화 ──
+    function initApp() {
+      tasks = loadTasks();
+
+      // 오늘 날짜 표시
+      const dateStr = new Date().toLocaleDateString('ko-KR', {
+        year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+      });
+      document.getElementById('today-date').textContent = dateStr;
+
+      // 공유 버튼
+      document.getElementById('share-btn').addEventListener('click', shareProgress);
+
+      // 필터 탭 이벤트 위임
+      document.getElementById('filter-area').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('filter-tab')) return;
+        activeFilter = e.target.dataset.filter;
+        renderTasks();
+      });
+
+      // 이벤트 바인딩
+      document.getElementById('add-btn').addEventListener('click', addTask);
+      document.getElementById('task-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') addTask();
+      });
+
+      // 이벤트 위임: task-list
+      document.getElementById('task-list').addEventListener('click', (e) => {
+        const card = e.target.closest('.task-card');
+        if (!card) return;
+        const id = card.dataset.id;
+
+        if (e.target.classList.contains('task-check')) {
+          toggleComplete(id);
+        } else if (e.target.classList.contains('delete-btn')) {
+          deleteTask(id);
+        }
+      });
+
+      renderTasks();
+    }
+
+    // ── 앱 시작 ──
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+
+</body>
+</html>
