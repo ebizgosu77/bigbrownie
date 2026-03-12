@@ -1,793 +1,1157 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>빅브라우니 - 공부 관리</title>
-  <style>
-    :root {
-      --color-primary: #8B5E3C;
-      --color-golden: #D4A96A;
-      --color-bg: #FFF8F0;
-      --color-school: #4A90D9;
-      --color-academy: #7B68EE;
-      --color-self: #3CB371;
-      --color-leisure: #FF8C69;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK Networks Family AI — 수학 완전기초 + 사전 미션</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+:root {
+  --sk-red:    #E8001C;
+  --sk-orange: #FF6B00;
+  --sk-navy:   #1A1E2E;
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  --ink:     #1A1E2E;
+  --paper:   #F8F8F8;
+  --gold:    #E8001C;
+  --steel:   #B0B8C8;
+  --blue-lt: #1A1E2E;
+  --grid:    rgba(26,30,46,0.05);
 
-    body {
-      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-      background-color: var(--color-bg);
-      color: #333;
-      min-height: 100vh;
-    }
+  --dk-bg:       #0F1220;
+  --dk-surface:  #1A1E2E;
+  --dk-surface2: #222840;
+  --dk-border:   #2E3555;
+  --dk-text:     #F0F2F8;
+  --dk-muted:    #7E88A8;
+  --dk-green:    #E8001C;
+  --dk-green-d:  #2E0008;
+  --dk-orange:   #FF6B00;
+  --dk-orange-d: #3A1E08;
+  --dk-blue:     #6B9FFF;
+  --dk-blue-d:   #1A2E5A;
+  --dk-red:      #FF6B6B;
+  --dk-red-d:    #3A1515;
+  --dk-yellow:   #FFB800;
+  --dk-yellow-d: #3A2E00;
+  --dk-purple:   #A78BFF;
+  --dk-purple-d: #251A5A;
+}
 
-    .app-container {
-      max-width: 720px;
-      margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 
-    /* ── 헤더 ── */
-    header {
-      background: linear-gradient(135deg, #8B5E3C, #D4A96A);
-      color: #fff;
-      padding: 28px 20px 24px;
-      text-align: center;
-    }
+/* ══ NAV ══ */
+.top-nav {
+  position:sticky; top:0; z-index:200;
+  background:var(--sk-navy);
+  border-bottom:3px solid var(--sk-red);
+  display:flex; align-items:stretch;
+  height:56px; overflow-x:auto;
+}
+.nav-brand {
+  display:flex; align-items:center;
+  padding:0 24px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; font-weight:700; letter-spacing:3px;
+  color:white; border-right:1px solid rgba(255,255,255,0.1);
+  white-space:nowrap; flex-shrink:0;
+}
+.nav-brand em { color:var(--sk-red); font-style:normal; }
+.nav-links { display:flex; align-items:stretch; flex:1; }
+.nav-link {
+  display:flex; align-items:center; gap:8px;
+  padding:0 18px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:rgba(255,255,255,0.4);
+  text-decoration:none; border-bottom:3px solid transparent;
+  transition:all 0.2s; white-space:nowrap; flex-shrink:0;
+}
+.nav-link:hover { color:rgba(255,255,255,0.8); }
+.nav-link.stage0 { border-bottom-color:var(--sk-red); color:var(--sk-red); }
+.nav-link.stage1 { color:rgba(255,255,255,0.55); }
+.nav-link.stage1:hover { color:white; }
+.nav-stage-badge { font-size:9px; padding:2px 7px; border-radius:2px; font-weight:700; }
+.badge-0 { background:rgba(232,0,28,0.2); color:var(--sk-red); }
+.badge-1 { background:rgba(255,107,0,0.15); color:var(--sk-orange); }
 
-    header h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
+/* ══ SHARED LAYOUT ══ */
+.light-body { background:var(--paper); color:var(--ink); overflow-x:hidden; }
+.light-body::before, .light-zone::before {
+  content:''; position:fixed; inset:0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:40px 40px; pointer-events:none; z-index:0;
+}
+.light-zone { background:var(--paper); position:relative; }
 
-    header .subtitle {
-      font-size: 0.85rem;
-      font-style: italic;
-      opacity: 0.85;
-      margin-bottom: 6px;
-    }
+/* ══ STAGE 0 DARK ══ */
+.stage0-zone {
+  background:var(--dk-bg); color:var(--dk-text);
+  position:relative; overflow:hidden;
+}
+.stage0-zone::after {
+  content:''; position:absolute; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0;
+}
+.stage0-zone > * { position:relative; z-index:1; }
 
-    header .date {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
+.s0-hero {
+  max-width:1160px; margin:0 auto;
+  padding:64px 40px 48px;
+  display:grid; grid-template-columns:1fr 320px;
+  gap:48px; align-items:center;
+}
+.s0-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; font-weight:600; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--sk-red);
+  background:rgba(232,0,28,0.12); border:1px solid rgba(232,0,28,0.3);
+  padding:5px 14px; border-radius:2px; margin-bottom:20px;
+}
+.s0-eyebrow::before { content:'●'; font-size:8px; animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    .mascot-area {
-      text-align: center;
-      padding: 20px 20px 8px;
-    }
+.s0-title {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:clamp(40px,5vw,64px); font-weight:800;
+  line-height:1.3; letter-spacing:-1px; color:var(--dk-text); margin-bottom:20px;
+}
+.s0-title .accent-g { color:var(--sk-red); }
+.s0-title .accent-o { color:var(--dk-orange); }
 
-    .mascot-img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid var(--color-golden);
-      box-shadow: 0 4px 16px rgba(139, 94, 60, 0.2);
-      background: #fff;
-    }
+.s0-desc { font-size:14px; color:var(--dk-muted); line-height:2; max-width:540px; margin-bottom:28px; }
+.s0-desc strong { color:var(--dk-text); font-weight:500; }
+.s0-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.s0-tag {
+  font-family:'IBM Plex Mono',monospace; font-size:10px;
+  padding:5px 12px; border:1px solid var(--dk-border);
+  color:var(--dk-muted); border-radius:2px;
+}
 
-    .mascot-msg {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: var(--color-primary);
-      font-weight: 600;
-    }
+.roadmap-box {
+  background:var(--dk-surface); border:1px solid var(--dk-border);
+  border-radius:6px; padding:24px 20px;
+}
+.rm-label {
+  font-family:'IBM Plex Mono',monospace; font-size:9px;
+  letter-spacing:2.5px; color:var(--dk-muted);
+  text-transform:uppercase; margin-bottom:16px;
+}
+.rm-step {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 0; border-bottom:1px solid var(--dk-border);
+}
+.rm-step:last-child { border-bottom:none; }
+.rm-icon {
+  width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; flex-shrink:0;
+}
+.rm-now  { background:rgba(232,0,28,0.15); color:var(--sk-red);   border:1px solid var(--sk-red); }
+.rm-next { background:var(--dk-surface2);  color:var(--dk-muted); border:1px dashed var(--dk-border); }
+.rm-goal { background:rgba(255,107,0,0.2); color:var(--dk-orange);border:1px solid var(--dk-orange); }
+.rm-info strong { display:block; font-size:12px; color:var(--dk-text); }
+.rm-info span   { font-size:11px; color:var(--dk-muted); }
 
-    /* ── 진행률 ── */
-    #progress-area {
-      padding: 18px 20px 10px;
-    }
+.s0-sec { max-width:1160px; margin:0 auto; padding:0 40px 64px; }
+.s0-sec-head {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:32px; padding-top:48px; border-top:1px solid var(--dk-border);
+}
+.s0-sec-num {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:2px; background:var(--dk-surface); border:1px solid var(--dk-border);
+  color:var(--dk-muted); padding:4px 12px; border-radius:2px; flex-shrink:0;
+}
+.s0-sec-title {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:26px; font-weight:800; letter-spacing:-0.5px; color:var(--dk-text);
+}
+.s0-sec-sub { margin-left:auto; font-size:12px; color:var(--dk-muted); text-align:right; line-height:1.6; flex-shrink:0; }
 
-    .progress-text {
-      font-size: 0.95rem;
-      color: var(--color-primary);
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+/* Lesson cards */
+.lessons-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.lcard {
+  background:var(--dk-surface); border:1px solid var(--dk-border);
+  border-radius:6px; overflow:hidden; transition:border-color .2s, transform .2s;
+}
+.lcard:hover { transform:translateY(-2px); border-color:var(--dk-blue); }
+.lcard-head {
+  padding:18px 22px 14px; border-bottom:1px solid var(--dk-border);
+  display:flex; align-items:flex-start; gap:14px;
+}
+.lcard-icon {
+  width:42px; height:42px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+  font-family:'IBM Plex Mono',monospace; font-weight:700; color:white;
+}
+.lcard-meta { flex:1; min-width:0; }
+.lcard-tag {
+  font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700;
+  letter-spacing:1.5px; text-transform:uppercase;
+  padding:2px 8px; border-radius:2px; display:inline-block; margin-bottom:6px;
+}
+.lcard-title {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:15px; font-weight:700; color:var(--dk-text); line-height:1.3;
+}
+.diff-badge {
+  font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700;
+  padding:3px 9px; border-radius:2px; flex-shrink:0; letter-spacing:.5px;
+}
+.lcard-body { padding:18px 22px; }
+.lcard-desc { font-size:13px; color:var(--dk-muted); line-height:1.9; margin-bottom:14px; }
 
-    .progress-bar-bg {
-      background: #E0D5C8;
-      border-radius: 999px;
-      height: 12px;
-      width: 100%;
-      overflow: hidden;
-    }
+.cbox {
+  background:var(--dk-surface2); border:1px solid var(--dk-border);
+  border-radius:4px; padding:14px 16px; margin-bottom:10px;
+}
+.cbox-q {
+  font-size:13px; font-weight:700; color:var(--dk-text); margin-bottom:8px;
+  display:flex; gap:9px; align-items:flex-start;
+}
+.cbox-num {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dk-blue);
+  background:var(--dk-blue-d); padding:2px 7px; border-radius:2px;
+  flex-shrink:0; margin-top:2px;
+}
+.cbox-body {
+  font-size:12px; color:var(--dk-muted); line-height:1.85;
+  border-left:2px solid var(--dk-border); padding-left:12px; margin-left:2px;
+}
+.vis {
+  background:var(--dk-bg); border:1px solid var(--dk-border);
+  border-radius:4px; padding:16px; margin:10px 0;
+  text-align:center; overflow-x:auto;
+}
+.vis-row { display:flex; justify-content:center; align-items:center; gap:8px; margin:5px 0; flex-wrap:wrap; }
+.vis-box {
+  padding:7px 13px; border-radius:4px; font-size:13px; font-weight:600;
+  font-family:'IBM Plex Mono',monospace; white-space:nowrap;
+}
+.vis-arr { color:var(--dk-muted); font-size:18px; flex-shrink:0; }
+.ai-strip {
+  display:flex; gap:11px; align-items:flex-start;
+  background:linear-gradient(135deg,var(--dk-purple-d),var(--dk-blue-d));
+  border:1px solid var(--dk-purple); border-radius:4px;
+  padding:12px 14px; margin-top:12px;
+}
+.ai-strip-ico { font-size:18px; flex-shrink:0; line-height:1; }
+.ai-strip-txt { font-size:12px; color:var(--dk-purple); line-height:1.8; }
+.ai-strip-txt strong { color:#D8B4FF; }
 
-    .progress-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.4s ease, background-color 0.4s ease;
-    }
+/* Theme colors */
+.th-green .lcard-icon  { background:rgba(232,0,28,0.15); color:var(--sk-red); }
+.th-green .lcard-tag   { background:rgba(232,0,28,0.15); color:var(--sk-red); }
+.th-green .diff-badge  { background:rgba(232,0,28,0.15); color:var(--sk-red); }
+.th-green:hover        { border-color:var(--sk-red) !important; }
+.th-orange .lcard-icon { background:var(--dk-orange-d); color:var(--dk-orange); }
+.th-orange .lcard-tag  { background:var(--dk-orange-d); color:var(--dk-orange); }
+.th-orange .diff-badge { background:var(--dk-orange-d); color:var(--dk-orange); }
+.th-orange:hover       { border-color:var(--dk-orange) !important; }
+.th-blue .lcard-icon   { background:var(--dk-blue-d); color:var(--dk-blue); }
+.th-blue .lcard-tag    { background:var(--dk-blue-d); color:var(--dk-blue); }
+.th-blue .diff-badge   { background:var(--dk-blue-d); color:var(--dk-blue); }
+.th-blue:hover         { border-color:var(--dk-blue) !important; }
+.th-yellow .lcard-icon { background:var(--dk-yellow-d); color:var(--dk-yellow); }
+.th-yellow .lcard-tag  { background:var(--dk-yellow-d); color:var(--dk-yellow); }
+.th-yellow .diff-badge { background:var(--dk-yellow-d); color:var(--dk-yellow); }
+.th-yellow:hover       { border-color:var(--dk-yellow) !important; }
+.th-red .lcard-icon    { background:var(--dk-red-d); color:var(--dk-red); }
+.th-red .lcard-tag     { background:var(--dk-red-d); color:var(--dk-red); }
+.th-red .diff-badge    { background:var(--dk-red-d); color:var(--dk-red); }
+.th-red:hover          { border-color:var(--dk-red) !important; }
+.th-purple .lcard-icon { background:var(--dk-purple-d); color:var(--dk-purple); }
+.th-purple .lcard-tag  { background:var(--dk-purple-d); color:var(--dk-purple); }
+.th-purple .diff-badge { background:var(--dk-purple-d); color:var(--dk-purple); }
+.th-purple:hover       { border-color:var(--dk-purple) !important; }
 
-    .congrats {
-      text-align: center;
-      padding: 10px 0 2px;
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: var(--color-primary);
-      animation: fadeInDown 0.4s ease;
-    }
+/* Transition */
+.transition-strip {
+  background:linear-gradient(to bottom,var(--dk-bg),var(--paper));
+  height:64px; position:relative; z-index:1;
+}
 
-    /* ── 필터 탭 ── */
-    #filter-area {
-      padding: 10px 20px;
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
+/* ══ QUIZ ══ */
+.quiz-wrap {
+  background:var(--dk-surface); border:1px solid var(--dk-border);
+  border-radius:8px; overflow:hidden;
+}
+.quiz-prog-bar { height:3px; background:var(--dk-border); }
+.quiz-prog-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--sk-red),var(--sk-orange));
+  transition:width .4s ease;
+}
+.quiz-hd {
+  padding:18px 26px 14px; border-bottom:1px solid var(--dk-border);
+  display:flex; align-items:center; gap:12px;
+}
+.quiz-lbl { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dk-muted); letter-spacing:2px; }
+.quiz-cnt { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; color:var(--sk-red); margin-left:auto; }
+.quiz-bd { padding:26px; }
+.quiz-q {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:17px; font-weight:700; color:var(--dk-text); margin-bottom:8px; line-height:1.5;
+}
+.quiz-hint { font-size:13px; color:var(--dk-muted); margin-bottom:22px; line-height:1.7; }
+.quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:18px; }
+.qopt {
+  background:var(--dk-surface2); border:1px solid var(--dk-border); border-radius:6px;
+  padding:13px 16px; cursor:pointer; display:flex; align-items:center; gap:11px;
+  transition:all .15s; font-size:13px; color:var(--dk-text); text-align:left;
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+}
+.qopt:hover { border-color:var(--dk-blue); background:var(--dk-blue-d); }
+.qopt.correct { border-color:var(--sk-red) !important; background:rgba(232,0,28,0.12) !important; color:var(--sk-red); }
+.qopt.wrong   { border-color:var(--dk-red) !important; background:var(--dk-red-d) !important; color:var(--dk-red); }
+.qopt.show-c  { border-color:var(--sk-red); background:rgba(232,0,28,0.08); color:var(--sk-red); opacity:.6; }
+.qopt.dis     { pointer-events:none; }
+.opt-k {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
+  width:21px; height:21px; border-radius:3px;
+  background:var(--dk-border); color:var(--dk-muted);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.qopt.correct .opt-k { background:var(--sk-red); color:white; }
+.qopt.wrong   .opt-k { background:var(--dk-red); color:white; }
+.q-feedback { display:none; padding:14px 18px; border-radius:5px; font-size:13px; line-height:1.8; margin-bottom:14px; }
+.q-feedback.show { display:block; }
+.q-feedback.ok { background:rgba(232,0,28,0.1); border:1px solid var(--sk-red); color:var(--sk-red); }
+.q-feedback.ng { background:var(--dk-red-d); border:1px solid var(--dk-red); color:#FF9999; }
+.quiz-nav-row { display:flex; align-items:center; gap:10px; }
+.btn {
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+  letter-spacing:1px; cursor:pointer; border:none; border-radius:4px; padding:9px 20px;
+  transition:all .15s;
+}
+.btn-g { background:var(--sk-red); color:white; }
+.btn-g:hover { filter:brightness(1.1); }
+.btn-g:disabled { background:var(--dk-surface2); color:var(--dk-muted); cursor:not-allowed; }
+.btn-ghost { background:transparent; color:var(--dk-muted); border:1px solid var(--dk-border); }
+.btn-ghost:hover { color:var(--dk-text); border-color:var(--dk-muted); }
+.score-txt { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dk-muted); margin-left:auto; }
+.result-card { display:none; text-align:center; padding:36px; }
+.result-card.show { display:block; }
+.r-emoji { font-size:60px; margin-bottom:16px; }
+.r-title { font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:10px; }
+.r-score { font-family:'IBM Plex Mono',monospace; font-size:44px; font-weight:600; margin-bottom:8px; }
+.r-sub { font-size:13px; color:var(--dk-muted); margin-bottom:24px; line-height:1.8; }
+.r-bars { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:420px; margin:0 auto 24px; }
+.rb { background:var(--dk-surface2); border:1px solid var(--dk-border); border-radius:5px; padding:14px 10px; }
+.rb-n { font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:600; margin-bottom:4px; }
+.rb-l { font-size:11px; color:var(--dk-muted); }
 
-    #filter-area::-webkit-scrollbar {
-      display: none;
-    }
+/* Cheatsheet */
+.cheat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.cc {
+  background:var(--dk-surface); border:1px solid var(--dk-border);
+  border-radius:5px; padding:18px; transition:border-color .2s;
+}
+.cc:hover { border-color:var(--dk-orange); }
+.cc-sym { font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; margin-bottom:7px; line-height:1; }
+.cc-name { font-size:13px; font-weight:700; color:var(--dk-text); margin-bottom:4px; }
+.cc-read { font-family:'IBM Plex Mono',monospace; font-size:10px; margin-bottom:7px; }
+.cc-desc { font-size:12px; color:var(--dk-muted); line-height:1.7; }
 
-    .filter-tab {
-      padding: 6px 14px;
-      border: 1.5px solid #DDD;
-      border-radius: 20px;
-      background: transparent;
-      color: #888;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
+/* ══ HEADER LIGHT ══ */
+.site-header {
+  position:relative; z-index:10;
+  background:var(--sk-navy); border-bottom:3px solid var(--sk-navy); overflow:hidden;
+}
+.header-inner { display:grid; grid-template-columns:1fr 1fr; min-height:300px; }
+.header-left { padding:44px 52px; display:flex; flex-direction:column; justify-content:space-between; }
+.sk-badge {
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--sk-red); color:white;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+  letter-spacing:2px; padding:7px 14px; width:fit-content;
+  text-transform:uppercase; border-radius:2px;
+}
+.sk-badge::before { content:'▶'; font-size:8px; }
+.header-title {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:clamp(36px,4.5vw,64px); font-weight:800;
+  color:white; line-height:1.25; letter-spacing:-1px;
+}
+.header-title span { color:var(--sk-orange); }
+.header-subtitle { color:var(--steel); font-size:13px; font-weight:300; letter-spacing:1px; line-height:1.8; }
+.header-right {
+  background:var(--sk-red); display:flex; flex-direction:column;
+  justify-content:center; align-items:flex-start;
+  padding:44px 52px; position:relative; overflow:hidden;
+}
+.header-right::before {
+  content:'Σ ∇ ∂ λ'; font-family:'IBM Plex Mono',monospace; font-size:120px;
+  color:rgba(255,255,255,.07); position:absolute; top:-20px; right:-20px;
+  line-height:1; letter-spacing:-5px;
+}
+.mission-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(255,255,255,.6); letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+.mission-title { font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:44px; color:white; letter-spacing:3px; margin-bottom:16px; }
+.mission-desc { font-size:13px; color:rgba(255,255,255,.8); line-height:2; font-weight:300; max-width:320px; }
+.mission-stats { display:flex; gap:28px; margin-top:28px; }
+.stat-num { font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:700; color:white; line-height:1; }
+.stat-label { font-size:10px; color:rgba(255,255,255,.6); letter-spacing:1px; margin-top:3px; }
 
-    .filter-tab:hover {
-      background: #f5ece3;
-      border-color: var(--color-golden);
-      color: #666;
-    }
+/* ══ MAIN LIGHT ══ */
+main { position:relative; z-index:1; max-width:1160px; margin:0 auto; padding:60px 40px; background:transparent; }
+.section-header { display:flex; align-items:center; gap:14px; margin-bottom:36px; }
+.section-num {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+  color:var(--sk-red); letter-spacing:2px; padding:5px 11px;
+  border:2px solid var(--sk-red); border-radius:2px;
+}
+.section-title {
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  font-size:28px; font-weight:800; letter-spacing:-0.5px; color:var(--ink);
+}
 
-    .filter-tab.active {
-      background: var(--color-primary);
-      color: #fff;
-      border-color: var(--color-primary);
-    }
+/* concept grid */
+.concept-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:72px; border:2px solid var(--ink); }
+.concept-card {
+  background:white; padding:28px 24px; border-right:2px solid var(--ink);
+  position:relative; transition:background .15s; cursor:pointer;
+}
+.concept-card:nth-child(3n) { border-right:none; }
+.concept-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:4px;
+  background:var(--sk-red); transform:scaleX(0); transform-origin:left; transition:transform .3s;
+}
+.concept-card:hover { background:#fafafa; }
+.concept-card:hover::after { transform:scaleX(1); }
+.concept-card.row2 { border-top:2px solid var(--ink); }
+.card-tag { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; letter-spacing:2px; color:var(--sk-red); text-transform:uppercase; margin-bottom:10px; }
+.card-formula { font-size:12px; background:#1A1E2E; color:#FF9955; padding:12px 14px; font-family:'IBM Plex Mono',monospace; margin-bottom:14px; line-height:1.7; overflow-x:auto; min-height:52px; display:flex; align-items:center; }
+.card-title { font-size:15px; font-weight:700; margin-bottom:7px; }
+.card-desc { font-size:12px; color:#3A3F5C; line-height:1.8; font-weight:300; }
+.card-ai-use { margin-top:12px; padding:9px 12px; background:#FFF3EB; border-left:3px solid var(--sk-red); font-size:11px; color:#6B4500; line-height:1.7; }
+.card-ai-use strong { font-weight:700; color:#6B3000; }
 
-    /* ── 입력 영역 ── */
-    #input-area {
-      padding: 12px 20px;
-      display: flex;
-      gap: 8px;
-    }
+/* mission grid */
+.mission-grid { display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-bottom:72px; }
+.mission-block { border:2px solid var(--ink); background:white; position:relative; overflow:hidden; }
+.mission-block-header { background:var(--sk-navy); padding:18px 24px; display:flex; align-items:center; gap:14px; }
+.mission-block-num { font-family:'IBM Plex Mono',monospace; font-size:26px; font-weight:700; color:var(--sk-orange); line-height:1; }
+.mission-block-info h3 { font-size:15px; font-weight:700; color:white; letter-spacing:1px; }
+.mission-block-info p  { font-size:11px; color:var(--steel); font-weight:300; margin-top:2px; }
+.mission-body { padding:24px; }
+.lecture-list { list-style:none; margin-bottom:18px; }
+.lecture-list li { padding:10px 0; border-bottom:1px dashed #ddd; display:flex; align-items:flex-start; gap:10px; font-size:12px; line-height:1.7; color:var(--ink); }
+.lecture-list li:last-child { border-bottom:none; }
+.lec-icon { width:22px; height:22px; background:var(--sk-red); color:white; font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; border-radius:3px; }
 
-    #task-input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 2px solid #E0D5C8;
-      border-radius: 10px;
-      font-size: 1rem;
-      outline: none;
-      background: #fff;
-      transition: border-color 0.2s ease;
-    }
+/* problems */
+.problems-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; border:2px solid var(--ink); }
+.problem-card { background:white; padding:28px 24px; border-right:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+.problem-card:nth-child(2n) { border-right:none; }
+.problem-card:nth-last-child(-n+2) { border-bottom:none; }
+.problem-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.problem-num { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; color:white; background:var(--blue-lt); padding:3px 9px; letter-spacing:1px; }
+.problem-level { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--sk-red); letter-spacing:1px; padding:2px 7px; border:1px solid var(--sk-red); }
+.problem-title { font-size:14px; font-weight:700; margin-bottom:8px; }
+.problem-text  { font-size:12px; color:#3A3F5C; line-height:1.9; margin-bottom:12px; }
+.problem-formula { background:#EDF1FF; border-left:3px solid var(--sk-navy); padding:12px 14px; font-size:12px; margin-bottom:12px; overflow-x:auto; }
+.answer-toggle { display:flex; align-items:center; gap:7px; font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; color:var(--sk-red); cursor:pointer; border:none; background:none; letter-spacing:1px; padding:6px 0; text-transform:uppercase; transition:gap .2s; }
+.answer-toggle:hover { gap:11px; }
+.answer-block { display:none; background:#FFFBF0; border:1px dashed var(--sk-red); padding:14px; margin-top:10px; font-size:12px; color:#3A3F5C; line-height:2; }
+.answer-block.show { display:block; }
+.answer-block .step { display:flex; gap:10px; margin-bottom:6px; align-items:flex-start; }
+.step-num { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; color:var(--sk-red); background:var(--ink); padding:2px 5px; flex-shrink:0; margin-top:3px; }
 
-    #task-input:focus {
-      border-color: var(--color-golden);
-      box-shadow: 0 0 0 3px rgba(212, 169, 106, 0.15);
-    }
+/* schedule table */
+.schedule-table { width:100%; border-collapse:collapse; border:2px solid var(--ink); margin-bottom:0; }
+.schedule-table th { background:var(--sk-navy); color:white; padding:14px 18px; text-align:left; font-size:11px; font-family:'IBM Plex Mono',monospace; letter-spacing:2px; text-transform:uppercase; font-weight:700; }
+.schedule-table td { padding:14px 18px; border-bottom:1px solid #ddd; font-size:12px; vertical-align:top; line-height:1.7; }
+.schedule-table tr:last-child td { border-bottom:none; }
+.schedule-table tr:hover td { background:#f9f8f5; }
+.tag-pill { display:inline-block; padding:2px 9px; font-size:10px; font-family:'IBM Plex Mono',monospace; font-weight:700; letter-spacing:1px; margin-right:5px; margin-bottom:3px; }
+.tag-math { background:#E8F0FF; color:var(--blue-lt); }
+.tag-ml   { background:#FFE8EC; color:var(--sk-red); }
+.tag-dl   { background:#FFF3E0; color:var(--sk-orange); }
+.tag-hard { background:var(--ink); color:var(--sk-orange); }
 
-    #category-select {
-      width: 140px;
-      padding: 10px 8px;
-      border: 2px solid #E0D5C8;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      background: #fff;
-      outline: none;
-      cursor: pointer;
-      transition: border-color 0.2s ease;
-    }
+.yt-link { display:inline-flex; align-items:center; gap:5px; margin-top:6px; font-size:11px; font-family:'IBM Plex Mono',monospace; font-weight:700; letter-spacing:.5px; color:#CC0000; text-decoration:none; padding:4px 10px; background:#FFF0F0; border:1px solid #FFCCCC; border-radius:3px; transition:all .15s; line-height:1.4; }
+.yt-link:hover { background:#CC0000; color:white; border-color:#CC0000; }
 
-    #category-select:focus {
-      border-color: var(--color-golden);
-    }
+/* ══ FOOTER ══ */
+footer {
+  background:var(--sk-navy);
+  color:white;
+  padding:52px 40px 44px;
+  position:relative;
+}
+footer::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg, var(--sk-red) 0%, var(--sk-orange) 100%);
+}
+.footer-inner { max-width:1160px; margin:0 auto; }
 
-    #add-btn {
-      padding: 10px 22px;
-      background-color: var(--color-primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.2s ease, transform 0.1s ease;
-    }
+/* Logo area */
+.footer-logo-area {
+  display:flex; align-items:center; justify-content:center;
+  gap:40px;
+}
+.footer-site-logo {
+  height:64px; object-fit:contain;
+  transition:opacity .2s;
+}
+.footer-site-logo:hover { opacity:0.85; }
+.footer-x-divider {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:22px; font-weight:300;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:2px; flex-shrink:0;
+  user-select:none;
+}
+.footer-pd-logo {
+  height:52px; object-fit:contain;
+  filter:brightness(0) invert(1); opacity:0.8;
+  transition:opacity .2s;
+}
+.footer-pd-logo:hover { opacity:1; }
 
-    #add-btn:hover {
-      background-color: #744E32;
-    }
+.footer-copy {
+  display:block; text-align:center; margin-top:28px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; color:rgba(255,255,255,0.22);
+  letter-spacing:0.5px;
+}
 
-    #add-btn:active {
-      transform: scale(0.96);
-    }
+/* ══ RESPONSIVE ══ */
+@media (max-width:880px) {
+  .s0-hero { grid-template-columns:1fr; }
+  .roadmap-box { display:none; }
+  .lessons-grid { grid-template-columns:1fr; }
+  .quiz-opts { grid-template-columns:1fr; }
+  .cheat-grid { grid-template-columns:1fr 1fr; }
+  .header-inner { grid-template-columns:1fr; }
+  .header-right { display:none; }
+  .concept-grid { grid-template-columns:1fr; }
+  .concept-card { border-right:none !important; border-bottom:2px solid var(--ink); }
+  .mission-grid { grid-template-columns:1fr; }
+  .problems-grid { grid-template-columns:1fr; }
+  .problem-card { border-right:none !important; }
+  .r-bars { grid-template-columns:1fr 1fr; }
+  .s0-sec-sub { display:none; }
+  .footer-logo-area { flex-direction:column; align-items:flex-start; gap:16px; }
+}
 
-    /* ── 할 일 카드 ── */
-    #task-list {
-      flex: 1;
-      padding: 8px 20px 20px;
-    }
-
-    .task-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #fff;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
-
-    .task-card:hover {
-      box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-      transform: translateY(-1px);
-    }
-
-    .task-card.completed {
-      background: #F5F5F5;
-    }
-
-    .task-card.new-card {
-      animation: fadeInDown 0.25s ease;
-    }
-
-    .task-check {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-      accent-color: var(--color-primary);
-      flex-shrink: 0;
-    }
-
-    .task-title {
-      flex: 1;
-      font-size: 1rem;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .task-title.done {
-      text-decoration: line-through;
-      opacity: 0.45;
-    }
-
-    .category-tag {
-      padding: 2px 8px;
-      border-radius: 999px;
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: bold;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .delete-btn {
-      background: none;
-      border: none;
-      font-size: 1.05rem;
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 6px;
-      opacity: 0;
-      transition: opacity 0.2s ease, background 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    .task-card:hover .delete-btn {
-      opacity: 1;
-    }
-
-    .delete-btn:hover {
-      background: #fee;
-    }
-
-    /* ── 빈 상태 ── */
-    .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: #bbb;
-      font-size: 1.05rem;
-      line-height: 1.8;
-    }
-
-    /* ── 푸터 ── */
-    footer {
-      background: linear-gradient(135deg, #8B5E3C, #74502F);
-      color: #fff;
-      padding: 18px 20px;
-      font-size: 0.85rem;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .category-summary {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .cat-label {
-      min-width: 60px;
-      font-weight: bold;
-      font-size: 0.8rem;
-    }
-
-    .mini-bar-bg {
-      flex: 1;
-      background: rgba(255,255,255,0.2);
-      border-radius: 999px;
-      height: 8px;
-      overflow: hidden;
-    }
-
-    .mini-bar-fill {
-      height: 100%;
-      border-radius: 999px;
-      transition: width 0.4s ease;
-    }
-
-    .cat-count {
-      min-width: 50px;
-      text-align: right;
-      font-size: 0.8rem;
-      opacity: 0.85;
-    }
-
-    /* ── 공유 버튼 ── */
-    .share-area {
-      padding: 8px 20px 16px;
-      text-align: center;
-    }
-
-    .share-btn {
-      padding: 12px 28px;
-      background: linear-gradient(135deg, #8B5E3C, #D4A96A);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 8px rgba(139, 94, 60, 0.3);
-    }
-
-    .share-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(139, 94, 60, 0.4);
-    }
-
-    .share-btn:active {
-      transform: scale(0.97);
-    }
-
-    .share-toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #333;
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      z-index: 999;
-      pointer-events: none;
-    }
-
-    .share-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ── 애니메이션 ── */
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    /* ── 반응형 ── */
-    @media (max-width: 480px) {
-      header h1 { font-size: 1.6rem; }
-
-      #input-area {
-        flex-direction: column;
-      }
-
-      #category-select {
-        width: 100%;
-      }
-
-      #add-btn {
-        width: 100%;
-      }
-
-      .delete-btn {
-        opacity: 1;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.lcard { animation:fadeUp .45s ease both; }
+.concept-card,.mission-block,.problem-card { animation:fadeUp .45s ease both; }
+.lcard:nth-child(1){animation-delay:.04s}.lcard:nth-child(2){animation-delay:.08s}
+.lcard:nth-child(3){animation-delay:.12s}.lcard:nth-child(4){animation-delay:.16s}
+.lcard:nth-child(5){animation-delay:.20s}.lcard:nth-child(6){animation-delay:.24s}
+.concept-card:nth-child(1){animation-delay:.05s}.concept-card:nth-child(2){animation-delay:.10s}
+.concept-card:nth-child(3){animation-delay:.15s}.concept-card:nth-child(4){animation-delay:.20s}
+.concept-card:nth-child(5){animation-delay:.25s}.concept-card:nth-child(6){animation-delay:.30s}
+</style>
 </head>
 <body>
 
-  <div class="app-container">
-    <header>
-      <h1>🐾 빅브라우니</h1>
-      <p class="subtitle">Big Brownie Study Manager</p>
-      <p class="date" id="today-date"></p>
-    </header>
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-brand"><em>SK</em>&nbsp;·&nbsp;AI MATH</div>
+  <div class="nav-links">
+    <a class="nav-link stage0" href="#stage0"><span class="nav-stage-badge badge-0">STEP 0</span>수식 완전기초</a>
+    <a class="nav-link stage1" href="#stage1-formulas"><span class="nav-stage-badge badge-1">STEP 1</span>핵심 수식</a>
+    <a class="nav-link stage1" href="#stage1-curriculum"><span class="nav-stage-badge badge-1">STEP 2</span>강좌 커리큘럼</a>
+    <a class="nav-link stage1" href="#stage1-problems"><span class="nav-stage-badge badge-1">STEP 3</span>개념 문제</a>
+    <a class="nav-link stage1" href="#stage1-roadmap"><span class="nav-stage-badge badge-1">STEP 4</span>로드맵</a>
+  </div>
+</nav>
 
-    <div class="mascot-area">
-      <img class="mascot-img"
-           src="https://www.ikea.com/kr/ko/images/products/gosig-golden-soft-toy-dog-golden-retriever__0710169_pe727372_s5.jpg?f=u"
-           alt="빅브라우니 골든리트리버">
-      <div class="mascot-msg" id="mascot-msg">오늘도 화이팅! 빅브라우니가 응원해요!</div>
+<!-- ██ STAGE 0 DARK ██ -->
+<div class="stage0-zone" id="stage0">
+  <div class="s0-hero">
+    <div>
+      <div class="s0-eyebrow">STEP 0 · ZERO-LEVEL MATH FOUNDATION</div>
+      <h1 class="s0-title">수식이<br><span class="accent-g">무서웠던</span> 당신을<br>위한 <span class="accent-o">완전기초</span></h1>
+      <p class="s0-desc"><strong>Σ, ∇, ∂</strong> — 이 기호들이 외계어처럼 느껴지신가요?<br>배웠지만 다 잊었어도 괜찮습니다.<br><strong>일상의 비유 → 개념 → AI 연결</strong> 순서로 되살려 드립니다.</p>
+      <div class="s0-tags">
+        <span class="s0-tag">🧮 변수·함수</span><span class="s0-tag">📈 기울기·그래프</span>
+        <span class="s0-tag">🔢 지수·로그</span><span class="s0-tag">Σ 시그마</span>
+        <span class="s0-tag">→ 벡터 직관</span><span class="s0-tag">∂ 편미분 입문</span>
+      </div>
     </div>
-
-    <section id="progress-area">
-      <!-- 진행률 표시 영역 -->
-    </section>
-
-    <section id="filter-area">
-      <!-- 카테고리 탭 -->
-    </section>
-
-    <section id="input-area">
-      <input type="text" id="task-input" placeholder="오늘 할 일을 입력하세요 🐾">
-      <select id="category-select">
-        <option value="학교공부">학교공부</option>
-        <option value="학원공부">학원공부</option>
-        <option value="개인공부">개인공부</option>
-        <option value="여가시간">여가시간</option>
-      </select>
-      <button id="add-btn">추가</button>
-    </section>
-
-    <main id="task-list">
-      <!-- 할 일 목록 -->
-    </main>
-
-    <div class="share-area">
-      <button class="share-btn" id="share-btn">📤 오늘의 학습 현황 공유하기</button>
+    <div class="roadmap-box">
+      <div class="rm-label">전체 학습 로드맵</div>
+      <div class="rm-step"><div class="rm-icon rm-now">0</div><div class="rm-info"><strong>완전기초 강의</strong><span>← 지금 여기</span></div></div>
+      <div class="rm-step"><div class="rm-icon rm-next">1</div><div class="rm-info"><strong>선형대수 기초</strong><span>벡터 · 행렬</span></div></div>
+      <div class="rm-step"><div class="rm-icon rm-next">2</div><div class="rm-info"><strong>미적분 기초</strong><span>미분 · 경사 하강</span></div></div>
+      <div class="rm-step"><div class="rm-icon rm-next">3</div><div class="rm-info"><strong>확률·통계 기초</strong><span>분포 · 베이즈</span></div></div>
+      <div class="rm-step"><div class="rm-icon rm-goal">🎯</div><div class="rm-info"><strong>본 과정 입과</strong><span>사전 미션 통과</span></div></div>
     </div>
-
-    <footer>
-      <!-- 카테고리별 요약 -->
-    </footer>
   </div>
 
-  <div class="share-toast" id="share-toast"></div>
+  <div class="s0-sec">
+    <div class="s0-sec-head">
+      <span class="s0-sec-num">LESSON</span>
+      <h2 class="s0-sec-title">AI 수학, 기초부터 탄탄하게 쌓는 6강</h2>
+      <div class="s0-sec-sub">비유 → 시각화 → AI 연결<br>순서로 이해하세요</div>
+    </div>
+    <div class="lessons-grid">
 
-  <script>
-    // ── 데이터 ──
-    let tasks = [];
-    let activeFilter = '전체';
-    let lastAddedId = null;
-    const STORAGE_KEY = 'bigbrownie_tasks';
-
-    const CATEGORIES = ['학교공부', '학원공부', '개인공부', '여가시간'];
-
-    const CATEGORY_COLOR_MAP = {
-      '학교공부': 'var(--color-school)',
-      '학원공부': 'var(--color-academy)',
-      '개인공부': 'var(--color-self)',
-      '여가시간': 'var(--color-leisure)'
-    };
-
-    // ── LocalStorage 함수 ──
-    function loadTasks() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    }
-
-    function saveTasks() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-    }
-
-    // ── CRUD 함수 ──
-    function addTask() {
-      const input = document.getElementById('task-input');
-      const title = input.value.trim();
-      if (!title) return;
-
-      const category = document.getElementById('category-select').value;
-      const task = {
-        id: Date.now().toString(),
-        title,
-        category,
-        completed: false,
-        createdAt: new Date().toISOString(),
-        order: tasks.length
-      };
-
-      tasks.push(task);
-      lastAddedId = task.id;
-      saveTasks();
-      renderTasks();
-
-      input.value = '';
-      input.focus();
-    }
-
-    function toggleComplete(id) {
-      const task = tasks.find(t => t.id === id);
-      if (task) {
-        task.completed = !task.completed;
-        saveTasks();
-        renderTasks();
-      }
-    }
-
-    function deleteTask(id) {
-      const task = tasks.find(t => t.id === id);
-      if (!task) return;
-      if (!confirm(`'${task.title}' 을(를) 삭제할까요? 🗑️`)) return;
-      tasks = tasks.filter(t => t.id !== id);
-      saveTasks();
-      renderTasks();
-    }
-
-    // ── 필터 탭 ──
-    function renderFilters() {
-      const area = document.getElementById('filter-area');
-      const tabs = ['전체', ...CATEGORIES];
-
-      area.innerHTML = tabs.map(tab => {
-        const count = tab === '전체' ? tasks.length : tasks.filter(t => t.category === tab).length;
-        const activeClass = activeFilter === tab ? 'active' : '';
-        return `<button class="filter-tab ${activeClass}" data-filter="${tab}">${tab} (${count})</button>`;
-      }).join('');
-    }
-
-    // ── 진행률 ──
-    function updateProgress() {
-      const area = document.getElementById('progress-area');
-      const total = tasks.length;
-      const done = tasks.filter(t => t.completed).length;
-      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-
-      let barColor;
-      if (pct >= 80) barColor = '#4CAF50';
-      else if (pct >= 40) barColor = 'var(--color-golden)';
-      else barColor = 'var(--color-leisure)';
-
-      let congratsHtml = '';
-      if (done > 0 && done === total) {
-        congratsHtml = '<div class="congrats">🎉 오늘 할 일 모두 완료! 빅브라우니 최고! 🐾</div>';
-      }
-
-      area.innerHTML = `
-        <div class="progress-text">오늘 ${done} / ${total} 완료 (${pct}%)</div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" style="width: ${pct}%; background: ${barColor}"></div>
+      <!-- L1 -->
+      <div class="lcard th-green">
+        <div class="lcard-head">
+          <div class="lcard-icon">🧮</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 01</div><div class="lcard-title">변수와 함수 — "입력→출력 자판기"</div></div>
+          <div class="diff-badge">★☆☆ 입문</div>
         </div>
-        ${congratsHtml}
-      `;
-    }
-
-    // ── 푸터 카테고리별 요약 ──
-    function updateFooter() {
-      const footer = document.querySelector('footer');
-      const items = CATEGORIES.map(cat => {
-        const catTasks = tasks.filter(t => t.category === cat);
-        const total = catTasks.length;
-        const done = catTasks.filter(t => t.completed).length;
-        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-        const color = CATEGORY_COLOR_MAP[cat];
-
-        if (total === 0) {
-          return `
-            <div class="category-summary">
-              <span class="cat-label">${cat}</span>
-              <span class="cat-count">항목 없음</span>
-            </div>`;
-        }
-
-        return `
-          <div class="category-summary">
-            <span class="cat-label">${cat}</span>
-            <div class="mini-bar-bg">
-              <div class="mini-bar-fill" style="width: ${pct}%; background: ${color}"></div>
+        <div class="lcard-body">
+          <div class="lcard-desc">수식에서 x, y, w, b 같은 문자가 나오면 당황하는 분들을 위해. 문자는 <strong>"변할 수 있는 숫자의 이름표"</strong>일 뿐입니다.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>변수(Variable)란?</div><div class="cbox-body">🎒 <strong>비유:</strong> "오늘 온도"를 x라 부르기로 약속한 것.<br>어제 x=5, 오늘 x=18 — x는 <em>값을 담는 상자</em>입니다.</div></div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>함수 f(x)란?</div><div class="cbox-body">🏭 <strong>비유:</strong> 함수는 자판기. 동전(x)을 넣으면 → 음료(y)가 나옴.<br>f(x) = 2x+1 이면, x=3 → y=7 출력.</div></div>
+          <div class="vis">
+            <div class="vis-row">
+              <div class="vis-box" style="background:var(--dk-green-d);color:var(--sk-red)">입력 x=3</div>
+              <div class="vis-arr">→</div>
+              <div class="vis-box" style="background:var(--dk-surface2);color:var(--dk-muted);border:1px solid var(--dk-border)">f(x)=2x+1</div>
+              <div class="vis-arr">→</div>
+              <div class="vis-box" style="background:var(--dk-orange-d);color:var(--dk-orange)">출력 y=7</div>
             </div>
-            <span class="cat-count">${done}/${total}</span>
-          </div>`;
-      }).join('');
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> ChatGPT도 결국 "다음 단어 예측 함수"입니다.<br>입력(텍스트) → 수백만 개의 f(x) → 출력(다음 단어)</div></div>
+        </div>
+      </div>
 
-      footer.innerHTML = `<div class="footer-grid">${items}</div>`;
-    }
+      <!-- L2 -->
+      <div class="lcard th-orange">
+        <div class="lcard-head">
+          <div class="lcard-icon">📈</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 02</div><div class="lcard-title">그래프와 기울기 — "산에서 내려오기"</div></div>
+          <div class="diff-badge">★☆☆ 입문</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-desc">딥러닝 학습의 핵심은 <strong>손실 그래프의 가장 낮은 곳을 찾는 것</strong>입니다. 기울기가 그 나침반 역할을 합니다.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>기울기(Slope)란?</div><div class="cbox-body">⛰️ 등산 코스의 가파름 = (높이 변화) ÷ (수평 거리)<br>기울기 0 → 평지 / 양수 → 오르막 / 음수 → 내리막</div></div>
+          <div class="vis">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
+              <div><svg width="56" height="44" viewBox="0 0 56 44"><line x1="4" y1="22" x2="52" y2="22" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round"/></svg><div style="font-size:11px;color:var(--dk-green)">기울기=0</div><div style="font-size:10px;color:var(--dk-muted)">최솟값 도달 ✓</div></div>
+              <div><svg width="56" height="44" viewBox="0 0 56 44"><line x1="4" y1="40" x2="52" y2="4" stroke="#F0883E" stroke-width="2.5" stroke-linecap="round"/></svg><div style="font-size:11px;color:var(--dk-orange)">기울기=양수</div><div style="font-size:10px;color:var(--dk-muted)">왼쪽 이동</div></div>
+              <div><svg width="56" height="44" viewBox="0 0 56 44"><line x1="4" y1="4" x2="52" y2="40" stroke="#58A6FF" stroke-width="2.5" stroke-linecap="round"/></svg><div style="font-size:11px;color:var(--dk-blue)">기울기=음수</div><div style="font-size:10px;color:var(--dk-muted)">오른쪽 이동</div></div>
+            </div>
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> 경사 하강법(Gradient Descent) = 눈 감고 산에서 내려오기.<br>발밑 기울기를 느끼며 낮은 쪽으로 한 걸음씩 → <strong>기울기=0인 골짜기=학습 완료</strong></div></div>
+        </div>
+      </div>
 
-    // ── 렌더링 ──
-    function renderTasks() {
-      const list = document.getElementById('task-list');
-      const filtered = activeFilter === '전체'
-        ? tasks
-        : tasks.filter(t => t.category === activeFilter);
+      <!-- L3 -->
+      <div class="lcard th-blue">
+        <div class="lcard-head">
+          <div class="lcard-icon">🔢</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 03</div><div class="lcard-title">지수와 로그 — "몇 번 곱했나?"</div></div>
+          <div class="diff-badge">★★☆ 기초</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-desc">AI 수식 어디서나 e, log가 등장합니다. 지수와 로그는 <strong>반대 방향의 짝꿍</strong>입니다.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>지수(Exponent)</div><div class="cbox-body">🦠 세균이 1시간마다 2배씩 증식: 3시간 후 = 2³ = 8배.<br>지수는 아주 빠른 성장(또는 감소)을 표현합니다.</div></div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>로그 = 지수의 역함수</div><div class="cbox-body">🔍 "2를 몇 번 곱하면 8?" → log₂(8) = 3<br>확률 0.7 → log(0.7) ≈ −0.357 (작은 손실 ✓)<br>확률 0.1 → log(0.1) ≈ −2.302 (큰 손실 ✗)</div></div>
+          <div class="vis">
+            <div class="vis-row">
+              <div class="vis-box" style="background:var(--dk-blue-d);color:var(--dk-blue)">2⁰=1</div><div class="vis-arr">→</div>
+              <div class="vis-box" style="background:var(--dk-blue-d);color:var(--dk-blue)">2¹=2</div><div class="vis-arr">→</div>
+              <div class="vis-box" style="background:var(--dk-blue-d);color:var(--dk-blue)">2²=4</div><div class="vis-arr">→</div>
+              <div class="vis-box" style="background:var(--dk-blue-d);color:var(--dk-blue)">2³=8</div>
+            </div>
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> 크로스 엔트로피 손실 L = −log(ŷ)<br>정답 클래스 확률이 낮을수록 −log 값이 커져 더 큰 벌점 → 모델 교정</div></div>
+        </div>
+      </div>
 
-      if (filtered.length === 0) {
-        const msg = tasks.length === 0
-          ? '🐶 오늘 할 일을 추가해봐요!\n빅브라우니 파이팅! 🐾'
-          : '이 카테고리에 할 일이 없어요 😴';
-        list.innerHTML = `<div class="empty-state">${msg.replace('\n', '<br>')}</div>`;
-      } else {
-        list.innerHTML = filtered.map(task => {
-          const isNew = task.id === lastAddedId;
-          const cardClass = `task-card${task.completed ? ' completed' : ''}${isNew ? ' new-card' : ''}`;
-          return `
-            <div class="${cardClass}" data-id="${task.id}">
-              <input type="checkbox" class="task-check" ${task.completed ? 'checked' : ''}>
-              <span class="task-title ${task.completed ? 'done' : ''}">${task.title}</span>
-              <span class="category-tag" style="background: ${CATEGORY_COLOR_MAP[task.category]}">${task.category}</span>
-              <button class="delete-btn" data-id="${task.id}">🗑️</button>
-            </div>`;
-        }).join('');
-      }
+      <!-- L4 -->
+      <div class="lcard th-yellow">
+        <div class="lcard-head">
+          <div class="lcard-icon" style="font-size:26px">Σ</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 04</div><div class="lcard-title">시그마 Σ — "전부 더하라는 명령어"</div></div>
+          <div class="diff-badge">★☆☆ 입문</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-desc">수식에서 Σ가 나오면 많은 분들이 멈춥니다. 사실 Σ는 <strong>"전부 더해라"</strong>는 기호일 뿐입니다.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>Σ 읽는 법</div><div class="cbox-body">🧾 영수증의 "합계" 기호입니다.<br>Σᵢ xᵢ = x₁ + x₂ + ... + xₙ<br>"i를 1부터 n까지 바꿔가며 xᵢ를 모두 더하라"</div></div>
+          <div class="vis">
+            <div style="font-size:12px;color:var(--dk-text);margin-bottom:10px;font-family:'IBM Plex Mono',monospace">Σᵢ₌₁³ (i²) 풀어 쓰면?</div>
+            <div class="vis-row">
+              <div class="vis-box" style="background:var(--dk-yellow-d);color:var(--dk-yellow)">i=1→1</div><div class="vis-arr" style="color:var(--dk-yellow)">+</div>
+              <div class="vis-box" style="background:var(--dk-yellow-d);color:var(--dk-yellow)">i=2→4</div><div class="vis-arr" style="color:var(--dk-yellow)">+</div>
+              <div class="vis-box" style="background:var(--dk-yellow-d);color:var(--dk-yellow)">i=3→9</div><div class="vis-arr">=</div>
+              <div class="vis-box" style="background:var(--dk-surface2);color:var(--dk-text);font-size:15px;font-weight:700">14</div>
+            </div>
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> MSE 손실 L = (1/n)Σᵢ(yᵢ−ŷᵢ)² 에서<br>Σ = "n개 데이터 각각의 (정답−예측)²를 모두 합산"</div></div>
+        </div>
+      </div>
 
-      lastAddedId = null;
-      renderFilters();
-      updateProgress();
-      updateFooter();
-      updateMascot();
-    }
+      <!-- L5 -->
+      <div class="lcard th-purple">
+        <div class="lcard-head">
+          <div class="lcard-icon" style="font-size:24px">→</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 05</div><div class="lcard-title">벡터 — "방향이 있는 숫자 묶음"</div></div>
+          <div class="diff-badge">★★☆ 기초</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-desc">AI에서 텍스트·이미지·소리 모두 벡터로 표현됩니다. 벡터 = <strong>여러 숫자를 순서 있게 나열한 것</strong>.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>벡터란?</div><div class="cbox-body">🗺️ "동쪽 3칸, 북쪽 4칸" = 벡터 (3, 4)<br>스칼라(크기만) vs <strong>벡터(크기+방향)</strong><br>온도 25°C = 스칼라 / 북동풍 25m/s = 벡터</div></div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">핵심</span>내적(Dot Product) = 유사도</div><div class="cbox-body">🤝 (3,4)·(1,2) = 3×1 + 4×2 = 11<br>방향이 같을수록 내적값이 크다 = <strong>"두 벡터가 비슷하다"</strong></div></div>
+          <div class="vis">
+            <svg width="200" height="110" viewBox="0 0 200 110" style="display:block;margin:0 auto">
+              <defs>
+                <marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#BC8CFF"/></marker>
+                <marker id="a2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#58A6FF"/></marker>
+              </defs>
+              <line x1="18" y1="90" x2="175" y2="90" stroke="#2A3240" stroke-width="1"/>
+              <line x1="18" y1="10" x2="18"  y2="90" stroke="#2A3240" stroke-width="1"/>
+              <line x1="18" y1="90" x2="75" y2="35" stroke="#BC8CFF" stroke-width="2" marker-end="url(#a1)"/>
+              <text x="77" y="30" font-size="11" fill="#BC8CFF" font-family="IBM Plex Mono">a=(2,3)</text>
+              <line x1="18" y1="90" x2="135" y2="60" stroke="#58A6FF" stroke-width="2" marker-end="url(#a2)"/>
+              <text x="137" y="56" font-size="11" fill="#58A6FF" font-family="IBM Plex Mono">b=(4,1)</text>
+            </svg>
+            <div style="font-size:10px;color:var(--dk-muted);margin-top:4px">방향이 비슷할수록 코사인 유사도 ↑</div>
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> "왕 − 남자 + 여자 ≈ 여왕" — Word2Vec<br>Transformer Attention = Q·K 벡터 내적으로 유사도 측정</div></div>
+        </div>
+      </div>
 
-    // ── 마스코트 메시지 ──
-    function updateMascot() {
-      const total = tasks.length;
-      const done = tasks.filter(t => t.completed).length;
-      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-      const el = document.getElementById('mascot-msg');
+      <!-- L6 -->
+      <div class="lcard th-red">
+        <div class="lcard-head">
+          <div class="lcard-icon" style="font-size:26px">∂</div>
+          <div class="lcard-meta"><div class="lcard-tag">LESSON 06</div><div class="lcard-title">편미분 ∂ — "하나씩 건드려 기울기 재기"</div></div>
+          <div class="diff-badge">★★★ 핵심</div>
+        </div>
+        <div class="lcard-body">
+          <div class="lcard-desc">∂(파셜)이 나오면 많은 분들이 포기합니다. 핵심은 단순합니다: <strong>"변수가 여러 개일 때, 하나만 건드려서 기울기 재기"</strong>.</div>
+          <div class="cbox"><div class="cbox-q"><span class="cbox-num">개념</span>편미분 vs 일반 미분</div><div class="cbox-body">🌡️ 방 온도가 위치(x)와 시간(t)에 따라 변할 때<br>∂T/∂x = 시간은 고정! 위치만 바꿀 때의 온도 변화율<br><strong>"다른 건 다 멈춰. 이것 하나만 움직여봐."</strong></div></div>
+          <div class="vis">
+            <div style="font-size:12px;margin-bottom:10px;color:var(--dk-text);font-family:'IBM Plex Mono',monospace">L(w₁,w₂) = w₁² + 3w₂ + 5</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="background:var(--dk-red-d);border:1px solid var(--dk-red);border-radius:4px;padding:11px;text-align:center">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--dk-red);margin-bottom:3px">∂L/∂w₁</div>
+                <div style="font-size:11px;color:var(--dk-muted)">w₂는 상수 취급</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:var(--dk-text);margin-top:5px">= 2w₁</div>
+              </div>
+              <div style="background:var(--dk-blue-d);border:1px solid var(--dk-blue);border-radius:4px;padding:11px;text-align:center">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--dk-blue);margin-bottom:3px">∂L/∂w₂</div>
+                <div style="font-size:11px;color:var(--dk-muted)">w₁는 상수 취급</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:16px;color:var(--dk-text);margin-top:5px">= 3</div>
+              </div>
+            </div>
+          </div>
+          <div class="ai-strip"><div class="ai-strip-ico">🤖</div><div class="ai-strip-txt"><strong>AI 연결:</strong> 역전파 = 수백만 개의 w 각각에 ∂L/∂w를 계산<br><strong>PyTorch Autograd</strong>가 이걸 자동으로 해줍니다</div></div>
+        </div>
+      </div>
+    </div><!-- /lessons-grid -->
 
-      if (total === 0) el.textContent = '오늘도 화이팅! 빅브라우니가 응원해요!';
-      else if (pct === 100) el.textContent = '대단해요! 오늘 할 일을 모두 끝냈어요! 🎉';
-      else if (pct >= 70) el.textContent = '거의 다 했어요! 조금만 더 힘내요! 💪';
-      else if (pct >= 40) el.textContent = '잘 하고 있어요! 계속 가보자! 🔥';
-      else el.textContent = '아직 할 일이 많아요, 시작해볼까요? 📚';
-    }
+    <!-- QUIZ -->
+    <div class="s0-sec-head" style="margin-top:56px">
+      <span class="s0-sec-num">QUIZ</span>
+      <h2 class="s0-sec-title">자기진단 — 기초 개념 이해 확인</h2>
+      <div class="s0-sec-sub">8문항 · 즉시 채점<br>6/8 이상 → 다음 단계 준비 완료</div>
+    </div>
+    <div class="quiz-wrap" id="quizWrap">
+      <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="qFill" style="width:0%"></div></div>
+      <div class="quiz-hd"><span class="quiz-lbl">SELF CHECK</span><span class="quiz-cnt" id="qCnt">1 / 8</span></div>
+      <div class="quiz-bd" id="qBody"></div>
+      <div class="result-card" id="qResult"></div>
+    </div>
 
-    // ── 공유 기능 ──
-    function buildShareText() {
-      const dateStr = new Date().toLocaleDateString('ko-KR', {
-        year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-      });
-      const total = tasks.length;
-      const done = tasks.filter(t => t.completed).length;
-      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+    <!-- CHEATSHEET -->
+    <div class="s0-sec-head" style="margin-top:56px">
+      <span class="s0-sec-num">CHEATSHEET</span>
+      <h2 class="s0-sec-title">수식 기호 해독표</h2>
+      <div class="s0-sec-sub">AI 강의에서 자주 보이는<br>기호 한눈에 정리</div>
+    </div>
+    <div class="cheat-grid">
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-yellow)">Σ</div><div class="cc-name">시그마 (대문자)</div><div class="cc-read" style="color:var(--dk-yellow)">"합산" · sum of</div><div class="cc-desc">모든 항을 더하라는 명령. Σᵢ xᵢ = x₁+x₂+…+xₙ</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-orange)">∂</div><div class="cc-name">편미분 기호</div><div class="cc-read" style="color:var(--dk-orange)">"파셜" · partial</div><div class="cc-desc">여러 변수 중 하나만 변화. ∂L/∂w = w에 대한 L의 편미분</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-green)">∇</div><div class="cc-name">나블라 · 그래디언트</div><div class="cc-read" style="color:var(--dk-green)">"나블라" · del</div><div class="cc-desc">모든 변수 편미분 벡터. ∇L = 경사 하강법의 방향 지시자</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-blue)">α</div><div class="cc-name">알파 · 학습률</div><div class="cc-read" style="color:var(--dk-blue)">"알파" · alpha</div><div class="cc-desc">경사 하강법에서 한 번에 이동하는 크기 (보폭)</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-purple)">θ</div><div class="cc-name">세타 · 파라미터</div><div class="cc-read" style="color:var(--dk-purple)">"세타" · theta</div><div class="cc-desc">모델의 모든 가중치(w, b)를 통틀어 부르는 이름</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-yellow)">λ</div><div class="cc-name">람다 · 고유값</div><div class="cc-read" style="color:var(--dk-yellow)">"람다" · lambda</div><div class="cc-desc">고유값(Av=λv) 또는 정규화 강도. L2: L + λ‖w‖²</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-red)">e</div><div class="cc-name">자연상수 (오일러)</div><div class="cc-read" style="color:var(--dk-red)">e ≈ 2.718</div><div class="cc-desc">eˣ는 미분해도 eˣ 그대로. softmax·sigmoid에 사용</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-green)">μ σ</div><div class="cc-name">뮤·시그마</div><div class="cc-read" style="color:var(--dk-green)">"뮤" · "시그마"</div><div class="cc-desc">μ=평균, σ=표준편차. 정규분포 N(μ,σ²). BatchNorm 핵심</div></div>
+      <div class="cc"><div class="cc-sym" style="color:var(--dk-orange)">⊤</div><div class="cc-name">전치 (Transpose)</div><div class="cc-read" style="color:var(--dk-orange)">"티" · transpose</div><div class="cc-desc">행렬 90도 뒤집기. SVD에서 Uᵀ, Attention에서 Kᵀ로 사용</div></div>
+    </div>
+  </div><!-- /s0-sec -->
+</div><!-- /stage0-zone -->
 
-      let text = `🐾 빅브라우니 학습 현황\n📅 ${dateStr}\n\n`;
-      text += `📊 전체 진행률: ${done}/${total} (${pct}%)\n\n`;
+<div class="transition-strip"></div>
 
-      CATEGORIES.forEach(cat => {
-        const catTasks = tasks.filter(t => t.category === cat);
-        if (catTasks.length === 0) return;
-        const catDone = catTasks.filter(t => t.completed).length;
-        text += `📌 ${cat} (${catDone}/${catTasks.length})\n`;
-        catTasks.forEach(t => {
-          text += `  ${t.completed ? '✅' : '⬜'} ${t.title}\n`;
-        });
-        text += '\n';
-      });
+<!-- ██ STAGE 1~4 LIGHT ██ -->
+<div class="light-zone">
+<div style="position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;"></div>
 
-      if (done > 0 && done === total) {
-        text += '🎉 오늘 할 일 모두 완료! 빅브라우니 최고!\n';
-      }
+<header class="site-header" id="stage1">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="sk-badge">SK 네트웍스 Family AI 캠프</div>
+      <div><div class="header-title">딥러닝·머신러닝을<br>위한 <span>수학</span><br>사전 미션</div></div>
+      <div class="header-subtitle">본 과정 수강 전 필수 이수 · Pre-Course Mathematics Mission<br>훈련생 모집 대상 — AI 기초 수학 역량 검증</div>
+    </div>
+    <div class="header-right">
+      <div class="mission-label">Pre-Course Mission</div>
+      <div class="mission-title">MATH<br>BOOTCAMP</div>
+      <div class="mission-desc">딥러닝과 머신러닝의 핵심 알고리즘은 수학 위에서 작동합니다. 선형대수, 미적분, 확률통계 — 세 가지 기둥을 먼저 세우세요.</div>
+      <div class="mission-stats">
+        <div class="stat"><div class="stat-num">3</div><div class="stat-label">수학 파트</div></div>
+        <div class="stat"><div class="stat-num">12</div><div class="stat-label">핵심 개념</div></div>
+        <div class="stat"><div class="stat-num">8</div><div class="stat-label">개념 문제</div></div>
+      </div>
+    </div>
+  </div>
+</header>
 
-      return text.trim();
-    }
+<main>
 
-    function showToast(msg) {
-      const toast = document.getElementById('share-toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
-    }
+  <!-- SECTION 01 -->
+  <div id="stage1-formulas">
+  <div class="section-header"><span class="section-num">SECTION 01</span><h2 class="section-title">딥러닝·머신러닝 핵심 수식과 AI 활용 예시</h2></div>
+  <div class="concept-grid">
+    <div class="concept-card"><div class="card-tag">선형대수 · Linear Algebra</div><div class="card-formula">\( \mathbf{y} = W\mathbf{x} + \mathbf{b} \)</div><div class="card-title">선형 변환 (행렬 곱)</div><div class="card-desc">신경망의 모든 레이어는 입력 벡터 <strong>x</strong>에 가중치 행렬 W를 곱하고 편향 <strong>b</strong>를 더하는 선형 변환입니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> 완전연결층(FC Layer), 임베딩 레이어, Transformer의 Q·K·V 행렬 연산 전부 이 공식입니다.</div></div>
+    <div class="concept-card"><div class="card-tag">미적분 · Calculus</div><div class="card-formula">\( \frac{\partial L}{\partial W} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial W} \)</div><div class="card-title">역전파 (Chain Rule)</div><div class="card-desc">손실 함수 L을 가중치 W로 편미분하여 기울기를 계산합니다. 연쇄 법칙으로 레이어를 역방향으로 통과하며 모든 파라미터를 업데이트합니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> Backpropagation — 딥러닝 학습의 근간. PyTorch의 <code>.backward()</code>가 이 계산을 자동으로 수행합니다.</div></div>
+    <div class="concept-card"><div class="card-tag">최적화 · Optimization</div><div class="card-formula">\( \theta \leftarrow \theta - \alpha \nabla_\theta L(\theta) \)</div><div class="card-title">경사 하강법 (Gradient Descent)</div><div class="card-desc">학습률 α 방향으로 손실 기울기 ∇L만큼 파라미터를 업데이트합니다. Adam, RMSProp 등 모든 옵티마이저의 기본 원리입니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> 모든 ML/DL 모델 훈련 — SGD, Adam, AdaGrad 전부 이 원리의 변형입니다.</div></div>
+    <div class="concept-card row2"><div class="card-tag">확률·통계 · Probability</div><div class="card-formula">\( P(y|x) = \frac{P(x|y)\,P(y)}{P(x)} \)</div><div class="card-title">베이즈 정리 (Bayes' Theorem)</div><div class="card-desc">사전 확률 P(y)와 우도 P(x|y)를 결합해 사후 확률 P(y|x)를 구합니다. 불확실성을 수치로 표현하는 핵심 공식입니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> Naive Bayes 분류기, 베이지안 최적화, VAE의 잠재 분포 추정, LLM의 불확실성 추정.</div></div>
+    <div class="concept-card row2"><div class="card-tag">정보이론 · Information Theory</div><div class="card-formula">\( \mathcal{L} = -\sum_{c} y_c \log(\hat{y}_c) \)</div><div class="card-title">크로스 엔트로피 손실</div><div class="card-desc">실제 레이블 y와 예측 확률 ŷ 사이의 차이를 정보이론적으로 측정합니다. 분류 문제에서 가장 많이 사용되는 손실 함수입니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> 이미지 분류, GPT의 다음 토큰 예측 학습, BERT의 MLM(Masked Language Model) 사전학습.</div></div>
+    <div class="concept-card row2"><div class="card-tag">선형대수 · SVD / PCA</div><div class="card-formula">\( A = U \Sigma V^\top \)</div><div class="card-title">특이값 분해 (SVD)</div><div class="card-desc">행렬 A를 세 행렬의 곱으로 분해합니다. 데이터의 주요 성분(방향)을 추출하고, 차원 축소·노이즈 제거·추천 시스템에 활용됩니다.</div><div class="card-ai-use"><strong>📌 AI 활용:</strong> PCA 차원 축소, 협업 필터링 추천 시스템, LoRA(LLM 경량화)의 핵심 수학 원리.</div></div>
+  </div>
+  </div>
 
-    async function shareProgress() {
-      const text = buildShareText();
+  <!-- SECTION 02 -->
+  <div id="stage1-curriculum">
+  <div class="section-header"><span class="section-num">SECTION 02</span><h2 class="section-title">사전 수학 강좌 커리큘럼</h2></div>
+  <div class="mission-grid">
+    <div class="mission-block">
+      <div class="mission-block-header"><div class="mission-block-num">01</div><div class="mission-block-info"><h3>선형대수학 기초</h3><p>Linear Algebra Fundamentals · 4강 구성</p></div></div>
+      <div class="mission-body">
+        <ul class="lecture-list">
+          <li><span class="lec-icon">L1</span><span><strong>벡터와 행렬 연산</strong> — 벡터의 덧셈·스칼라 곱, 행렬 곱셈(dot product), 전치 행렬.<br><a href="https://www.youtube.com/watch?v=kjBOesZCoqc" target="_blank" class="yt-link">▶ 벡터란 무엇인가? | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L2</span><span><strong>행렬식과 역행렬</strong> — 정방행렬의 행렬식(det), 역행렬의 존재 조건.<br><a href="https://www.youtube.com/watch?v=Ip3X9LOh2dk" target="_blank" class="yt-link">▶ 행렬식의 의미 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L3</span><span><strong>고유값 · 고유벡터</strong> — Av=λv의 의미, 스펙트럼 분해. PCA와 SVD의 기반.<br><a href="https://www.youtube.com/watch?v=PFDu9oVAE-g" target="_blank" class="yt-link">▶ 고유벡터와 고유값 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L4</span><span><strong>벡터 공간과 기저</strong> — 선형 독립, 기저, 차원, 열공간과 영공간.<br><a href="https://www.youtube.com/watch?v=k7RM-ot2NWY" target="_blank" class="yt-link">▶ 벡터 공간의 기저 | 3Blue1Brown 한국어</a></span></li>
+        </ul>
+        <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="tag-pill tag-math">필수</span><span class="tag-pill tag-ml">ML 연관</span><span class="tag-pill tag-dl">DL 연관</span></div>
+      </div>
+    </div>
+    <div class="mission-block">
+      <div class="mission-block-header"><div class="mission-block-num">02</div><div class="mission-block-info"><h3>미적분학 기초</h3><p>Calculus Fundamentals · 4강 구성</p></div></div>
+      <div class="mission-body">
+        <ul class="lecture-list">
+          <li><span class="lec-icon">L1</span><span><strong>미분의 기초</strong> — 극한과 연속, 기본 미분 공식. f'(x)의 기하학적 의미.<br><a href="https://www.youtube.com/watch?v=9vKqVkMQHKk" target="_blank" class="yt-link">▶ 미적분학의 본질 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L2</span><span><strong>연쇄 법칙 (Chain Rule)</strong> — 합성 함수 미분. 역전파 계산 과정 추적.<br><a href="https://www.youtube.com/watch?v=YG15m2VwSjA" target="_blank" class="yt-link">▶ 연쇄 법칙과 역전파 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L3</span><span><strong>편미분과 기울기 벡터</strong> — 다변수 함수의 편미분, 그래디언트 ∇f.<br><a href="https://www.youtube.com/watch?v=tIpKfDc295M" target="_blank" class="yt-link">▶ 경사 하강법, 신경망 학습 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L4</span><span><strong>최솟값 탐색</strong> — 임계점, 2계 도함수 판정, Convex 함수.<br><a href="https://www.youtube.com/watch?v=aircAruvnKk" target="_blank" class="yt-link">▶ 신경망이란? 딥러닝 Ch.1 | 3Blue1Brown 한국어</a></span></li>
+        </ul>
+        <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="tag-pill tag-math">필수</span><span class="tag-pill tag-dl">DL 핵심</span><span class="tag-pill tag-hard">★ 심화</span></div>
+      </div>
+    </div>
+    <div class="mission-block">
+      <div class="mission-block-header"><div class="mission-block-num">03</div><div class="mission-block-info"><h3>확률 · 통계 기초</h3><p>Probability & Statistics · 4강 구성</p></div></div>
+      <div class="mission-body">
+        <ul class="lecture-list">
+          <li><span class="lec-icon">L1</span><span><strong>확률의 기초</strong> — 표본공간, 사건, 조건부 확률, 독립 사건.<br><a href="https://www.youtube.com/watch?v=HZGCoVF3YvM" target="_blank" class="yt-link">▶ 베이즈 정리의 시각화 | 3Blue1Brown 한국어</a></span></li>
+          <li><span class="lec-icon">L2</span><span><strong>확률 분포</strong> — 이항분포, 정규분포(Gaussian), 소프트맥스의 확률론적 해석.<br><a href="https://www.youtube.com/watch?v=zeJD6dqJ5lo" target="_blank" class="yt-link">▶ 정규분포를 왜 이렇게 많이 쓸까? | StatQuest</a></span></li>
+          <li><span class="lec-icon">L3</span><span><strong>기댓값과 분산</strong> — E[X], Var[X], 공분산. 모델 불확실성과 정규화.<br><a href="https://www.youtube.com/watch?v=SzZ6GpcfoQY" target="_blank" class="yt-link">▶ 기댓값과 분산 쉽게 이해하기</a></span></li>
+          <li><span class="lec-icon">L4</span><span><strong>최대 우도 추정 (MLE)</strong> — 로그 우도, MLE와 크로스 엔트로피의 동치 관계.<br><a href="https://www.youtube.com/watch?v=XepXtl9YKwc" target="_blank" class="yt-link">▶ 최대 우도 추정(MLE) | StatQuest 한국어 자막</a></span></li>
+        </ul>
+        <div style="display:flex;gap:7px;flex-wrap:wrap"><span class="tag-pill tag-math">필수</span><span class="tag-pill tag-ml">ML 핵심</span></div>
+      </div>
+    </div>
+    <div class="mission-block">
+      <div class="mission-block-header"><div class="mission-block-num">04</div><div class="mission-block-info"><h3>미션 수행 일정</h3><p>Pre-Mission Schedule &amp; Evaluation</p></div></div>
+      <div class="mission-body">
+        <ul class="lecture-list">
+          <li><span class="lec-icon" style="background:var(--blue-lt)">W1</span><span><strong>1주차</strong> — 선형대수학 강좌 수강 + 개념 문제 1~3번 제출</span></li>
+          <li><span class="lec-icon" style="background:var(--blue-lt)">W2</span><span><strong>2주차</strong> — 미적분학 강좌 수강 + 개념 문제 4~6번 제출</span></li>
+          <li><span class="lec-icon" style="background:var(--blue-lt)">W3</span><span><strong>3주차</strong> — 확률·통계 강좌 수강 + 개념 문제 7~8번 제출</span></li>
+          <li><span class="lec-icon" style="background:var(--gold);color:var(--ink)">평가</span><span><strong>최종 검증</strong> — 온라인 수식 이해도 테스트 (30분) → 본 과정 준비 완료</span></li>
+        </ul>
+        <div style="margin-top:14px;padding:11px 14px;background:#F0F4FF;border-left:3px solid var(--blue-lt);font-size:11px;color:var(--blue-lt);line-height:1.8">
+          <strong>✓ 평가 기준:</strong> 개념 문제 총 8문항 중 6문항 이상 정답 시 본 과정 수강 자격이 부여됩니다.
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 
-      // Web Share API 지원 시 (모바일 카카오톡/문자 등 공유 가능)
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: '🐾 빅브라우니 학습 현황',
-            text: text
-          });
-          showToast('✅ 공유 완료!');
-          return;
-        } catch (e) {
-          if (e.name === 'AbortError') return;
-        }
-      }
+  <!-- SECTION 03 -->
+  <div id="stage1-problems">
+  <div class="section-header"><span class="section-num">SECTION 03</span><h2 class="section-title">사전 미션 개념 문제</h2></div>
+  <div class="problems-grid" style="margin-bottom:72px">
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.01</span><span class="problem-level">★☆☆ 기초</span></div>
+      <div class="problem-title">벡터 내적과 유사도</div>
+      <div class="problem-text">두 벡터 <strong>a</strong>=(3,4)와 <strong>b</strong>=(1,2)의 내적을 구하고, 코사인 유사도를 계산하세요.</div>
+      <div class="problem-formula">\( \text{cos sim}(\mathbf{a},\mathbf{b}) = \frac{\mathbf{a}\cdot\mathbf{b}}{\|\mathbf{a}\|\|\mathbf{b}\|} \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>내적: 3×1 + 4×2 = <strong>11</strong></span></div>
+        <div class="step"><span class="step-num">②</span><span>∥a∥=5, ∥b∥=√5 → cos sim = 11/(5√5) ≈ <strong>0.984</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>1에 가까울수록 의미가 유사한 단어/문장임을 뜻합니다.</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.02</span><span class="problem-level">★☆☆ 기초</span></div>
+      <div class="problem-title">행렬 곱셈 — FC Layer 시뮬레이션</div>
+      <div class="problem-text">입력 벡터 x=[1,2]ᵀ, 가중치 행렬 W=[[2,0],[1,3]], 편향 b=[1,−1]ᵀ일 때, 선형 변환 y=Wx+b를 계산하세요.</div>
+      <div class="problem-formula">\( \mathbf{y} = W\mathbf{x} + \mathbf{b} \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>Wx = [2×1+0×2, 1×1+3×2] = [2, 7]</span></div>
+        <div class="step"><span class="step-num">②</span><span>y = [2+1, 7−1] = <strong>[3, 6]</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>신경망 한 레이어가 바로 이 연산. 이어서 활성화 함수를 적용합니다.</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.03</span><span class="problem-level">★★☆ 중급</span></div>
+      <div class="problem-title">편미분과 경사 하강법</div>
+      <div class="problem-text">손실 함수 L(w)=(w−3)²가 있을 때, w=1에서의 미분값을 구하고, α=0.1로 한 스텝 경사 하강법을 적용한 뒤 새 w 값을 구하세요.</div>
+      <div class="problem-formula">\( w \leftarrow w - \alpha \frac{dL}{dw} \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>dL/dw = 2(w−3), w=1 → <strong>−4</strong></span></div>
+        <div class="step"><span class="step-num">②</span><span>w_new = 1 − 0.1×(−4) = <strong>1.4</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>w가 최솟값(3) 방향으로 이동했습니다. 이것이 AI 학습의 원리입니다.</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.04</span><span class="problem-level">★★☆ 중급</span></div>
+      <div class="problem-title">연쇄 법칙 — 역전파 1단계</div>
+      <div class="problem-text">z=w·x, ŷ=σ(z)=1/(1+e⁻ᶻ), L=(ŷ−y)² 일 때, x=2, w=0.5, y=1로 두고 ∂L/∂w를 연쇄 법칙으로 계산하세요.</div>
+      <div class="problem-formula">\( \frac{\partial L}{\partial w} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial z} \cdot \frac{\partial z}{\partial w} \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>z=1, ŷ=σ(1)≈0.731</span></div>
+        <div class="step"><span class="step-num">②</span><span>∂L/∂ŷ = 2(0.731−1) = −0.538</span></div>
+        <div class="step"><span class="step-num">③</span><span>∂ŷ/∂z = 0.731×0.269 ≈ 0.197, ∂z/∂w = 2</span></div>
+        <div class="step"><span class="step-num">④</span><span>∂L/∂w = −0.538×0.197×2 ≈ <strong>−0.212</strong></span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.05</span><span class="problem-level">★★☆ 중급</span></div>
+      <div class="problem-title">베이즈 정리 적용</div>
+      <div class="problem-text">스팸 메일 판별기. 전체 메일 중 스팸 비율 P(S)=0.3. 스팸 메일에 "무료"가 포함될 확률 P(무료|S)=0.8. 일반 메일에서 "무료" 포함 확률 P(무료|¬S)=0.1. "무료"가 포함된 메일이 스팸일 확률을 구하세요.</div>
+      <div class="problem-formula">\( P(S|\text{무료}) = \frac{P(\text{무료}|S)\,P(S)}{P(\text{무료})} \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>P(무료) = 0.8×0.3 + 0.1×0.7 = 0.24 + 0.07 = 0.31</span></div>
+        <div class="step"><span class="step-num">②</span><span>P(S|무료) = (0.8×0.3) / 0.31 = 0.24/0.31 ≈ <strong>0.774</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>"무료"가 있으면 약 77.4% 확률로 스팸입니다. 나이브 베이즈 분류기의 원리입니다.</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.06</span><span class="problem-level">★★☆ 중급</span></div>
+      <div class="problem-title">크로스 엔트로피 손실 계산</div>
+      <div class="problem-text">3-class 분류 문제에서 정답 레이블 y=[1,0,0]이고, 모델 예측 ŷ=[0.7,0.2,0.1]일 때 크로스 엔트로피 손실을 계산하세요.</div>
+      <div class="problem-formula">\( \mathcal{L} = -\sum_{c} y_c \log(\hat{y}_c) \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>L = −(1×log(0.7) + 0×log(0.2) + 0×log(0.1))</span></div>
+        <div class="step"><span class="step-num">②</span><span>L = −log(0.7) ≈ −(−0.357) = <strong>0.357</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>정답 클래스의 예측 확률만 손실에 영향. 확률 높을수록 손실↓</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.07</span><span class="problem-level">★★★ 심화</span></div>
+      <div class="problem-title">MSE와 그래디언트</div>
+      <div class="problem-text">MSE 손실 L=(1/n)Σᵢ(yᵢ−ŷᵢ)²에서 데이터 [y₁=2, y₂=4], 예측 [ŷ₁=1, ŷ₂=3]일 때 MSE를 계산하고, ŷ₁에 대한 ∂L/∂ŷ₁ 를 구하세요.</div>
+      <div class="problem-formula">\( \frac{\partial L}{\partial \hat{y}_i} = -\frac{2}{n}(y_i - \hat{y}_i) \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>MSE = (1/2)×[(2−1)² + (4−3)²] = (1/2)×2 = <strong>1.0</strong></span></div>
+        <div class="step"><span class="step-num">②</span><span>∂L/∂ŷ₁ = −(2/2)×(2−1) = −1×1 = <strong>−1.0</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>기울기가 음수 → ŷ₁을 증가 방향으로 업데이트해야 손실↓</span></div>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="problem-header"><span class="problem-num">Q.08</span><span class="problem-level">★★★ 심화</span></div>
+      <div class="problem-title">SVD와 차원 축소</div>
+      <div class="problem-text">행렬 A의 SVD A=UΣVᵀ에서 Σ=diag(5,3,1)일 때, 상위 2개 특이값만 사용하여 rank-2 근사를 만들 때 보존되는 정보 비율(%)을 구하세요.</div>
+      <div class="problem-formula">\( A_k = U_k \Sigma_k V_k^\top \)</div>
+      <button class="answer-toggle" onclick="tog(this)">▶ 풀이 보기</button>
+      <div class="answer-block">
+        <div class="step"><span class="step-num">①</span><span>전체 에너지 = 5²+3²+1² = 25+9+1 = 35</span></div>
+        <div class="step"><span class="step-num">②</span><span>rank-2 에너지 = 5²+3² = 25+9 = 34</span></div>
+        <div class="step"><span class="step-num">③</span><span>보존 비율 = 34/35 ≈ <strong>97.1%</strong></span></div>
+        <div class="step"><span class="step-num">💡</span><span>PCA·LoRA의 핵심 원리. 상위 특이값 몇 개만으로도 대부분의 정보를 보존합니다.</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
 
-      // 미지원 시 클립보드 복사
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast('📋 학습 현황이 복사되었어요! 부모님께 붙여넣기로 보내주세요');
-      } catch (e) {
-        // fallback
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showToast('📋 학습 현황이 복사되었어요! 부모님께 붙여넣기로 보내주세요');
-      }
-    }
+  <!-- SECTION 04 -->
+  <div id="stage1-roadmap">
+  <div class="section-header"><span class="section-num">SECTION 04</span><h2 class="section-title">학습 로드맵 &amp; 수료 후 경력 연결</h2></div>
+  <table class="schedule-table" style="margin-bottom:72px">
+    <thead>
+      <tr>
+        <th>단계</th><th>학습 내용</th><th>AI 연결 포인트</th><th>예상 기간</th><th>분류</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>STEP 0</strong><br>완전기초</td><td>변수·함수, 기울기, 지수·로그, Σ, 벡터 직관, 편미분 입문</td><td>AI 수식 기호 해독, 자판기-함수 비유</td><td>1~2일</td><td><span class="tag-pill tag-math">기초</span></td></tr>
+      <tr><td><strong>STEP 1</strong><br>선형대수</td><td>벡터·행렬 연산, 행렬식, 고유값/벡터, 벡터 공간</td><td>FC Layer, Embedding, Attention Q·K·V</td><td>1주</td><td><span class="tag-pill tag-ml">ML</span><span class="tag-pill tag-dl">DL</span></td></tr>
+      <tr><td><strong>STEP 2</strong><br>미적분</td><td>미분 기초, 연쇄 법칙, 편미분·그래디언트, 최솟값 탐색</td><td>Backpropagation, Gradient Descent, Adam</td><td>1주</td><td><span class="tag-pill tag-dl">DL 핵심</span><span class="tag-pill tag-hard">★ 심화</span></td></tr>
+      <tr><td><strong>STEP 3</strong><br>확률·통계</td><td>조건부 확률, 확률 분포, 기댓값·분산, MLE</td><td>Bayesian, Cross-Entropy, BatchNorm</td><td>1주</td><td><span class="tag-pill tag-ml">ML 핵심</span></td></tr>
+      <tr><td><strong>STEP 4</strong><br>최종 평가</td><td>온라인 수식 이해도 테스트 8문항 (30분)</td><td>6/8 이상 → 본 과정 수강 자격 부여</td><td>당일</td><td><span class="tag-pill" style="background:#FFE8EC;color:var(--sk-red)">필수 통과</span></td></tr>
+      <tr><td><strong>본 과정</strong><br>AI 캠프</td><td>ML/DL 이론 + 프로젝트, SK 네트웍스 Family 멘토링</td><td>실무 AI 엔지니어링 전 과정</td><td>6개월</td><td><span class="tag-pill" style="background:var(--ink);color:var(--sk-orange)">메인 과정</span></td></tr>
+    </tbody>
+  </table>
+  </div>
 
-    // ── 초기화 ──
-    function initApp() {
-      tasks = loadTasks();
+</main>
 
-      // 오늘 날짜 표시
-      const dateStr = new Date().toLocaleDateString('ko-KR', {
-        year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-      });
-      document.getElementById('today-date').textContent = dateStr;
+<!-- ══ FOOTER — SK Networks x PlayData 공식 로고 ══ -->
+<footer>
+  <div class="footer-inner">
 
-      // 공유 버튼
-      document.getElementById('share-btn').addEventListener('click', shareProgress);
+    <!-- 로고 영역: SK Networks Family AI Camp 로고 + PlayData 로고 -->
+    <div class="footer-logo-area">
+      <!-- SK Networks Family AI Camp 공식 로고 (흰색 버전) -->
+      <img
+        class="footer-site-logo"
+        src="https://cdn.imweb.me/thumbnail/20250110/55fbc987ed34e.png"
+        alt="SK Networks Family AI Camp"
+        onerror="this.style.display='none';document.getElementById('sk-text-fallback').style.display='flex'"
+      >
+      <!-- fallback text -->
+      <div id="sk-text-fallback" style="display:none;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:white;letter-spacing:2px">
+        <span style="color:var(--sk-red)">SK</span> Networks Family AI Camp
+      </div>
 
-      // 필터 탭 이벤트 위임
-      document.getElementById('filter-area').addEventListener('click', (e) => {
-        if (!e.target.classList.contains('filter-tab')) return;
-        activeFilter = e.target.dataset.filter;
-        renderTasks();
-      });
+      <div class="footer-x-divider">×</div>
 
-      // 이벤트 바인딩
-      document.getElementById('add-btn').addEventListener('click', addTask);
-      document.getElementById('task-input').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') addTask();
-      });
+      <!-- PlayData 로고 -->
+      <img
+        class="footer-pd-logo"
+        src="https://cdn.imweb.me/upload/S20240314bd10436a7991a/c77cc3870cc5e.png"
+        alt="PlayData"
+        onerror="this.style.display='none';document.getElementById('pd-text-fallback').style.display='block'"
+      >
+      <!-- fallback text -->
+      <div id="pd-text-fallback" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:3px">
+        PLAYDATA
+      </div>
+    </div>
 
-      // 이벤트 위임: task-list
-      document.getElementById('task-list').addEventListener('click', (e) => {
-        const card = e.target.closest('.task-card');
-        if (!card) return;
-        const id = card.dataset.id;
+    <div class="footer-copy">Copyright © SK Networks × Playdata. All Rights Reserved.</div>
 
-        if (e.target.classList.contains('task-check')) {
-          toggleComplete(id);
-        } else if (e.target.classList.contains('delete-btn')) {
-          deleteTask(id);
-        }
-      });
+  </div>
+</footer>
 
-      renderTasks();
-    }
+</div><!-- /light-zone -->
 
-    // ── 앱 시작 ──
-    document.addEventListener('DOMContentLoaded', initApp);
-  </script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function tog(btn) {
+  const b = btn.nextElementSibling;
+  b.classList.toggle('show');
+  btn.textContent = b.classList.contains('show') ? '▼ 풀이 닫기' : '▶ 풀이 보기';
+}
 
-</body>
-</html>
+// ══ QUIZ ══
+const Qs = [
+  { q:'f(x) = 3x − 2 에서 x = 4 일 때 f(x)의 값은?', hint:'x에 4를 대입해보세요.', opts:['8','10','12','14'], a:1,
+    fb:'3×4 − 2 = 12 − 2 = 10 ✓ 함수는 입력을 넣으면 출력이 나오는 자판기입니다.' },
+  { q:'경사 하강법에서 손실 기울기(∂L/∂w)가 양수(+)일 때 파라미터 w는 어떻게 업데이트되나요?', hint:'w ← w − α × 기울기 공식을 생각해보세요.', opts:['w를 증가시킨다','w를 감소시킨다','w를 0으로 만든다','변화 없다'], a:1,
+    fb:'기울기가 양수이면 w − α×(+) → w가 줄어듭니다. 손실의 기울기 반대 방향으로 이동합니다.' },
+  { q:'log₂(32) 의 값은?', hint:'2를 몇 번 곱하면 32가 될까요?', opts:['4','5','6','8'], a:1,
+    fb:'2⁵ = 32 이므로 log₂(32) = 5 ✓' },
+  { q:'Σᵢ₌₁⁴ i 를 계산하면?', hint:'1+2+3+4 를 더해보세요.', opts:['8','10','12','14'], a:1,
+    fb:'1+2+3+4 = 10 ✓ Σ는 "전부 더하라"는 명령 기호입니다.' },
+  { q:'벡터 (1, 0)과 (0, 1)의 내적(dot product)은?', hint:'내적 = 각 성분의 곱의 합입니다.', opts:['0','1','√2','2'], a:0,
+    fb:'1×0 + 0×1 = 0 ✓ 두 벡터가 수직이면 내적은 0, 코사인 유사도도 0이 됩니다.' },
+  { q:'L(w) = w² 를 w에 대해 편미분하면?', hint:'거듭제곱 미분 공식 d/dw(wⁿ) = n·wⁿ⁻¹ 을 사용하세요.', opts:['w','2w','w²','2'], a:1,
+    fb:'d/dw(w²) = 2w ✓ 역전파에서 각 가중치에 대한 기울기를 이렇게 계산합니다.' },
+  { q:'크로스 엔트로피 손실 L = −log(ŷ) 에서 ŷ = 0.9 일 때 손실은?', hint:'log(0.9) ≈ −0.105 입니다.', opts:['0.105','−0.105','0.9','−0.9'], a:0,
+    fb:'L = −log(0.9) ≈ −(−0.105) = 0.105 ✓ 예측 확률이 높을수록 손실이 작습니다.' },
+  { q:'경사 하강법 θ ← θ − α∇L 에서 α(알파)가 너무 크면 어떤 문제가 생기나요?', hint:'보폭이 너무 크면 골짜기를 지나쳐 버립니다.', opts:['학습이 너무 느리다','발산(Divergence)할 수 있다','과적합이 줄어든다','가중치가 0이 된다'], a:1,
+    fb:'학습률이 너무 크면 손실이 줄어들지 않고 발산합니다. 적절한 α 선택이 중요합니다.' }
+];
+
+let cur=0, score=0, answered=new Array(8).fill(false), scores=new Array(8).fill(false);
+
+function render(){
+  const q=Qs[cur];
+  document.getElementById('qCnt').textContent=`${cur+1} / ${Qs.length}`;
+  document.getElementById('qFill').style.width=`${(cur/Qs.length)*100}%`;
+  document.getElementById('qBody').innerHTML=`
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-hint">${q.hint}</div>
+    <div class="quiz-opts">
+      ${q.opts.map((o,i)=>`
+        <button class="qopt" onclick="pick(${i})">
+          <span class="opt-k">${['A','B','C','D'][i]}</span>${o}
+        </button>`).join('')}
+    </div>
+    <div class="q-feedback" id="fb"></div>
+    <div class="quiz-nav-row">
+      <button class="btn btn-g" id="nextBtn" onclick="next()" disabled>${cur===Qs.length-1?'결과 보기':'다음 문제 →'}</button>
+      <span class="score-txt">현재 점수: ${score}/${cur}</span>
+    </div>`;
+}
+
+function pick(i){
+  if(answered[cur]) return;
+  answered[cur]=true;
+  const q=Qs[cur];
+  const opts=document.querySelectorAll('.qopt');
+  opts.forEach(o=>o.classList.add('dis'));
+  const fb=document.getElementById('fb');
+  if(i===q.a){
+    opts[i].classList.add('correct');
+    score++; scores[cur]=true;
+    fb.className='q-feedback ok show';
+    fb.innerHTML='✓ 정답! '+q.fb;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.a].classList.add('show-c');
+    fb.className='q-feedback ng show';
+    fb.innerHTML='✗ 오답. '+q.fb;
+  }
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function next(){
+  if(cur<Qs.length-1){ cur++; render(); }
+  else { showResult(); }
+}
+
+function showResult(){
+  document.getElementById('qBody').style.display='none';
+  const r=document.getElementById('qResult');
+  r.classList.add('show');
+  const pct=Math.round(score/Qs.length*100);
+  const pass=score>=6;
+  r.innerHTML=`
+    <div class="r-emoji">${pass?'🎉':'📚'}</div>
+    <div class="r-title" style="color:${pass?'var(--sk-red)':'var(--dk-orange)'}">
+      ${pass?'✓ 사전 미션 통과!':'조금 더 공부해봐요'}
+    </div>
+    <div class="r-score" style="color:${pass?'var(--sk-red)':'var(--dk-orange)'}">
+      ${score} / ${Qs.length}
+    </div>
+    <div class="r-sub">
+      ${pass
+        ? '6문항 이상 통과! 본 과정 수강 준비가 되었습니다.<br>STEP 1~4 핵심 수식을 계속 복습하세요.'
+        : '틀린 문항의 개념을 LESSON 섹션에서 다시 확인해보세요.<br>완전히 이해하면 다시 도전하세요!'}
+    </div>
+    <div class="r-bars">
+      <div class="rb"><div class="rb-n" style="color:var(--sk-red)">${score}</div><div class="rb-l">정답</div></div>
+      <div class="rb"><div class="rb-n" style="color:var(--dk-muted)">${Qs.length-score}</div><div class="rb-l">오답</div></div>
+      <div class="rb"><div class="rb-n" style="color:var(--dk-orange)">${pct}%</div><div class="rb-l">정확도</div></div>
+    </div>
+    <button class="btn btn-ghost" onclick="restart()">↺ 다시 풀기</button>`;
+}
+
+function restart(){
+  cur=0; score=0; answe
