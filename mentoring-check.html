@@ -21,6 +21,27 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 
+  /* LOADING OVERLAY */
+  #loadingOverlay{position:fixed;inset:0;background:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;transition:opacity .4s;}
+  #loadingOverlay.hidden{opacity:0;pointer-events:none;}
+  .loading-dot-wrap{display:flex;gap:8px;}
+  .loading-dot{width:10px;height:10px;border-radius:50%;background:var(--accent2);animation:ldot 1.2s ease-in-out infinite;}
+  .loading-dot:nth-child(2){animation-delay:.2s;}
+  .loading-dot:nth-child(3){animation-delay:.4s;}
+  @keyframes ldot{0%,80%,100%{transform:scale(0);opacity:.3;}40%{transform:scale(1);opacity:1;}}
+  .loading-text{font-size:13px;color:#9a9890;letter-spacing:.05em;}
+
+  /* SYNC BADGE */
+  .sync-badge{display:flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;transition:all .3s;}
+  .sync-badge.synced{background:#1e3a2f;color:#6fcf97;}
+  .sync-badge.syncing{background:#3a3020;color:#f2994a;}
+  .sync-badge.error{background:#3a1f1f;color:#eb5757;}
+  .sync-dot{width:6px;height:6px;border-radius:50%;}
+  .synced .sync-dot{background:#6fcf97;}
+  .syncing .sync-dot{background:#f2994a;animation:pulse 1s infinite;}
+  .error .sync-dot{background:#eb5757;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
   header{background:var(--text);color:#f4f3ef;padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:16px;}
   .hd-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:9px;white-space:nowrap;}
   .hd-dot{width:7px;height:7px;background:var(--accent2);border-radius:50%;}
@@ -28,11 +49,11 @@
   .lg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#b0ada6;white-space:nowrap;}
   .lg-dot{width:7px;height:7px;border-radius:2px;}
   .lg-dot.done{background:#2a5c45;} .lg-dot.missing{background:#c0392b;} .lg-dot.pend{background:#888;}
+  .hd-right{display:flex;align-items:center;gap:10px;}
   .hd-date{font-size:11px;color:#888;font-family:'DM Mono',monospace;white-space:nowrap;}
 
   .app{display:flex;flex:1;height:calc(100vh - 54px);}
 
-  /* SIDEBAR */
   .sidebar{width:228px;min-width:228px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
   .sb-head{padding:18px 18px 12px;border-bottom:1px solid var(--border);}
   .sb-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;}
@@ -55,7 +76,6 @@
 
   .main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:22px;}
 
-  /* MENTOR HEADER */
   .mh-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);}
   .mh-info h2{font-size:21px;font-weight:700;margin-bottom:3px;}
   .mh-info p{font-size:13px;color:var(--text2);}
@@ -70,19 +90,16 @@
   .section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* PHASE CARDS */
   .phases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
   .phase-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
   .phase-card:hover{box-shadow:var(--shadow-lg);}
   .phase-card.status-overdue-incomplete{border-color:#f5c6c6;}
   .phase-card.status-warning{border-color:#fde8b0;}
   .phase-card.status-done{border-color:#b8dcc8;}
-
   .pc-head{padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
   .phase-card.status-overdue-incomplete .pc-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
   .phase-card.status-warning .pc-head{background:#fffbf2;border-bottom-color:#fde8b0;}
   .phase-card.status-done .pc-head{background:#f4faf7;border-bottom-color:#b8dcc8;}
-
   .pc-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
   .pi-0{background:#e8f0fe;} .pi-1{background:#e8f5e9;} .pi-2{background:#fff3e0;} .pi-3{background:#fce4ec;}
   .pc-title{flex:1;}
@@ -96,7 +113,6 @@
   .dday.ok{background:var(--border);color:var(--text3);}
   .dday.done-badge{background:var(--accent-light);color:var(--accent);}
   .dday.no-date{background:var(--border);color:var(--text3);}
-
   .pc-body{padding:13px 16px;display:flex;flex-direction:column;gap:11px;}
   .deadline-row{display:flex;align-items:center;gap:8px;}
   .deadline-row label{font-size:11px;color:var(--text3);white-space:nowrap;}
@@ -105,7 +121,6 @@
   .output-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .output-label{font-size:12px;font-weight:500;color:var(--text2);}
 
-  /* 3-STATE TOGGLE */
   .tri{display:inline-flex;border:1px solid var(--border2);border-radius:7px;overflow:hidden;}
   .tri-b{padding:5px 10px;cursor:pointer;border:none;background:var(--surface);color:var(--text3);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:500;transition:all .15s;border-right:1px solid var(--border2);white-space:nowrap;line-height:1;}
   .tri-b:last-child{border-right:none;}
@@ -114,11 +129,9 @@
   .tri-b.a-miss{background:var(--danger);color:#fff;font-weight:700;}
   .tri-b.a-pend{background:#e0dfd9;color:var(--text2);font-weight:700;}
 
-  /* ADD */
   .add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;box-shadow:0 2px 6px rgba(42,92,69,.25);white-space:nowrap;}
   .add-btn:hover{background:#1e4433;transform:translateY(-1px);}
 
-  /* SESSION CARD */
   .sessions-wrap{display:flex;flex-direction:column;gap:14px;}
   .empty-box{text-align:center;padding:50px 20px;color:var(--text3);background:var(--surface);border:2px dashed var(--border);border-radius:12px;}
   .empty-box p{font-size:14px;margin-top:10px;}
@@ -126,27 +139,19 @@
   .ses-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
   .ses-card:hover{box-shadow:var(--shadow-lg);}
   .ses-card.has-miss{border-color:#f5c6c6;}
-
   .ses-head{display:flex;align-items:center;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;}
   .ses-card.has-miss .ses-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
-
   .ses-num{font-size:10px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
-
   .ses-meta{display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;}
-
-  /* date */
   .ses-field{display:flex;align-items:center;gap:6px;}
   .ses-field-l{font-size:11px;color:var(--text3);white-space:nowrap;}
   .ses-date{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;}
   .ses-date:focus{outline:none;border-color:var(--accent);}
-
-  /* TIME INPUT */
   .time-input-wrap{display:flex;align-items:center;gap:4px;}
   .time-num{width:48px;border:1px solid var(--border2);border-radius:6px;padding:5px 7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);text-align:center;transition:border .15s;}
   .time-num:focus{outline:none;border-color:var(--blue);}
   .time-unit{font-size:11px;color:var(--text3);}
   .time-total-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;background:var(--blue-light);color:var(--blue);font-weight:600;white-space:nowrap;}
-
   .ses-head-r{display:flex;align-items:center;gap:8px;}
   .ses-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap;}
   .sb-all{background:var(--accent-light);color:var(--accent);}
@@ -156,7 +161,6 @@
   .del-btn{width:26px;height:26px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:13px;flex-shrink:0;}
   .del-btn:hover{background:#fef0f0;border-color:#f5c6c6;color:var(--danger);}
 
-  /* TABLE */
   .ses-table{width:100%;border-collapse:collapse;}
   .ses-table thead tr{border-bottom:1px solid var(--border);}
   .ses-table th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:9px 20px;text-align:left;}
@@ -172,13 +176,9 @@
   .dl-chip.over{background:var(--danger-light);color:var(--danger);}
   .dl-chip.soon{background:var(--warn-light);color:var(--warn);}
   .dl-chip.ok{background:var(--accent-light);color:var(--accent);}
-
   .miss-row{padding:8px 20px;background:#fff2f2;border-top:1px solid #f5c6c6;font-size:12px;color:var(--danger);display:flex;align-items:flex-start;gap:6px;line-height:1.7;flex-wrap:wrap;}
-
-  /* TIME SUMMARY BAR */
   .time-summary-bar{padding:10px 20px;background:var(--blue-light);border-top:1px solid #c5d9f5;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--blue);font-weight:500;}
   .time-summary-bar strong{font-family:'DM Mono',monospace;font-size:13px;}
-
   .notes-wrap{padding:11px 20px;background:var(--surface2);border-top:1px solid var(--border);}
   .notes-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
   .notes-ta{width:100%;border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--surface);resize:vertical;min-height:40px;transition:border .15s;}
@@ -195,6 +195,16 @@
 </head>
 <body>
 
+<!-- 로딩 오버레이 -->
+<div id="loadingOverlay">
+  <div class="loading-dot-wrap">
+    <div class="loading-dot"></div>
+    <div class="loading-dot"></div>
+    <div class="loading-dot"></div>
+  </div>
+  <div class="loading-text">Firebase에 연결 중...</div>
+</div>
+
 <header>
   <div class="hd-title"><span class="hd-dot"></span>멘토링 체크일지</div>
   <div class="hd-legend">
@@ -202,7 +212,13 @@
     <div class="lg-item"><span class="lg-dot missing"></span>미기입</div>
     <div class="lg-item"><span class="lg-dot pend"></span>미확인</div>
   </div>
-  <div class="hd-date" id="hDate"></div>
+  <div class="hd-right">
+    <div class="sync-badge syncing" id="syncBadge">
+      <div class="sync-dot"></div>
+      <span id="syncText">연결 중</span>
+    </div>
+    <div class="hd-date" id="hDate"></div>
+  </div>
 </header>
 
 <div class="app">
@@ -218,9 +234,29 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue, set, update, remove, push }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDF0OFdUG2bZ1QDi1hNvOGZgdrXcng0NIQ",
+  authDomain: "mentoring-check.firebaseapp.com",
+  databaseURL: "https://mentoring-check-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "mentoring-check",
+  storageBucket: "mentoring-check.firebasestorage.app",
+  messagingSenderId: "97354960863",
+  appId: "1:97354960863:web:2135b13a64cd4f26b1be6a",
+  measurementId: "G-4QZRJ9NYMQ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+/* ────────── 상수 ────────── */
 const MENTORS = ['홍건의','양지현','석지민','양재연','이용준'];
-const PHASES = [
+const PHASES  = [
   { name:'프로젝트 기획평가', icon:'📋', icCls:'pi-0' },
   { name:'백엔드 평가',       icon:'⚙️',  icCls:'pi-1' },
   { name:'프론트엔드 평가',   icon:'🖥️', icCls:'pi-2' },
@@ -229,49 +265,102 @@ const PHASES = [
 const DEFAULT_DEADLINES = {
   4:{ 0:'2025-04-04', 1:'2025-05-04', 2:'2025-04-19', 3:'2025-05-13' }
 };
-const KEY = 'mentoring_v6';
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
-let state = loadState();
-let active = 0;
+/* ────────── 상태 ────────── */
+let state   = {};   // Firebase에서 받아온 전체 상태
+let active  = 0;
+let _initialized = false;
 
-function loadState(){
-  try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){}
-  const s={};
-  MENTORS.forEach((_,i)=>{
-    s[i]={ deadlines:DEFAULT_DEADLINES[i]||{}, output:{}, sessions:[] };
-  });
-  return s;
+/* ────────── Firebase 연동 ────────── */
+function syncBadge(s){
+  const b=document.getElementById('syncBadge');
+  const t=document.getElementById('syncText');
+  b.className='sync-badge '+s;
+  t.textContent=s==='synced'?'실시간 동기화':s==='syncing'?'동기화 중':'연결 오류';
 }
-function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
+// 초기 데이터 구조 생성
+function initMentorData(mi){
+  return {
+    deadlines: DEFAULT_DEADLINES[mi]||{},
+    output:    {},
+    sessions:  {}
+  };
+}
+
+// Firebase 전체 구독
+const rootRef = ref(db, 'mentoring');
+onValue(rootRef, (snapshot)=>{
+  const data = snapshot.val();
+  // 데이터가 없으면 초기화
+  if(!data){
+    const init={};
+    MENTORS.forEach((_,i)=>{ init[i]=initMentorData(i); });
+    set(rootRef, init);
+    return;
+  }
+  state = data;
+  syncBadge('synced');
+
+  // 로딩 숨김
+  if(!_initialized){
+    _initialized=true;
+    const ov=document.getElementById('loadingOverlay');
+    ov.classList.add('hidden');
+    setTimeout(()=>ov.remove(),500);
+  }
+
+  render();
+}, (err)=>{
+  console.error(err);
+  syncBadge('error');
+});
+
+/* ────────── DB 쓰기 헬퍼 ────────── */
+function dbSet(path, val){
+  syncBadge('syncing');
+  return set(ref(db, path), val);
+}
+function dbUpdate(path, val){
+  syncBadge('syncing');
+  return update(ref(db, path), val);
+}
+function dbRemove(path){
+  syncBadge('syncing');
+  return remove(ref(db, path));
+}
+
+/* ────────── 상태 접근 헬퍼 ────────── */
 function getMentor(mi){
-  if(!state[mi]) state[mi]={deadlines:{},output:{},sessions:[]};
-  ['deadlines','output','sessions'].forEach(k=>{ if(!state[mi][k]) state[mi][k]=k==='sessions'?[]:{};});
+  if(!state[mi]) state[mi]=initMentorData(mi);
   return state[mi];
 }
+function getSessions(mi){
+  const m=getMentor(mi);
+  if(!m.sessions) return [];
+  // Firebase object → array (key 순서 보장)
+  return Object.entries(m.sessions)
+    .sort(([a],[b])=> (a>b?1:a<b?-1:0))
+    .map(([k,v])=>({...v, _key:k}));
+}
 
-/* ── TIME UTILS ── */
-// session.duration = { h: number, m: number }
+/* ────────── 시간 유틸 ────────── */
 function sessionMinutes(ses){
-  const h=parseInt(ses.duration?.h)||0;
-  const m=parseInt(ses.duration?.m)||0;
-  return h*60+m;
+  return (parseInt(ses.duration?.h)||0)*60+(parseInt(ses.duration?.m)||0);
 }
 function totalMinutes(mi){
-  return getMentor(mi).sessions.reduce((sum,s)=>sum+sessionMinutes(s),0);
+  return getSessions(mi).reduce((s,ses)=>s+sessionMinutes(ses),0);
 }
-function fmtMinutes(mins){
+function fmtMins(mins){
   if(!mins) return '0분';
   const h=Math.floor(mins/60), m=mins%60;
-  if(h && m) return `${h}시간 ${m}분`;
-  if(h) return `${h}시간`;
-  return `${m}분`;
+  return h&&m?`${h}시간 ${m}분`:h?`${h}시간`:`${m}분`;
 }
 
-/* ── D-DAY ── */
-function parseDL(str){ if(!str) return null; const d=new Date(str); d.setHours(0,0,0,0); return d; }
-function getDdayInfo(dlStr, isDone){
+/* ────────── D-Day 유틸 ────────── */
+function parseDL(s){ if(!s) return null; const d=new Date(s); d.setHours(0,0,0,0); return d; }
+function getDday(dlStr,isDone){
   const dl=parseDL(dlStr);
   if(!dl) return {text:'마감일 미설정',cls:'no-date',cardCls:''};
   const diff=Math.round((dl-TODAY)/86400000);
@@ -281,43 +370,44 @@ function getDdayInfo(dlStr, isDone){
   if(diff<=7)  return {text:`D-${diff}`,cls:'soon',cardCls:'status-warning'};
   return {text:`D-${diff}`,cls:'ok',cardCls:''};
 }
-function getPhaseChip(dlStr, isDone){
+function getChip(dlStr,isDone){
   const dl=parseDL(dlStr); if(!dl||isDone) return null;
   const diff=Math.round((dl-TODAY)/86400000);
   if(diff<0)  return {text:`D+${Math.abs(diff)}초과`,cls:'over'};
   if(diff<=7)  return {text:`D-${diff}`,cls:'soon'};
   return {text:`D-${diff}`,cls:'ok'};
 }
-function fmtDate(str){ if(!str) return ''; const d=new Date(str); return `${d.getMonth()+1}/${d.getDate()}`; }
+function fmtDate(s){ if(!s) return ''; const d=new Date(s); return `${d.getMonth()+1}/${d.getDate()}`; }
 
-/* ── STATS ── */
+/* ────────── 통계 ────────── */
 function calcStats(mi){
   const m=getMentor(mi);
+  const sessions=getSessions(mi);
   let oDone=0,oMiss=0,overdue=0;
   PHASES.forEach((_,pi)=>{
-    const v=m.output[pi]; const isDone=v==='done';
+    const v=m.output?.[pi]; const isDone=v==='done';
     if(isDone) oDone++; else if(v==='missing') oMiss++;
-    const dl=parseDL(m.deadlines[pi]);
+    const dl=parseDL(m.deadlines?.[pi]);
     if(dl&&dl<TODAY&&!isDone) overdue++;
   });
   let sDone=0,sMiss=0;
-  m.sessions.forEach(s=>{
+  sessions.forEach(s=>{
     PHASES.forEach((_,pi)=>{
       const v=s.checks?.[pi];
       if(v==='done') sDone++; else if(v==='missing') sMiss++;
     });
   });
-  const totMins=totalMinutes(mi);
-  return {oDone,oMiss,sDone,sMiss,overdue,totMins,sessions:m.sessions.length};
+  return {oDone,oMiss,sDone,sMiss,overdue,totMins:totalMinutes(mi),sessions:sessions.length};
 }
 
+/* ────────── TOAST ────────── */
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-/* ── SIDEBAR ── */
+/* ────────── SIDEBAR ────────── */
 function renderSidebar(){
   const list=document.getElementById('mentorList');
   list.innerHTML='';
@@ -330,19 +420,18 @@ function renderSidebar(){
 
     const el=document.createElement('div');
     el.className='m-item'+(i===active?' active':'');
-
-    const allEmpty=(st.sessions===0&&st.oDone===0&&st.oMiss===0&&st.overdue===0);
+    const allEmpty=!st.sessions&&!st.oDone&&!st.oMiss&&!st.overdue;
     const pills=allEmpty
-      ? `<span class="pill pend">미시작</span>`
-      : [
-          (st.sDone+st.oDone)>0?`<span class="pill done">완료 ${st.sDone+st.oDone}</span>`:'',
-          (st.sMiss+st.oMiss)>0?`<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>`:'',
-          st.overdue>0?`<span class="pill warn">마감초과 ${st.overdue}</span>`:'',
-        ].join('');
+      ?`<span class="pill pend">미시작</span>`
+      :[
+        (st.sDone+st.oDone)>0?`<span class="pill done">완료 ${st.sDone+st.oDone}</span>`:'',
+        (st.sMiss+st.oMiss)>0?`<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>`:'',
+        st.overdue>0?`<span class="pill warn">마감초과 ${st.overdue}</span>`:'',
+      ].join('');
 
     el.innerHTML=`
       <div class="m-name">${name} 멘토</div>
-      ${st.totMins>0?`<div class="m-time-row">⏱ 누적 ${fmtMinutes(st.totMins)}</div>`:''}
+      ${st.totMins>0?`<div class="m-time-row">⏱ 누적 ${fmtMins(st.totMins)}</div>`:''}
       <div class="m-pills">${pills}</div>
     `;
     el.onclick=()=>{ active=i; render(); };
@@ -353,15 +442,14 @@ function renderSidebar(){
     `전체 세션: <strong>${tSes}회</strong><br>`+
     `완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; `+
     `미기입: <strong style="color:var(--danger)">${tMiss}</strong><br>`+
-    `전체 누적시간: <strong style="color:var(--blue)">${fmtMinutes(tMins)}</strong>`+
+    `전체 누적시간: <strong style="color:var(--blue)">${fmtMins(tMins)}</strong>`+
     (tOver>0?`<br>⚠️ 마감초과: <strong style="color:var(--warn)">${tOver}건</strong>`:'');
 }
 
-/* ── MAIN ── */
+/* ────────── MAIN ────────── */
 function renderMain(){
   const main=document.getElementById('mainContent');
   const st=calcStats(active);
-
   main.innerHTML=`
     <div class="mh-card">
       <div class="mh-info">
@@ -370,7 +458,7 @@ function renderMain(){
       </div>
       <div class="mh-stats">
         <div class="stat time-stat">
-          <div class="stat-n b" style="font-size:16px;">${fmtMinutes(st.totMins)}</div>
+          <div class="stat-n b" style="font-size:16px;">${fmtMins(st.totMins)}</div>
           <div class="stat-l">누적 멘토링 시간</div>
         </div>
         <div class="stat"><div class="stat-n gr">${st.sessions}</div><div class="stat-l">멘토링 회차</div></div>
@@ -381,10 +469,8 @@ function renderMain(){
         ${st.overdue>0?`<div class="stat"><div class="stat-n w">${st.overdue}</div><div class="stat-l">마감 초과</div></div>`:''}
       </div>
     </div>
-
     <div class="section-label">📁 산출물평가서 &amp; 마감일 관리</div>
     <div class="phases-grid" id="phasesGrid"></div>
-
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
       <div class="section-label" style="flex:1;">📝 수행일지 — 회차별</div>
       <button class="add-btn" id="addBtn">
@@ -394,20 +480,19 @@ function renderMain(){
     </div>
     <div class="sessions-wrap" id="sesWrap"></div>
   `;
-
   document.getElementById('addBtn').onclick=addSession;
   renderPhasesGrid();
   renderSessions();
 }
 
-/* ── PHASES GRID ── */
+/* ────────── PHASES GRID ────────── */
 function renderPhasesGrid(){
   const grid=document.getElementById('phasesGrid'); if(!grid) return;
   const m=getMentor(active);
   grid.innerHTML=PHASES.map((ph,pi)=>{
-    const v=m.output[pi]||null;
-    const dl=m.deadlines[pi]||'';
-    const dday=getDdayInfo(dl,v==='done');
+    const v=m.output?.[pi]||null;
+    const dl=m.deadlines?.[pi]||'';
+    const dday=getDday(dl,v==='done');
     return `
       <div class="phase-card ${dday.cardCls}">
         <div class="pc-head">
@@ -437,23 +522,19 @@ function renderPhasesGrid(){
 
   grid.querySelectorAll('.deadline-input').forEach(inp=>{
     inp.addEventListener('change',function(){
-      getMentor(+this.dataset.mi).deadlines[+this.dataset.pi]=this.value;
-      save(); render();
+      dbSet(`mentoring/${this.dataset.mi}/deadlines/${this.dataset.pi}`, this.value);
     });
   });
   grid.querySelectorAll('.tri-b[data-type="out"]').forEach(btn=>{
     btn.addEventListener('click',function(){
-      const mi=+this.dataset.mi,pi=+this.dataset.pi;
       const val=this.dataset.v==='null'?null:this.dataset.v;
-      getMentor(mi).output[pi]=val;
-      save();
+      dbSet(`mentoring/${this.dataset.mi}/output/${this.dataset.pi}`, val);
       showToast(val==='missing'?'⚠️ 산출물평가서 미기입 표시':val==='done'?'✓ 산출물평가서 완료 표시':'— 미확인으로 변경');
-      render();
     });
   });
 }
 
-/* ── SESSIONS ── */
+/* ────────── SESSIONS ────────── */
 function getSesBadge(ses){
   let done=0,miss=0,total=PHASES.length;
   PHASES.forEach((_,pi)=>{ const v=ses.checks?.[pi]; if(v==='done') done++; else if(v==='missing') miss++; });
@@ -468,9 +549,10 @@ function getSesBadge(ses){
 function renderSessions(){
   const wrap=document.getElementById('sesWrap'); if(!wrap) return;
   const m=getMentor(active);
+  const sessions=getSessions(active);
   wrap.innerHTML='';
 
-  if(!m.sessions.length){
+  if(!sessions.length){
     wrap.innerHTML=`
       <div class="empty-box">
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="7" y="5" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.4"/><path d="M13 13h12M13 19h8M13 25h5" stroke="#9a9890" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -479,40 +561,36 @@ function renderSessions(){
     return;
   }
 
-  // 누적 시간 계산용
   let runningMins=0;
-
-  m.sessions.forEach((ses,si)=>{
+  sessions.forEach((ses,si)=>{
     const badge=getSesBadge(ses);
     const missItems=PHASES.filter((_,pi)=>ses.checks?.[pi]==='missing').map(ph=>ph.name);
     const sesMins=sessionMinutes(ses);
     runningMins+=sesMins;
+    const sesKey=ses._key;
 
     const card=document.createElement('div');
     card.className='ses-card'+(badge.hasMiss?' has-miss':'');
 
     const rows=PHASES.map((ph,pi)=>{
       const v=ses.checks?.[pi]||null;
-      const chip=getPhaseChip(m.deadlines[pi],v==='done');
+      const chip=getChip(m.deadlines?.[pi],v==='done');
       const chipHtml=chip?`<span class="dl-chip ${chip.cls}">${chip.text}</span>`:'';
-      const dlTxt=m.deadlines[pi]?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">(~${fmtDate(m.deadlines[pi])})</span>`:'';
+      const dlTxt=m.deadlines?.[pi]?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">(~${fmtDate(m.deadlines[pi])})</span>`:'';
       return `
         <tr class="r${pi}">
-          <td><div class="cat-cell">
-            <div class="cat-ic">${ph.icon}</div>${ph.name}${dlTxt}${chipHtml}
-          </div></td>
+          <td><div class="cat-cell"><div class="cat-ic">${ph.icon}</div>${ph.name}${dlTxt}${chipHtml}</div></td>
           <td class="check-td">
             <div class="tri">
-              <button class="tri-b${v==='done'?' a-done':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="done">✓ 완료</button>
-              <button class="tri-b${v==='missing'?' a-miss':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
-              <button class="tri-b${v===null?' a-pend':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="null">— 미확인</button>
+              <button class="tri-b${v==='done'?' a-done':''}" data-type="ses" data-mi="${active}" data-sk="${sesKey}" data-pi="${pi}" data-v="done">✓ 완료</button>
+              <button class="tri-b${v==='missing'?' a-miss':''}" data-type="ses" data-mi="${active}" data-sk="${sesKey}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
+              <button class="tri-b${v===null?' a-pend':''}" data-type="ses" data-mi="${active}" data-sk="${sesKey}" data-pi="${pi}" data-v="null">— 미확인</button>
             </div>
           </td>
         </tr>`;
     }).join('');
 
     const alertHtml=missItems.length?`<div class="miss-row">⚠️ 미기입 : ${missItems.join(' · ')}</div>`:'';
-
     const durH=ses.duration?.h??'';
     const durM=ses.duration?.m??'';
 
@@ -522,24 +600,22 @@ function renderSessions(){
         <div class="ses-meta">
           <div class="ses-field">
             <span class="ses-field-l">📅 날짜</span>
-            <input type="date" class="ses-date" value="${ses.date||''}" data-mi="${active}" data-si="${si}">
+            <input type="date" class="ses-date" value="${ses.date||''}" data-mi="${active}" data-sk="${sesKey}">
           </div>
           <div class="ses-field">
             <span class="ses-field-l">⏱ 멘토링 시간</span>
             <div class="time-input-wrap">
-              <input type="number" class="time-num time-h" min="0" max="23" placeholder="0"
-                value="${durH}" data-mi="${active}" data-si="${si}">
+              <input type="number" class="time-num time-h" min="0" max="23" placeholder="0" value="${durH}" data-mi="${active}" data-sk="${sesKey}">
               <span class="time-unit">시간</span>
-              <input type="number" class="time-num time-m" min="0" max="59" placeholder="0"
-                value="${durM}" data-mi="${active}" data-si="${si}">
+              <input type="number" class="time-num time-m" min="0" max="59" placeholder="0" value="${durM}" data-mi="${active}" data-sk="${sesKey}">
               <span class="time-unit">분</span>
             </div>
           </div>
-          ${sesMins>0?`<span class="time-total-badge">이 회차 ${fmtMinutes(sesMins)}</span>`:''}
+          ${sesMins>0?`<span class="time-total-badge">이 회차 ${fmtMins(sesMins)}</span>`:''}
         </div>
         <div class="ses-head-r">
           <span class="ses-badge ${badge.cls}">${badge.label}</span>
-          <button class="del-btn" data-mi="${active}" data-si="${si}">✕</button>
+          <button class="del-btn" data-mi="${active}" data-sk="${sesKey}">✕</button>
         </div>
       </div>
       <table class="ses-table">
@@ -551,94 +627,78 @@ function renderSessions(){
       </table>
       ${alertHtml}
       <div class="time-summary-bar">
-        ⏱ ${si+1}회차까지 누적 멘토링 시간: <strong>${fmtMinutes(runningMins)}</strong>
-        ${m.sessions.length===si+1&&runningMins>0?`&nbsp;(전체 합계)`:''}
+        ⏱ ${si+1}회차까지 누적 멘토링 시간: <strong>${fmtMins(runningMins)}</strong>
       </div>
       <div class="notes-wrap">
         <div class="notes-lbl">메모</div>
-        <textarea class="notes-ta" placeholder="멘토링 내용, 미기입 사유 등..." data-mi="${active}" data-si="${si}">${ses.notes||''}</textarea>
+        <textarea class="notes-ta" placeholder="멘토링 내용, 미기입 사유 등..." data-mi="${active}" data-sk="${sesKey}">${ses.notes||''}</textarea>
       </div>
     `;
     wrap.appendChild(card);
   });
 
-  /* event listeners */
+  /* 이벤트 */
   wrap.querySelectorAll('.tri-b[data-type="ses"]').forEach(btn=>{
     btn.addEventListener('click',function(){
-      const mi=+this.dataset.mi,si=+this.dataset.si,pi=+this.dataset.pi;
       const val=this.dataset.v==='null'?null:this.dataset.v;
-      const ses=getMentor(mi).sessions[si];
-      if(!ses.checks) ses.checks={};
-      ses.checks[pi]=val;
-      save();
+      dbSet(`mentoring/${this.dataset.mi}/sessions/${this.dataset.sk}/checks/${this.dataset.pi}`, val);
       showToast(val==='missing'?'⚠️ 수행일지 미기입 표시':val==='done'?'✓ 수행일지 완료 표시':'— 미확인으로 변경');
-      render();
     });
   });
-
   wrap.querySelectorAll('input.ses-date').forEach(inp=>{
     inp.addEventListener('change',function(){
-      getMentor(+this.dataset.mi).sessions[+this.dataset.si].date=this.value;
-      save();
+      dbSet(`mentoring/${this.dataset.mi}/sessions/${this.dataset.sk}/date`, this.value);
     });
   });
-
-  // TIME INPUTS
   wrap.querySelectorAll('input.time-h').forEach(inp=>{
     inp.addEventListener('change',function(){
-      const mi=+this.dataset.mi,si=+this.dataset.si;
-      const ses=getMentor(mi).sessions[si];
-      if(!ses.duration) ses.duration={};
-      ses.duration.h=Math.max(0,parseInt(this.value)||0);
-      this.value=ses.duration.h||'';
-      save(); render();
+      const val=Math.max(0,parseInt(this.value)||0);
+      this.value=val||'';
+      dbSet(`mentoring/${this.dataset.mi}/sessions/${this.dataset.sk}/duration/h`, val);
     });
   });
   wrap.querySelectorAll('input.time-m').forEach(inp=>{
     inp.addEventListener('change',function(){
-      const mi=+this.dataset.mi,si=+this.dataset.si;
-      const ses=getMentor(mi).sessions[si];
-      if(!ses.duration) ses.duration={};
-      ses.duration.m=Math.min(59,Math.max(0,parseInt(this.value)||0));
-      this.value=ses.duration.m||'';
-      save(); render();
+      const val=Math.min(59,Math.max(0,parseInt(this.value)||0));
+      this.value=val||'';
+      dbSet(`mentoring/${this.dataset.mi}/sessions/${this.dataset.sk}/duration/m`, val);
     });
   });
-
   wrap.querySelectorAll('textarea.notes-ta').forEach(ta=>{
+    let timer;
     ta.addEventListener('input',function(){
-      getMentor(+this.dataset.mi).sessions[+this.dataset.si].notes=this.value;
-      save();
+      clearTimeout(timer);
+      const mi=this.dataset.mi, sk=this.dataset.sk, val=this.value;
+      timer=setTimeout(()=>{ dbSet(`mentoring/${mi}/sessions/${sk}/notes`, val); },800);
     });
   });
-
   wrap.querySelectorAll('.del-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
-      const mi=+this.dataset.mi,si=+this.dataset.si;
-      if(confirm(`${MENTORS[mi]} 멘토 ${si+1}회차를 삭제할까요?`)){
-        getMentor(mi).sessions.splice(si,1);
-        save(); showToast('회차 삭제됨'); render();
+      if(confirm(`${MENTORS[active]} 멘토 이 회차를 삭제할까요?`)){
+        dbRemove(`mentoring/${this.dataset.mi}/sessions/${this.dataset.sk}`);
+        showToast('회차 삭제됨');
       }
     });
   });
 }
 
+/* ────────── 회차 추가 ────────── */
 function addSession(){
-  getMentor(active).sessions.push({date:'',duration:{h:'',m:''},checks:{},notes:''});
-  save();
-  showToast(`${MENTORS[active]} 멘토 ${getMentor(active).sessions.length}회차 추가`);
-  render();
+  const newRef=push(ref(db,`mentoring/${active}/sessions`));
+  set(newRef,{date:'',duration:{h:0,m:0},checks:{},notes:''});
+  showToast(`${MENTORS[active]} 멘토 새 회차 추가`);
   setTimeout(()=>{
     document.getElementById('sesWrap')?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'start'});
-  },100);
+  },400);
 }
 
+/* ────────── RENDER ────────── */
 function render(){ renderSidebar(); renderMain(); }
 
+/* ────────── 날짜 ────────── */
 const d=new Date();
 document.getElementById('hDate').textContent=
   `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-render();
 </script>
 </body>
 </html>
