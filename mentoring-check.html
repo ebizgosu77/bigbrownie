@@ -8,7 +8,7 @@
 <style>
   :root {
     --bg: #f4f3ef;
-    --surface: #ffffff;
+    --surface: #fff;
     --surface2: #f9f8f5;
     --border: #e4e2db;
     --border2: #d0cec6;
@@ -21,432 +21,166 @@
     --accent2-light: #fdf0e6;
     --danger: #c0392b;
     --danger-light: #fdf0ef;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
-    --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06),0 2px 8px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
   }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* HEADER */
+  header{background:var(--text);color:#f4f3ef;padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:16px;}
+  .hd-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:9px;white-space:nowrap;}
+  .hd-dot{width:7px;height:7px;background:var(--accent2);border-radius:50%;}
+  .hd-legend{display:flex;align-items:center;gap:12px;}
+  .lg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#b0ada6;white-space:nowrap;}
+  .lg-dot{width:7px;height:7px;border-radius:2px;}
+  .lg-dot.done{background:#2a5c45;} .lg-dot.missing{background:#c0392b;} .lg-dot.pend{background:#888;}
+  .hd-date{font-size:11px;color:#888;font-family:'DM Mono',monospace;white-space:nowrap;}
 
-  body {
-    font-family: 'Noto Sans KR', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+  /* LAYOUT */
+  .app{display:flex;flex:1;height:calc(100vh - 54px);}
 
-  header {
-    background: var(--text);
-    color: #f4f3ef;
-    padding: 0 32px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    gap: 16px;
-  }
+  /* SIDEBAR */
+  .sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+  .sb-head{padding:18px 18px 12px;border-bottom:1px solid var(--border);}
+  .sb-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;}
+  .sb-sub{font-size:12px;color:var(--text2);}
+  .mentor-list{padding:8px 0;flex:1;}
+  .m-item{padding:11px 18px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;}
+  .m-item:hover{background:var(--surface2);}
+  .m-item.active{background:var(--accent-light);border-left-color:var(--accent);}
+  .m-name{font-size:14px;font-weight:600;margin-bottom:5px;}
+  .m-item.active .m-name{color:var(--accent);}
+  .m-pills{display:flex;gap:4px;flex-wrap:wrap;}
+  .pill{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px;font-weight:500;}
+  .pill.done{background:var(--accent-light);color:var(--accent);}
+  .pill.missing{background:var(--danger-light);color:var(--danger);}
+  .pill.pend{background:var(--border);color:var(--text3);}
+  .sb-foot{padding:14px 18px;border-top:1px solid var(--border);}
+  .sb-sum{font-size:12px;color:var(--text2);line-height:1.9;}
 
-  .header-title {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-  }
+  /* MAIN */
+  .main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:22px;}
 
-  .header-title .dot { width: 7px; height: 7px; background: var(--accent2); border-radius: 50%; display: inline-block; }
+  /* MENTOR HEADER */
+  .mh-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);}
+  .mh-info h2{font-size:21px;font-weight:700;margin-bottom:3px;}
+  .mh-info p{font-size:13px;color:var(--text2);}
+  .mh-stats{display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
+  .stat{text-align:center;padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;min-width:64px;}
+  .stat-n{font-size:19px;font-weight:700;font-family:'DM Mono',monospace;}
+  .stat-n.g{color:var(--accent);} .stat-n.r{color:var(--danger);} .stat-n.gr{color:var(--text3);}
+  .stat-l{font-size:11px;color:var(--text3);margin-top:1px;}
 
-  .header-legend {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+  /* SECTION TITLES */
+  .section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    color: #c0bdb6;
-    white-space: nowrap;
-  }
+  /* 산출물평가서 PANEL */
+  .output-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .output-panel-head{padding:14px 22px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .output-panel-head span{font-size:12px;font-weight:600;color:var(--text2);}
+  .output-panel-head small{font-size:11px;color:var(--text3);}
+  .output-grid{display:grid;grid-template-columns:repeat(2,1fr);}
+  .output-item{padding:16px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);border-right:1px solid var(--border);gap:12px;}
+  .output-item:nth-child(2n){border-right:none;}
+  .output-item:nth-last-child(-n+2){border-bottom:none;}
+  .oi-left{display:flex;align-items:center;gap:10px;}
+  .oi-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+  .oi-0{background:#e8f0fe;} .oi-1{background:#e8f5e9;} .oi-2{background:#fff3e0;} .oi-3{background:#fce4ec;}
+  .oi-name{font-size:13px;font-weight:500;}
+  .oi-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 
-  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
-  .legend-dot.done { background: #2a5c45; }
-  .legend-dot.missing { background: #c0392b; }
-  .legend-dot.pending { background: #6b6960; }
+  /* 3-STATE TOGGLE */
+  .tri{display:inline-flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;}
+  .tri-b{padding:6px 11px;cursor:pointer;border:none;background:var(--surface);color:var(--text3);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;transition:all .15s;border-right:1px solid var(--border2);white-space:nowrap;line-height:1;}
+  .tri-b:last-child{border-right:none;}
+  .tri-b:hover:not(.a-done):not(.a-miss):not(.a-pend){background:var(--surface2);}
+  .tri-b.a-done{background:var(--accent);color:#fff;font-weight:700;}
+  .tri-b.a-miss{background:var(--danger);color:#fff;font-weight:700;}
+  .tri-b.a-pend{background:#e0dfd9;color:var(--text2);font-weight:700;}
 
-  .header-meta { font-size: 12px; color: #9a9890; font-family: 'DM Mono', monospace; white-space: nowrap; }
+  /* ADD SESSION BTN */
+  .add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;box-shadow:0 2px 6px rgba(42,92,69,.25);white-space:nowrap;}
+  .add-btn:hover{background:#1e4433;transform:translateY(-1px);}
 
-  .app { display: flex; flex: 1; height: calc(100vh - 56px); }
+  /* SESSIONS */
+  .sessions-wrap{display:flex;flex-direction:column;gap:14px;}
+  .empty-box{text-align:center;padding:50px 20px;color:var(--text3);background:var(--surface);border:2px dashed var(--border);border-radius:12px;}
+  .empty-box p{font-size:14px;margin-top:10px;}
 
-  .sidebar {
-    width: 230px;
-    min-width: 230px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
+  .ses-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
+  .ses-card:hover{box-shadow:var(--shadow-lg);}
+  .ses-card.has-miss{border-color:#f5c6c6;}
 
-  .sidebar-header {
-    padding: 20px 20px 14px;
-    border-bottom: 1px solid var(--border);
-  }
+  .ses-head{display:flex;align-items:center;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap;}
+  .ses-card.has-miss .ses-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
+  .ses-num{font-size:10px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
+  .ses-date-w{display:flex;align-items:center;gap:7px;flex:1;min-width:160px;}
+  .ses-date-l{font-size:12px;color:var(--text3);}
+  .ses-date{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:13px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;}
+  .ses-date:focus{outline:none;border-color:var(--accent);}
+  .ses-head-r{display:flex;align-items:center;gap:9px;}
+  .ses-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap;}
+  .sb-all{background:var(--accent-light);color:var(--accent);}
+  .sb-miss{background:var(--danger-light);color:var(--danger);}
+  .sb-part{background:var(--accent2-light);color:var(--accent2);}
+  .sb-empty{background:var(--border);color:var(--text3);}
+  .del-btn{width:26px;height:26px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:13px;flex-shrink:0;}
+  .del-btn:hover{background:#fef0f0;border-color:#f5c6c6;color:var(--danger);}
 
-  .sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
-  .sidebar-count { font-size: 13px; color: var(--text2); }
-  .mentor-list { padding: 10px 0; flex: 1; }
+  /* SESSION CHECKLIST — only 수행일지 columns */
+  .ses-table{width:100%;border-collapse:collapse;}
+  .ses-table thead tr{border-bottom:1px solid var(--border);}
+  .ses-table th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:9px 20px;text-align:left;}
+  .ses-table th.check-th{text-align:center;width:180px;}
+  .ses-table tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+  .ses-table tbody tr:last-child{border-bottom:none;}
+  .ses-table tbody tr:hover{background:var(--surface2);}
+  .cat-cell{padding:13px 20px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;white-space:nowrap;}
+  .cat-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+  .r0 .cat-ic{background:#e8f0fe;} .r1 .cat-ic{background:#e8f5e9;} .r2 .cat-ic{background:#fff3e0;} .r3 .cat-ic{background:#fce4ec;}
+  td.check-td{text-align:center;padding:11px 16px;}
 
-  .mentor-item {
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: background 0.15s;
-    border-left: 3px solid transparent;
-  }
+  /* miss alert */
+  .miss-row{padding:8px 20px;background:#fff2f2;border-top:1px solid #f5c6c6;font-size:12px;color:var(--danger);display:flex;align-items:flex-start;gap:6px;line-height:1.7;flex-wrap:wrap;}
 
-  .mentor-item:hover { background: var(--surface2); }
-  .mentor-item.active { background: var(--accent-light); border-left-color: var(--accent); }
-  .mentor-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .mentor-item.active .mentor-name { color: var(--accent); }
+  /* notes */
+  .notes-wrap{padding:11px 20px;background:var(--surface2);border-top:1px solid var(--border);}
+  .notes-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+  .notes-ta{width:100%;border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--surface);resize:vertical;min-height:40px;transition:border .15s;}
+  .notes-ta:focus{outline:none;border-color:var(--accent);}
+  .notes-ta::placeholder{color:var(--text3);}
 
-  .mentor-status-row { display: flex; gap: 4px; flex-wrap: wrap; }
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
 
-  .status-pill {
-    font-size: 10px;
-    font-family: 'DM Mono', monospace;
-    padding: 2px 7px;
-    border-radius: 20px;
-    font-weight: 500;
-  }
-
-  .status-pill.done { background: var(--accent-light); color: var(--accent); }
-  .status-pill.missing { background: var(--danger-light); color: var(--danger); }
-  .status-pill.pending { background: var(--border); color: var(--text3); }
-
-  .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
-  .total-summary { font-size: 12px; color: var(--text2); line-height: 1.8; }
-
-  .main { flex: 1; overflow-y: auto; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
-
-  .mentor-header-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: var(--shadow);
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .mentor-title-group h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .mentor-title-group p { font-size: 13px; color: var(--text2); }
-
-  .mentor-stats { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-
-  .stat-box {
-    text-align: center;
-    padding: 10px 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    min-width: 68px;
-  }
-
-  .stat-num { font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace; }
-  .stat-num.green { color: var(--accent); }
-  .stat-num.red { color: var(--danger); }
-  .stat-num.gray { color: var(--text3); }
-  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-  .add-session-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Noto Sans KR', sans-serif;
-    cursor: pointer;
-    transition: all 0.15s;
-    box-shadow: 0 2px 6px rgba(42,92,69,0.25);
-    white-space: nowrap;
-  }
-
-  .add-session-btn:hover { background: #1e4433; transform: translateY(-1px); }
-
-  .sessions-container { display: flex; flex-direction: column; gap: 16px; }
-
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text3);
-    background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-  }
-  .empty-state p { font-size: 14px; margin-top: 12px; }
-
-  .session-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-  }
-
-  .session-card:hover { box-shadow: var(--shadow-lg); }
-  .session-card.has-missing { border-color: #f5c6c6; }
-
-  .session-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 22px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .session-card.has-missing .session-card-header { background: #fff8f8; border-bottom-color: #f5c6c6; }
-
-  .session-num-badge {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: white;
-    background: var(--accent);
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-    white-space: nowrap;
-  }
-
-  .session-date-wrap { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 180px; }
-  .session-date-label { font-size: 12px; color: var(--text3); }
-
-  .session-date-input {
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 13px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text);
-    background: var(--surface);
-    cursor: pointer;
-    transition: border 0.15s;
-  }
-
-  .session-date-input:focus { outline: none; border-color: var(--accent); }
-
-  .session-header-right { display: flex; align-items: center; gap: 10px; }
-
-  .session-badge {
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .session-badge.all-done { background: var(--accent-light); color: var(--accent); }
-  .session-badge.has-missing { background: var(--danger-light); color: var(--danger); }
-  .session-badge.partial { background: var(--accent2-light); color: var(--accent2); }
-  .session-badge.empty { background: var(--border); color: var(--text3); }
-
-  .delete-session-btn {
-    width: 26px; height: 26px;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    background: var(--surface);
-    color: var(--text3);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-
-  .delete-session-btn:hover { background: #fef0f0; border-color: #f5c6c6; color: var(--danger); }
-
-  .checklist-table { width: 100%; border-collapse: collapse; }
-  .checklist-table thead tr { border-bottom: 1px solid var(--border); }
-
-  .checklist-table th {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text3);
-    padding: 10px 22px;
-    text-align: left;
-  }
-
-  .checklist-table th:not(:first-child) { text-align: center; }
-
-  .checklist-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
-  .checklist-table tbody tr:last-child { border-bottom: none; }
-  .checklist-table tbody tr:hover { background: var(--surface2); }
-
-  .category-cell {
-    padding: 14px 22px;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
-  }
-
-  .category-icon {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-
-  .cat-0 .category-icon { background: #e8f0fe; }
-  .cat-1 .category-icon { background: #e8f5e9; }
-  .cat-2 .category-icon { background: #fff3e0; }
-  .cat-3 .category-icon { background: #fce4ec; }
-
-  .check-cell { text-align: center; padding: 12px 16px; }
-
-  /* ── 3-STATE TOGGLE ── */
-  .tri-toggle {
-    display: inline-flex;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .tri-btn {
-    padding: 6px 11px;
-    cursor: pointer;
-    border: none;
-    background: var(--surface);
-    color: var(--text3);
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.15s;
-    border-right: 1px solid var(--border2);
-    white-space: nowrap;
-    line-height: 1;
-  }
-
-  .tri-btn:last-child { border-right: none; }
-  .tri-btn:hover:not(.active-done):not(.active-missing):not(.active-pending) { background: var(--surface2); }
-
-  .tri-btn.active-done { background: var(--accent); color: white; font-weight: 700; }
-  .tri-btn.active-missing { background: var(--danger); color: white; font-weight: 700; }
-  .tri-btn.active-pending { background: #e0dfd9; color: var(--text2); font-weight: 700; }
-
-  .missing-alert-row {
-    padding: 8px 22px;
-    background: #fff2f2;
-    border-top: 1px solid #f5c6c6;
-    font-size: 12px;
-    color: var(--danger);
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    line-height: 1.6;
-    flex-wrap: wrap;
-  }
-
-  .session-notes-wrap {
-    padding: 12px 22px;
-    background: var(--surface2);
-    border-top: 1px solid var(--border);
-  }
-
-  .notes-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
-
-  .session-notes {
-    width: 100%;
-    border: 1px solid var(--border2);
-    border-radius: 7px;
-    padding: 9px 12px;
-    font-size: 12px;
-    font-family: 'Noto Sans KR', sans-serif;
-    color: var(--text);
-    background: var(--surface);
-    resize: vertical;
-    min-height: 44px;
-    transition: border 0.15s;
-  }
-
-  .session-notes:focus { outline: none; border-color: var(--accent); }
-  .session-notes::placeholder { color: var(--text3); }
-
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
-
-  .toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background: var(--text);
-    color: #f4f3ef;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    box-shadow: var(--shadow-lg);
-    transform: translateY(10px);
-    opacity: 0;
-    transition: all 0.2s;
-    z-index: 1000;
-    pointer-events: none;
-  }
-
-  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast{position:fixed;bottom:26px;right:26px;background:var(--text);color:#f4f3ef;padding:11px 18px;border-radius:8px;font-size:13px;box-shadow:var(--shadow-lg);transform:translateY(8px);opacity:0;transition:all .2s;z-index:999;pointer-events:none;}
+  .toast.show{opacity:1;transform:translateY(0);}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-title">
-    <span class="dot"></span>
-    멘토링 체크일지
+  <div class="hd-title"><span class="hd-dot"></span>멘토링 체크일지</div>
+  <div class="hd-legend">
+    <div class="lg-item"><span class="lg-dot done"></span>완료</div>
+    <div class="lg-item"><span class="lg-dot missing"></span>미기입</div>
+    <div class="lg-item"><span class="lg-dot pend"></span>미확인</div>
   </div>
-  <div class="header-legend">
-    <div class="legend-item"><span class="legend-dot done"></span>제출완료</div>
-    <div class="legend-item"><span class="legend-dot missing"></span>미기입</div>
-    <div class="legend-item"><span class="legend-dot pending"></span>미확인</div>
-  </div>
-  <div class="header-meta" id="headerDate"></div>
+  <div class="hd-date" id="hDate"></div>
 </header>
 
 <div class="app">
   <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-label">멘토 목록</div>
-      <div class="sidebar-count">5명</div>
+    <div class="sb-head">
+      <div class="sb-label">멘토 목록</div>
+      <div class="sb-sub">5명</div>
     </div>
     <div class="mentor-list" id="mentorList"></div>
-    <div class="sidebar-footer">
-      <div class="total-summary" id="totalSummary"></div>
+    <div class="sb-foot">
+      <div class="sb-sum" id="sbSum"></div>
     </div>
   </aside>
   <main class="main" id="mainContent"></main>
@@ -455,268 +189,327 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const MENTORS = ['홍건의', '양지현', '석지민', '양재연', '이용준'];
-const CATEGORIES = [
-  { name: '프로젝트 기획평가', icon: '📋' },
-  { name: '백엔드 평가', icon: '⚙️' },
-  { name: '프론트엔드 평가', icon: '🖥️' },
-  { name: '시스템 통합평가', icon: '🔗' },
+const MENTORS = ['홍건의','양지현','석지민','양재연','이용준'];
+const PHASES = [
+  { name:'프로젝트 기획평가', icon:'📋', cls:'oi-0' },
+  { name:'백엔드 평가',       icon:'⚙️',  cls:'oi-1' },
+  { name:'프론트엔드 평가',   icon:'🖥️', cls:'oi-2' },
+  { name:'시스템 통합평가',   icon:'🔗', cls:'oi-3' },
 ];
-const CHECKS = ['수행일지', '산출물평가서'];
-// val: null=미확인, 'done'=제출완료, 'missing'=미기입
-const STORAGE_KEY = 'mentoring_check_v3';
+// state[mi] = {
+//   output: { 0:null|'done'|'missing', 1:..., 2:..., 3:... }  // 산출물평가서 (per phase, 1회)
+//   sessions: [ { date, notes, checks:{ 0:null|'done'|'missing', ... } } ]  // 수행일지 per session per phase
+// }
+const KEY = 'mentoring_v4';
 
 let state = loadState();
-let activeMentor = 0;
+let active = 0;
 
-function loadState() {
-  try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
-  const s = {}; MENTORS.forEach((_, i) => { s[i] = []; }); return s;
+function loadState(){
+  try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){}
+  const s={};
+  MENTORS.forEach((_,i)=>{ s[i]={output:{},sessions:[]}; });
+  return s;
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function getMentor(mi){
+  if(!state[mi]) state[mi]={output:{},sessions:[]};
+  if(!state[mi].output) state[mi].output={};
+  if(!state[mi].sessions) state[mi].sessions=[];
+  return state[mi];
 }
 
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-function calcStats(mi) {
-  const sessions = state[mi] || [];
-  let done = 0, missing = 0, pending = 0, total = 0;
-  sessions.forEach(s => {
-    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => {
-      total++;
-      const v = s.checks?.[ci]?.[ki];
-      if (v === 'done') done++;
-      else if (v === 'missing') missing++;
-      else pending++;
-    }));
+function calcMentorStats(mi){
+  const m=getMentor(mi);
+  // output stats
+  let oDone=0, oMiss=0, oPend=0;
+  PHASES.forEach((_,pi)=>{
+    const v=m.output[pi];
+    if(v==='done') oDone++;
+    else if(v==='missing') oMiss++;
+    else oPend++;
   });
-  return { done, missing, pending, total, sessions: sessions.length };
+  // session 수행일지 stats
+  let sDone=0, sMiss=0, sPend=0, sTotal=0;
+  m.sessions.forEach(s=>{
+    PHASES.forEach((_,pi)=>{
+      sTotal++;
+      const v=s.checks?.[pi];
+      if(v==='done') sDone++;
+      else if(v==='missing') sMiss++;
+      else sPend++;
+    });
+  });
+  return { oDone, oMiss, oPend, sDone, sMiss, sPend, sTotal, sessions:m.sessions.length };
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
 }
 
-function renderSidebar() {
-  const list = document.getElementById('mentorList');
-  list.innerHTML = '';
-  let tDone = 0, tMissing = 0, tSessions = 0;
+/* ── SIDEBAR ── */
+function renderSidebar(){
+  const list=document.getElementById('mentorList');
+  list.innerHTML='';
+  let tMiss=0, tDone=0, tSes=0;
 
-  MENTORS.forEach((name, i) => {
-    const st = calcStats(i);
-    tDone += st.done; tMissing += st.missing; tSessions += st.sessions;
+  MENTORS.forEach((name,i)=>{
+    const st=calcMentorStats(i);
+    tDone += st.oDone+st.sDone;
+    tMiss += st.oMiss+st.sMiss;
+    tSes  += st.sessions;
 
-    const item = document.createElement('div');
-    item.className = 'mentor-item' + (i === activeMentor ? ' active' : '');
+    const el=document.createElement('div');
+    el.className='m-item'+(i===active?' active':'');
 
-    const pills = st.sessions === 0
-      ? `<span class="status-pill pending">세션 없음</span>`
+    const pills = st.sessions===0 && st.oDone===0 && st.oMiss===0
+      ? `<span class="pill pend">미시작</span>`
       : [
-          st.done   > 0 ? `<span class="status-pill done">완료 ${st.done}</span>` : '',
-          st.missing > 0 ? `<span class="status-pill missing">미기입 ${st.missing}</span>` : '',
-          st.pending > 0 ? `<span class="status-pill pending">미확인 ${st.pending}</span>` : '',
+          (st.sDone+st.oDone)>0 ? `<span class="pill done">완료 ${st.sDone+st.oDone}</span>` : '',
+          (st.sMiss+st.oMiss)>0 ? `<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>` : '',
+          (st.sPend+st.oPend)>0 ? `<span class="pill pend">미확인 ${st.sPend+st.oPend}</span>` : '',
         ].join('');
 
-    item.innerHTML = `
-      <div class="mentor-name">${name} 멘토</div>
-      <div class="mentor-status-row">${pills}</div>
-    `;
-    item.onclick = () => { activeMentor = i; render(); };
-    list.appendChild(item);
+    el.innerHTML=`<div class="m-name">${name} 멘토</div><div class="m-pills">${pills}</div>`;
+    el.onclick=()=>{ active=i; render(); };
+    list.appendChild(el);
   });
 
-  document.getElementById('totalSummary').innerHTML =
-    `전체 세션: <strong>${tSessions}회</strong><br>` +
-    `제출완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; ` +
-    `미기입: <strong style="color:var(--danger)">${tMissing}</strong>`;
+  document.getElementById('sbSum').innerHTML=
+    `전체 세션: <strong>${tSes}회</strong><br>`+
+    `완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; `+
+    `미기입: <strong style="color:var(--danger)">${tMiss}</strong>`;
 }
 
-function renderMain() {
-  const main = document.getElementById('mainContent');
-  const st = calcStats(activeMentor);
+/* ── MAIN ── */
+function renderMain(){
+  const main=document.getElementById('mainContent');
+  const st=calcMentorStats(active);
+  const m=getMentor(active);
 
-  main.innerHTML = `
-    <div class="mentor-header-card">
-      <div class="mentor-title-group">
-        <h2>${MENTORS[activeMentor]} 멘토</h2>
-        <p>멘토링 회차별 수행일지 및 산출물평가서 제출 현황</p>
+  main.innerHTML=`
+    <div class="mh-card">
+      <div class="mh-info">
+        <h2>${MENTORS[active]} 멘토</h2>
+        <p>회차별 수행일지 · 평가단계별 산출물평가서 관리</p>
       </div>
-      <div class="mentor-stats">
-        <div class="stat-box"><div class="stat-num gray">${st.sessions}</div><div class="stat-label">총 회차</div></div>
-        <div class="stat-box"><div class="stat-num green">${st.done}</div><div class="stat-label">제출완료</div></div>
-        <div class="stat-box"><div class="stat-num red">${st.missing}</div><div class="stat-label">미기입</div></div>
-        <div class="stat-box"><div class="stat-num gray">${st.pending}</div><div class="stat-label">미확인</div></div>
-        <button class="add-session-btn" id="addSessionBtn">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-          회차 추가
-        </button>
+      <div class="mh-stats">
+        <div class="stat"><div class="stat-n gr">${st.sessions}</div><div class="stat-l">멘토링 회차</div></div>
+        <div class="stat"><div class="stat-n g">${st.sDone}</div><div class="stat-l">수행일지 완료</div></div>
+        <div class="stat"><div class="stat-n r">${st.sMiss}</div><div class="stat-l">수행일지 미기입</div></div>
+        <div class="stat"><div class="stat-n g">${st.oDone}</div><div class="stat-l">산출물 완료</div></div>
+        <div class="stat"><div class="stat-n r">${st.oMiss}</div><div class="stat-l">산출물 미기입</div></div>
       </div>
     </div>
-    <div class="sessions-container" id="sessionsContainer"></div>
+
+    <!-- 산출물평가서 섹션 -->
+    <div class="section-title">📁 산출물평가서 — 단계 완료 시 1회 작성</div>
+    <div class="output-panel">
+      <div class="output-panel-head">
+        <span>평가단계별 산출물평가서</span>
+        <small>각 단계 기한 내 종료 후 1회 작성</small>
+      </div>
+      <div class="output-grid" id="outputGrid"></div>
+    </div>
+
+    <!-- 수행일지 섹션 -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div class="section-title" style="flex:1;">📝 수행일지 — 회차별 작성</div>
+      <button class="add-btn" id="addBtn">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        회차 추가
+      </button>
+    </div>
+    <div class="sessions-wrap" id="sesWrap"></div>
   `;
 
-  document.getElementById('addSessionBtn').onclick = addSession;
+  document.getElementById('addBtn').onclick=addSession;
+  renderOutputGrid();
   renderSessions();
 }
 
-function getSessionMeta(session) {
-  let done = 0, missing = 0, total = CATEGORIES.length * CHECKS.length;
-  CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => {
-    const v = session.checks?.[ci]?.[ki];
-    if (v === 'done') done++;
-    else if (v === 'missing') missing++;
-  }));
-  const pending = total - done - missing;
-  const hasMissing = missing > 0;
-  let label, badgeCls;
-  if (done === total) { label = '전체완료'; badgeCls = 'all-done'; }
-  else if (hasMissing && pending === 0 && done === 0) { label = `미기입 ${missing}건`; badgeCls = 'has-missing'; }
-  else if (hasMissing) { label = `미기입 ${missing}건`; badgeCls = 'has-missing'; }
-  else if (done > 0) { label = `${done}/${total} 완료`; badgeCls = 'partial'; }
-  else { label = '미확인'; badgeCls = 'empty'; }
-  return { hasMissing, label, badgeCls };
+/* ── 산출물평가서 그리드 ── */
+function renderOutputGrid(){
+  const grid=document.getElementById('outputGrid');
+  if(!grid) return;
+  const m=getMentor(active);
+
+  grid.innerHTML = PHASES.map((ph,pi)=>{
+    const v = m.output[pi] || null;
+    return `
+      <div class="output-item">
+        <div class="oi-left">
+          <div class="oi-icon ${ph.cls}">${ph.icon}</div>
+          <div>
+            <div class="oi-name">${ph.name}</div>
+            <div class="oi-sub">단계 종료 후 1회 제출</div>
+          </div>
+        </div>
+        <div class="tri">
+          <button class="tri-b${v==='done'?' a-done':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="done">✓ 완료</button>
+          <button class="tri-b${v==='missing'?' a-miss':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
+          <button class="tri-b${v===null?' a-pend':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="null">— 미확인</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.tri-b[data-type="output"]').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const mi=+this.dataset.mi, pi=+this.dataset.pi;
+      const val=this.dataset.v==='null'?null:this.dataset.v;
+      getMentor(mi).output[pi]=val;
+      save();
+      if(val==='missing') showToast('⚠️ 산출물평가서 미기입 표시');
+      else if(val==='done') showToast('✓ 산출물평가서 완료 표시');
+      render();
+    });
+  });
 }
 
-function getMissingItems(session) {
-  const items = [];
-  CATEGORIES.forEach((cat, ci) => CHECKS.forEach((chk, ki) => {
-    if (session.checks?.[ci]?.[ki] === 'missing') items.push(`${cat.name} · ${chk}`);
-  }));
-  return items;
+/* ── SESSIONS ── */
+function getSesBadge(session){
+  let done=0,miss=0,total=PHASES.length;
+  PHASES.forEach((_,pi)=>{
+    const v=session.checks?.[pi];
+    if(v==='done') done++;
+    else if(v==='missing') miss++;
+  });
+  const pend=total-done-miss;
+  if(done===total) return {cls:'sb-all',label:'전체완료',hasMiss:false};
+  if(miss>0&&pend===0&&done===0) return {cls:'sb-miss',label:`미기입 ${miss}건`,hasMiss:true};
+  if(miss>0) return {cls:'sb-miss',label:`미기입 ${miss}건`,hasMiss:true};
+  if(done>0) return {cls:'sb-part',label:`${done}/${total} 완료`,hasMiss:false};
+  return {cls:'sb-empty',label:'미확인',hasMiss:false};
 }
 
-function renderSessions() {
-  const container = document.getElementById('sessionsContainer');
-  if (!container) return;
-  const sessions = state[activeMentor] || [];
-  container.innerHTML = '';
+function renderSessions(){
+  const wrap=document.getElementById('sesWrap');
+  if(!wrap) return;
+  const m=getMentor(active);
+  wrap.innerHTML='';
 
-  if (!sessions.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="6" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.5"/><path d="M14 14h12M14 20h8" stroke="#9a9890" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <p>아직 멘토링 회차가 없습니다.<br><strong>회차 추가</strong> 버튼을 눌러 시작하세요.</p>
+  if(!m.sessions.length){
+    wrap.innerHTML=`
+      <div class="empty-box">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="7" y="5" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.4"/><path d="M13 13h12M13 19h8M13 25h5" stroke="#9a9890" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <p>아직 회차가 없습니다.<br><strong>회차 추가</strong> 버튼을 눌러 시작하세요.</p>
       </div>`;
     return;
   }
 
-  sessions.forEach((session, si) => {
-    const meta = getSessionMeta(session);
-    const missingItems = getMissingItems(session);
+  m.sessions.forEach((ses,si)=>{
+    const badge=getSesBadge(ses);
+    const missItems=PHASES.filter((_,pi)=>ses.checks?.[pi]==='missing').map(ph=>ph.name);
 
-    const card = document.createElement('div');
-    card.className = `session-card${meta.hasMissing ? ' has-missing' : ''}`;
+    const card=document.createElement('div');
+    card.className='ses-card'+(badge.hasMiss?' has-miss':'');
 
-    const rows = CATEGORIES.map((cat, ci) => `
-      <tr class="cat-${ci}">
-        <td><div class="category-cell"><div class="category-icon">${cat.icon}</div>${cat.name}</div></td>
-        ${CHECKS.map((_, ki) => {
-          const v = session.checks?.[ci]?.[ki] || null;
-          return `<td class="check-cell">
-            <div class="tri-toggle">
-              <button class="tri-btn${v === 'done' ? ' active-done' : ''}"
-                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="done">✓ 완료</button>
-              <button class="tri-btn${v === 'missing' ? ' active-missing' : ''}"
-                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="missing">✕ 미기입</button>
-              <button class="tri-btn${v === null ? ' active-pending' : ''}"
-                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="null">— 미확인</button>
+    const rows=PHASES.map((ph,pi)=>{
+      const v=ses.checks?.[pi]||null;
+      return `
+        <tr class="r${pi}">
+          <td><div class="cat-cell"><div class="cat-ic">${ph.icon}</div>${ph.name}</div></td>
+          <td class="check-td">
+            <div class="tri">
+              <button class="tri-b${v==='done'?' a-done':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="done">✓ 완료</button>
+              <button class="tri-b${v==='missing'?' a-miss':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
+              <button class="tri-b${v===null?' a-pend':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="null">— 미확인</button>
             </div>
-          </td>`;
-        }).join('')}
-      </tr>`).join('');
+          </td>
+        </tr>`;
+    }).join('');
 
-    const alertHtml = missingItems.length
-      ? `<div class="missing-alert-row">⚠️ 미기입 항목 : ${missingItems.join('  /  ')}</div>` : '';
+    const alertHtml=missItems.length
+      ? `<div class="miss-row">⚠️ 미기입 : ${missItems.join(' · ')}</div>` : '';
 
-    card.innerHTML = `
-      <div class="session-card-header">
-        <div class="session-num-badge">ROUND ${si + 1}</div>
-        <div class="session-date-wrap">
-          <span class="session-date-label">날짜</span>
-          <input type="date" class="session-date-input" value="${session.date || ''}"
-            data-m="${activeMentor}" data-s="${si}">
+    card.innerHTML=`
+      <div class="ses-head">
+        <div class="ses-num">ROUND ${si+1}</div>
+        <div class="ses-date-w">
+          <span class="ses-date-l">날짜</span>
+          <input type="date" class="ses-date" value="${ses.date||''}" data-mi="${active}" data-si="${si}">
         </div>
-        <div class="session-header-right">
-          <span class="session-badge ${meta.badgeCls}">${meta.label}</span>
-          <button class="delete-session-btn" data-m="${activeMentor}" data-s="${si}">✕</button>
+        <div class="ses-head-r">
+          <span class="ses-badge ${badge.cls}">${badge.label}</span>
+          <button class="del-btn" data-mi="${active}" data-si="${si}">✕</button>
         </div>
       </div>
-      <table class="checklist-table">
+      <table class="ses-table">
         <thead><tr>
           <th>평가 영역</th>
-          ${CHECKS.map(c => `<th>${c}</th>`).join('')}
+          <th class="check-th">수행일지</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
       ${alertHtml}
-      <div class="session-notes-wrap">
-        <div class="notes-label">메모</div>
-        <textarea class="session-notes" placeholder="멘토링 내용, 미기입 사유 등 메모..."
-          data-m="${activeMentor}" data-s="${si}">${session.notes || ''}</textarea>
+      <div class="notes-wrap">
+        <div class="notes-lbl">메모</div>
+        <textarea class="notes-ta" placeholder="멘토링 내용, 미기입 사유 등..." data-mi="${active}" data-si="${si}">${ses.notes||''}</textarea>
       </div>
     `;
-    container.appendChild(card);
+    wrap.appendChild(card);
   });
 
-  container.querySelectorAll('.tri-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const m = +this.dataset.m, s = +this.dataset.s, c = +this.dataset.c, k = +this.dataset.k;
-      const val = this.dataset.v === 'null' ? null : this.dataset.v;
-      if (!state[m][s].checks) state[m][s].checks = {};
-      if (!state[m][s].checks[c]) state[m][s].checks[c] = {};
-      state[m][s].checks[c][k] = val;
-      saveState();
-      if (val === 'missing') showToast('⚠️ 미기입으로 표시되었습니다');
-      else if (val === 'done') showToast('✓ 제출완료로 표시되었습니다');
-      else showToast('— 미확인으로 변경되었습니다');
+  // 수행일지 toggles
+  wrap.querySelectorAll('.tri-b[data-type="ses"]').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const mi=+this.dataset.mi,si=+this.dataset.si,pi=+this.dataset.pi;
+      const val=this.dataset.v==='null'?null:this.dataset.v;
+      const ses=getMentor(mi).sessions[si];
+      if(!ses.checks) ses.checks={};
+      ses.checks[pi]=val;
+      save();
+      if(val==='missing') showToast('⚠️ 수행일지 미기입 표시');
+      else if(val==='done') showToast('✓ 수행일지 완료 표시');
       render();
     });
   });
 
-  container.querySelectorAll('input[type="date"]').forEach(inp => {
-    inp.addEventListener('change', function() {
-      state[+this.dataset.m][+this.dataset.s].date = this.value;
-      saveState();
+  wrap.querySelectorAll('input[type="date"]').forEach(inp=>{
+    inp.addEventListener('change',function(){
+      getMentor(+this.dataset.mi).sessions[+this.dataset.si].date=this.value;
+      save();
     });
   });
 
-  container.querySelectorAll('textarea.session-notes').forEach(ta => {
-    ta.addEventListener('input', function() {
-      state[+this.dataset.m][+this.dataset.s].notes = this.value;
-      saveState();
+  wrap.querySelectorAll('textarea.notes-ta').forEach(ta=>{
+    ta.addEventListener('input',function(){
+      getMentor(+this.dataset.mi).sessions[+this.dataset.si].notes=this.value;
+      save();
     });
   });
 
-  container.querySelectorAll('.delete-session-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const m = +this.dataset.m, s = +this.dataset.s;
-      if (confirm(`${MENTORS[m]} 멘토 ${s + 1}회차를 삭제할까요?`)) {
-        state[m].splice(s, 1);
-        saveState();
-        showToast('회차가 삭제되었습니다.');
+  wrap.querySelectorAll('.del-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const mi=+this.dataset.mi,si=+this.dataset.si;
+      if(confirm(`${MENTORS[mi]} 멘토 ${si+1}회차를 삭제할까요?`)){
+        getMentor(mi).sessions.splice(si,1);
+        save();
+        showToast('회차 삭제됨');
         render();
       }
     });
   });
 }
 
-function addSession() {
-  if (!state[activeMentor]) state[activeMentor] = [];
-  state[activeMentor].push({ date: '', checks: {}, notes: '' });
-  saveState();
-  showToast(`${MENTORS[activeMentor]} 멘토 ${state[activeMentor].length}회차 추가`);
+function addSession(){
+  getMentor(active).sessions.push({date:'',checks:{},notes:''});
+  save();
+  showToast(`${MENTORS[active]} 멘토 ${getMentor(active).sessions.length}회차 추가`);
   render();
-  setTimeout(() => {
-    document.getElementById('sessionsContainer')?.lastElementChild
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  setTimeout(()=>{
+    document.getElementById('sesWrap')?.lastElementChild
+      ?.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
 }
 
-function render() { renderSidebar(); renderMain(); }
+function render(){ renderSidebar(); renderMain(); }
 
-const d = new Date();
-document.getElementById('headerDate').textContent =
+const d=new Date();
+document.getElementById('hDate').textContent=
   `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 
 render();
