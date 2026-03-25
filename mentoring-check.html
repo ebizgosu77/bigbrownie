@@ -7,22 +7,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f4f3ef;
-    --surface: #fff;
-    --surface2: #f9f8f5;
-    --border: #e4e2db;
-    --border2: #d0cec6;
-    --text: #1a1916;
-    --text2: #5a5850;
-    --text3: #9a9890;
-    --accent: #2a5c45;
-    --accent-light: #e8f2ed;
-    --accent2: #c8773a;
-    --accent2-light: #fdf0e6;
-    --danger: #c0392b;
-    --danger-light: #fdf0ef;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06),0 2px 8px rgba(0,0,0,0.04);
-    --shadow-lg: 0 4px 16px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
+    --bg:#f4f3ef; --surface:#fff; --surface2:#f9f8f5;
+    --border:#e4e2db; --border2:#d0cec6;
+    --text:#1a1916; --text2:#5a5850; --text3:#9a9890;
+    --accent:#2a5c45; --accent-light:#e8f2ed;
+    --accent2:#c8773a; --accent2-light:#fdf0e6;
+    --danger:#c0392b; --danger-light:#fdf0ef;
+    --warn:#b5730a; --warn-light:#fef6e4;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
+    --shadow-lg:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
@@ -37,7 +30,6 @@
   .lg-dot.done{background:#2a5c45;} .lg-dot.missing{background:#c0392b;} .lg-dot.pend{background:#888;}
   .hd-date{font-size:11px;color:#888;font-family:'DM Mono',monospace;white-space:nowrap;}
 
-  /* LAYOUT */
   .app{display:flex;flex:1;height:calc(100vh - 54px);}
 
   /* SIDEBAR */
@@ -55,6 +47,7 @@
   .pill{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px;font-weight:500;}
   .pill.done{background:var(--accent-light);color:var(--accent);}
   .pill.missing{background:var(--danger-light);color:var(--danger);}
+  .pill.warn{background:var(--warn-light);color:var(--warn);}
   .pill.pend{background:var(--border);color:var(--text3);}
   .sb-foot{padding:14px 18px;border-top:1px solid var(--border);}
   .sb-sum{font-size:12px;color:var(--text2);line-height:1.9;}
@@ -69,42 +62,68 @@
   .mh-stats{display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
   .stat{text-align:center;padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;min-width:64px;}
   .stat-n{font-size:19px;font-weight:700;font-family:'DM Mono',monospace;}
-  .stat-n.g{color:var(--accent);} .stat-n.r{color:var(--danger);} .stat-n.gr{color:var(--text3);}
+  .stat-n.g{color:var(--accent);} .stat-n.r{color:var(--danger);} .stat-n.w{color:var(--warn);} .stat-n.gr{color:var(--text3);}
   .stat-l{font-size:11px;color:var(--text3);margin-top:1px;}
 
-  /* SECTION TITLES */
-  .section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;}
-  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* 산출물평가서 PANEL */
-  .output-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
-  .output-panel-head{padding:14px 22px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-  .output-panel-head span{font-size:12px;font-weight:600;color:var(--text2);}
-  .output-panel-head small{font-size:11px;color:var(--text3);}
-  .output-grid{display:grid;grid-template-columns:repeat(2,1fr);}
-  .output-item{padding:16px 22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);border-right:1px solid var(--border);gap:12px;}
-  .output-item:nth-child(2n){border-right:none;}
-  .output-item:nth-last-child(-n+2){border-bottom:none;}
-  .oi-left{display:flex;align-items:center;gap:10px;}
-  .oi-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-  .oi-0{background:#e8f0fe;} .oi-1{background:#e8f5e9;} .oi-2{background:#fff3e0;} .oi-3{background:#fce4ec;}
-  .oi-name{font-size:13px;font-weight:500;}
-  .oi-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+  /* PHASE CARDS (산출물평가서 + 마감일) */
+  .phases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+
+  .phase-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
+  .phase-card:hover{box-shadow:var(--shadow-lg);}
+  .phase-card.status-overdue-incomplete{border-color:#f5c6c6;}
+  .phase-card.status-warning{border-color:#fde8b0;}
+  .phase-card.status-done{border-color:#b8dcc8;}
+
+  .pc-head{padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+  .phase-card.status-overdue-incomplete .pc-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
+  .phase-card.status-warning .pc-head{background:#fffbf2;border-bottom-color:#fde8b0;}
+  .phase-card.status-done .pc-head{background:#f4faf7;border-bottom-color:#b8dcc8;}
+
+  .pc-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .pi-0{background:#e8f0fe;} .pi-1{background:#e8f5e9;} .pi-2{background:#fff3e0;} .pi-3{background:#fce4ec;}
+
+  .pc-title{flex:1;}
+  .pc-title .phase-name{font-size:13px;font-weight:600;margin-bottom:2px;}
+  .pc-title .phase-sub{font-size:11px;color:var(--text3);}
+
+  /* D-DAY BADGE */
+  .dday{font-size:11px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;}
+  .dday.over-complete{background:var(--accent-light);color:var(--accent);}
+  .dday.over-incomplete{background:var(--danger-light);color:var(--danger);}
+  .dday.today{background:#ffe4cc;color:#9c4a00;}
+  .dday.soon{background:var(--warn-light);color:var(--warn);}
+  .dday.ok{background:var(--border);color:var(--text3);}
+  .dday.done-badge{background:var(--accent-light);color:var(--accent);}
+  .dday.no-date{background:var(--border);color:var(--text3);}
+
+  .pc-body{padding:13px 16px;display:flex;flex-direction:column;gap:11px;}
+
+  /* DEADLINE INPUT ROW */
+  .deadline-row{display:flex;align-items:center;gap:8px;}
+  .deadline-row label{font-size:11px;color:var(--text3);white-space:nowrap;}
+  .deadline-input{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;flex:1;}
+  .deadline-input:focus{outline:none;border-color:var(--accent);}
+
+  /* 산출물평가서 toggle */
+  .output-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .output-label{font-size:12px;font-weight:500;color:var(--text2);}
 
   /* 3-STATE TOGGLE */
-  .tri{display:inline-flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;}
-  .tri-b{padding:6px 11px;cursor:pointer;border:none;background:var(--surface);color:var(--text3);font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;transition:all .15s;border-right:1px solid var(--border2);white-space:nowrap;line-height:1;}
+  .tri{display:inline-flex;border:1px solid var(--border2);border-radius:7px;overflow:hidden;}
+  .tri-b{padding:5px 10px;cursor:pointer;border:none;background:var(--surface);color:var(--text3);font-family:'Noto Sans KR',sans-serif;font-size:11px;font-weight:500;transition:all .15s;border-right:1px solid var(--border2);white-space:nowrap;line-height:1;}
   .tri-b:last-child{border-right:none;}
   .tri-b:hover:not(.a-done):not(.a-miss):not(.a-pend){background:var(--surface2);}
   .tri-b.a-done{background:var(--accent);color:#fff;font-weight:700;}
   .tri-b.a-miss{background:var(--danger);color:#fff;font-weight:700;}
   .tri-b.a-pend{background:#e0dfd9;color:var(--text2);font-weight:700;}
 
-  /* ADD SESSION BTN */
+  /* ADD / SESSIONS */
   .add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;box-shadow:0 2px 6px rgba(42,92,69,.25);white-space:nowrap;}
   .add-btn:hover{background:#1e4433;transform:translateY(-1px);}
 
-  /* SESSIONS */
   .sessions-wrap{display:flex;flex-direction:column;gap:14px;}
   .empty-box{text-align:center;padding:50px 20px;color:var(--text3);background:var(--surface);border:2px dashed var(--border);border-radius:12px;}
   .empty-box p{font-size:14px;margin-top:10px;}
@@ -116,7 +135,7 @@
   .ses-head{display:flex;align-items:center;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap;}
   .ses-card.has-miss .ses-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
   .ses-num{font-size:10px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
-  .ses-date-w{display:flex;align-items:center;gap:7px;flex:1;min-width:160px;}
+  .ses-date-w{display:flex;align-items:center;gap:7px;flex:1;min-width:150px;}
   .ses-date-l{font-size:12px;color:var(--text3);}
   .ses-date{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:13px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;}
   .ses-date:focus{outline:none;border-color:var(--accent);}
@@ -129,23 +148,25 @@
   .del-btn{width:26px;height:26px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:13px;flex-shrink:0;}
   .del-btn:hover{background:#fef0f0;border-color:#f5c6c6;color:var(--danger);}
 
-  /* SESSION CHECKLIST — only 수행일지 columns */
   .ses-table{width:100%;border-collapse:collapse;}
   .ses-table thead tr{border-bottom:1px solid var(--border);}
   .ses-table th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:9px 20px;text-align:left;}
-  .ses-table th.check-th{text-align:center;width:180px;}
+  .ses-table th.check-th{text-align:center;}
   .ses-table tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
   .ses-table tbody tr:last-child{border-bottom:none;}
   .ses-table tbody tr:hover{background:var(--surface2);}
-  .cat-cell{padding:13px 20px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;white-space:nowrap;}
+  .cat-cell{padding:13px 20px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;}
   .cat-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
   .r0 .cat-ic{background:#e8f0fe;} .r1 .cat-ic{background:#e8f5e9;} .r2 .cat-ic{background:#fff3e0;} .r3 .cat-ic{background:#fce4ec;}
-  td.check-td{text-align:center;padding:11px 16px;}
+  td.check-td{text-align:center;padding:10px 16px;}
 
-  /* miss alert */
+  /* deadline warning in session table */
+  .dl-chip{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;margin-left:6px;}
+  .dl-chip.over{background:var(--danger-light);color:var(--danger);}
+  .dl-chip.soon{background:var(--warn-light);color:var(--warn);}
+  .dl-chip.ok{background:var(--accent-light);color:var(--accent);}
+
   .miss-row{padding:8px 20px;background:#fff2f2;border-top:1px solid #f5c6c6;font-size:12px;color:var(--danger);display:flex;align-items:flex-start;gap:6px;line-height:1.7;flex-wrap:wrap;}
-
-  /* notes */
   .notes-wrap{padding:11px 20px;background:var(--surface2);border-top:1px solid var(--border);}
   .notes-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
   .notes-ta{width:100%;border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--surface);resize:vertical;min-height:40px;transition:border .15s;}
@@ -158,6 +179,8 @@
 
   .toast{position:fixed;bottom:26px;right:26px;background:var(--text);color:#f4f3ef;padding:11px 18px;border-radius:8px;font-size:13px;box-shadow:var(--shadow-lg);transform:translateY(8px);opacity:0;transition:all .2s;z-index:999;pointer-events:none;}
   .toast.show{opacity:1;transform:translateY(0);}
+
+  @media(max-width:900px){.phases-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -179,28 +202,28 @@
       <div class="sb-sub">5명</div>
     </div>
     <div class="mentor-list" id="mentorList"></div>
-    <div class="sb-foot">
-      <div class="sb-sum" id="sbSum"></div>
-    </div>
+    <div class="sb-foot"><div class="sb-sum" id="sbSum"></div></div>
   </aside>
   <main class="main" id="mainContent"></main>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
 const MENTORS = ['홍건의','양지현','석지민','양재연','이용준'];
 const PHASES = [
-  { name:'프로젝트 기획평가', icon:'📋', cls:'oi-0' },
-  { name:'백엔드 평가',       icon:'⚙️',  cls:'oi-1' },
-  { name:'프론트엔드 평가',   icon:'🖥️', cls:'oi-2' },
-  { name:'시스템 통합평가',   icon:'🔗', cls:'oi-3' },
+  { name:'프로젝트 기획평가', icon:'📋', icCls:'pi-0' },
+  { name:'백엔드 평가',       icon:'⚙️',  icCls:'pi-1' },
+  { name:'프론트엔드 평가',   icon:'🖥️', icCls:'pi-2' },
+  { name:'시스템 통합평가',   icon:'🔗', icCls:'pi-3' },
 ];
-// state[mi] = {
-//   output: { 0:null|'done'|'missing', 1:..., 2:..., 3:... }  // 산출물평가서 (per phase, 1회)
-//   sessions: [ { date, notes, checks:{ 0:null|'done'|'missing', ... } } ]  // 수행일지 per session per phase
-// }
-const KEY = 'mentoring_v4';
+
+// 이용준(index 4) 초기 마감일 설정
+const DEFAULT_DEADLINES = {
+  4: { 0:'2025-04-04', 1:'2025-05-04', 2:'2025-04-19', 3:'2025-05-13' }
+};
+
+const KEY = 'mentoring_v5';
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
 let state = loadState();
 let active = 0;
@@ -208,69 +231,110 @@ let active = 0;
 function loadState(){
   try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){}
   const s={};
-  MENTORS.forEach((_,i)=>{ s[i]={output:{},sessions:[]}; });
+  MENTORS.forEach((_,i)=>{
+    s[i]={
+      deadlines: DEFAULT_DEADLINES[i] || {},
+      output:{},
+      sessions:[]
+    };
+  });
   return s;
 }
 function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
 function getMentor(mi){
-  if(!state[mi]) state[mi]={output:{},sessions:[]};
+  if(!state[mi]) state[mi]={deadlines:{},output:{},sessions:[]};
+  if(!state[mi].deadlines) state[mi].deadlines={};
   if(!state[mi].output) state[mi].output={};
   if(!state[mi].sessions) state[mi].sessions=[];
   return state[mi];
 }
 
+/* ── D-DAY UTILS ── */
+function parseDateStr(str){ if(!str) return null; const d=new Date(str); d.setHours(0,0,0,0); return d; }
+
+function getDdayInfo(deadlineStr, isDone){
+  const dl = parseDateStr(deadlineStr);
+  if(!dl) return { text:'마감일 미설정', cls:'no-date', cardCls:'' };
+  const diff = Math.round((dl - TODAY) / 86400000);
+  if(isDone) return { text:'✓ 완료', cls:'done-badge', cardCls:'status-done' };
+  if(diff < 0)  return { text:`D+${Math.abs(diff)} 초과`, cls:'over-incomplete', cardCls:'status-overdue-incomplete' };
+  if(diff === 0) return { text:'D-Day', cls:'today', cardCls:'status-warning' };
+  if(diff <= 7)  return { text:`D-${diff}`, cls:'soon', cardCls:'status-warning' };
+  return { text:`D-${diff}`, cls:'ok', cardCls:'' };
+}
+
+function getPhaseChipInfo(deadlineStr, isDone){
+  const dl = parseDateStr(deadlineStr);
+  if(!dl) return null;
+  const diff = Math.round((dl - TODAY) / 86400000);
+  if(isDone) return null;
+  if(diff < 0)  return { text:`D+${Math.abs(diff)}초과`, cls:'over' };
+  if(diff <= 7)  return { text:`D-${diff}`, cls:'soon' };
+  return { text:`D-${diff}`, cls:'ok' };
+}
+
+function formatDate(str){
+  if(!str) return '';
+  const d=new Date(str);
+  return `${d.getMonth()+1}/${d.getDate()}`;
+}
+
+/* ── STATS ── */
 function calcMentorStats(mi){
   const m=getMentor(mi);
-  // output stats
-  let oDone=0, oMiss=0, oPend=0;
+  let oDone=0,oMiss=0,oPend=0,overdue=0;
   PHASES.forEach((_,pi)=>{
     const v=m.output[pi];
-    if(v==='done') oDone++;
+    const isDone=v==='done';
+    if(isDone) oDone++;
     else if(v==='missing') oMiss++;
     else oPend++;
+    // overdue = deadline passed and not done
+    const dl=parseDateStr(m.deadlines[pi]);
+    if(dl && dl < TODAY && !isDone) overdue++;
   });
-  // session 수행일지 stats
-  let sDone=0, sMiss=0, sPend=0, sTotal=0;
+  let sDone=0,sMiss=0,sPend=0;
   m.sessions.forEach(s=>{
     PHASES.forEach((_,pi)=>{
-      sTotal++;
       const v=s.checks?.[pi];
       if(v==='done') sDone++;
       else if(v==='missing') sMiss++;
       else sPend++;
     });
   });
-  return { oDone, oMiss, oPend, sDone, sMiss, sPend, sTotal, sessions:m.sessions.length };
+  return {oDone,oMiss,oPend,sDone,sMiss,sPend,overdue,sessions:m.sessions.length};
 }
 
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
+  setTimeout(()=>t.classList.remove('show'),2200);
 }
 
 /* ── SIDEBAR ── */
 function renderSidebar(){
   const list=document.getElementById('mentorList');
   list.innerHTML='';
-  let tMiss=0, tDone=0, tSes=0;
+  let tDone=0,tMiss=0,tOver=0,tSes=0;
 
   MENTORS.forEach((name,i)=>{
     const st=calcMentorStats(i);
-    tDone += st.oDone+st.sDone;
-    tMiss += st.oMiss+st.sMiss;
-    tSes  += st.sessions;
+    tDone+=st.oDone+st.sDone;
+    tMiss+=st.oMiss+st.sMiss;
+    tOver+=st.overdue;
+    tSes+=st.sessions;
 
     const el=document.createElement('div');
     el.className='m-item'+(i===active?' active':'');
 
-    const pills = st.sessions===0 && st.oDone===0 && st.oMiss===0
+    const allEmpty=(st.sessions===0&&st.oDone===0&&st.oMiss===0&&st.overdue===0);
+    const pills=allEmpty
       ? `<span class="pill pend">미시작</span>`
       : [
           (st.sDone+st.oDone)>0 ? `<span class="pill done">완료 ${st.sDone+st.oDone}</span>` : '',
           (st.sMiss+st.oMiss)>0 ? `<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>` : '',
-          (st.sPend+st.oPend)>0 ? `<span class="pill pend">미확인 ${st.sPend+st.oPend}</span>` : '',
+          st.overdue>0 ? `<span class="pill warn">마감초과 ${st.overdue}</span>` : '',
         ].join('');
 
     el.innerHTML=`<div class="m-name">${name} 멘토</div><div class="m-pills">${pills}</div>`;
@@ -281,20 +345,20 @@ function renderSidebar(){
   document.getElementById('sbSum').innerHTML=
     `전체 세션: <strong>${tSes}회</strong><br>`+
     `완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; `+
-    `미기입: <strong style="color:var(--danger)">${tMiss}</strong>`;
+    `미기입: <strong style="color:var(--danger)">${tMiss}</strong>`+
+    (tOver>0?`<br>⚠️ 마감초과: <strong style="color:var(--warn)">${tOver}건</strong>`:'');
 }
 
 /* ── MAIN ── */
 function renderMain(){
   const main=document.getElementById('mainContent');
   const st=calcMentorStats(active);
-  const m=getMentor(active);
 
   main.innerHTML=`
     <div class="mh-card">
       <div class="mh-info">
         <h2>${MENTORS[active]} 멘토</h2>
-        <p>회차별 수행일지 · 평가단계별 산출물평가서 관리</p>
+        <p>회차별 수행일지 · 단계별 산출물평가서 · 마감일 관리</p>
       </div>
       <div class="mh-stats">
         <div class="stat"><div class="stat-n gr">${st.sessions}</div><div class="stat-l">멘토링 회차</div></div>
@@ -302,22 +366,15 @@ function renderMain(){
         <div class="stat"><div class="stat-n r">${st.sMiss}</div><div class="stat-l">수행일지 미기입</div></div>
         <div class="stat"><div class="stat-n g">${st.oDone}</div><div class="stat-l">산출물 완료</div></div>
         <div class="stat"><div class="stat-n r">${st.oMiss}</div><div class="stat-l">산출물 미기입</div></div>
+        ${st.overdue>0?`<div class="stat"><div class="stat-n w">${st.overdue}</div><div class="stat-l">마감 초과</div></div>`:''}
       </div>
     </div>
 
-    <!-- 산출물평가서 섹션 -->
-    <div class="section-title">📁 산출물평가서 — 단계 완료 시 1회 작성</div>
-    <div class="output-panel">
-      <div class="output-panel-head">
-        <span>평가단계별 산출물평가서</span>
-        <small>각 단계 기한 내 종료 후 1회 작성</small>
-      </div>
-      <div class="output-grid" id="outputGrid"></div>
-    </div>
+    <div class="section-label">📁 산출물평가서 &amp; 마감일 관리</div>
+    <div class="phases-grid" id="phasesGrid"></div>
 
-    <!-- 수행일지 섹션 -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-      <div class="section-title" style="flex:1;">📝 수행일지 — 회차별 작성</div>
+      <div class="section-label" style="flex:1;">📝 수행일지 — 회차별</div>
       <button class="add-btn" id="addBtn">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v11M1 6.5h11" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
         회차 추가
@@ -327,38 +384,62 @@ function renderMain(){
   `;
 
   document.getElementById('addBtn').onclick=addSession;
-  renderOutputGrid();
+  renderPhasesGrid();
   renderSessions();
 }
 
-/* ── 산출물평가서 그리드 ── */
-function renderOutputGrid(){
-  const grid=document.getElementById('outputGrid');
+/* ── PHASES GRID ── */
+function renderPhasesGrid(){
+  const grid=document.getElementById('phasesGrid');
   if(!grid) return;
   const m=getMentor(active);
 
-  grid.innerHTML = PHASES.map((ph,pi)=>{
-    const v = m.output[pi] || null;
+  grid.innerHTML=PHASES.map((ph,pi)=>{
+    const v=m.output[pi]||null;
+    const dl=m.deadlines[pi]||'';
+    const isDone=v==='done';
+    const dday=getDdayInfo(dl,isDone);
+
     return `
-      <div class="output-item">
-        <div class="oi-left">
-          <div class="oi-icon ${ph.cls}">${ph.icon}</div>
-          <div>
-            <div class="oi-name">${ph.name}</div>
-            <div class="oi-sub">단계 종료 후 1회 제출</div>
+      <div class="phase-card ${dday.cardCls}">
+        <div class="pc-head">
+          <div class="pc-icon ${ph.icCls}">${ph.icon}</div>
+          <div class="pc-title">
+            <div class="phase-name">${ph.name}</div>
+            <div class="phase-sub">단계 완료 시 산출물평가서 1회 제출</div>
           </div>
+          <span class="dday ${dday.cls}">${dday.text}</span>
         </div>
-        <div class="tri">
-          <button class="tri-b${v==='done'?' a-done':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="done">✓ 완료</button>
-          <button class="tri-b${v==='missing'?' a-miss':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
-          <button class="tri-b${v===null?' a-pend':''}" data-type="output" data-mi="${active}" data-pi="${pi}" data-v="null">— 미확인</button>
+        <div class="pc-body">
+          <div class="deadline-row">
+            <label>📅 마감일</label>
+            <input type="date" class="deadline-input" value="${dl}"
+              data-mi="${active}" data-pi="${pi}">
+          </div>
+          <div class="output-row">
+            <span class="output-label">산출물평가서</span>
+            <div class="tri">
+              <button class="tri-b${v==='done'?' a-done':''}" data-type="out" data-mi="${active}" data-pi="${pi}" data-v="done">✓ 완료</button>
+              <button class="tri-b${v==='missing'?' a-miss':''}" data-type="out" data-mi="${active}" data-pi="${pi}" data-v="missing">✕ 미기입</button>
+              <button class="tri-b${v===null?' a-pend':''}" data-type="out" data-mi="${active}" data-pi="${pi}" data-v="null">— 미확인</button>
+            </div>
+          </div>
         </div>
       </div>`;
   }).join('');
 
-  grid.querySelectorAll('.tri-b[data-type="output"]').forEach(btn=>{
-    btn.addEventListener('click',function(){
+  grid.querySelectorAll('.deadline-input').forEach(inp=>{
+    inp.addEventListener('change',function(){
       const mi=+this.dataset.mi, pi=+this.dataset.pi;
+      getMentor(mi).deadlines[pi]=this.value;
+      save();
+      render();
+    });
+  });
+
+  grid.querySelectorAll('.tri-b[data-type="out"]').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const mi=+this.dataset.mi,pi=+this.dataset.pi;
       const val=this.dataset.v==='null'?null:this.dataset.v;
       getMentor(mi).output[pi]=val;
       save();
@@ -370,10 +451,10 @@ function renderOutputGrid(){
 }
 
 /* ── SESSIONS ── */
-function getSesBadge(session){
+function getSesBadge(ses){
   let done=0,miss=0,total=PHASES.length;
   PHASES.forEach((_,pi)=>{
-    const v=session.checks?.[pi];
+    const v=ses.checks?.[pi];
     if(v==='done') done++;
     else if(v==='missing') miss++;
   });
@@ -409,9 +490,18 @@ function renderSessions(){
 
     const rows=PHASES.map((ph,pi)=>{
       const v=ses.checks?.[pi]||null;
+      // deadline chip in session row
+      const dl=m.deadlines[pi];
+      const chip=getPhaseChipInfo(dl, v==='done');
+      const chipHtml=chip?`<span class="dl-chip ${chip.cls}">${chip.text}</span>`:'';
+      const dlText=dl?`<span style="font-size:10px;color:var(--text3);margin-left:4px;">(~${formatDate(dl)})</span>`:'';
+
       return `
         <tr class="r${pi}">
-          <td><div class="cat-cell"><div class="cat-ic">${ph.icon}</div>${ph.name}</div></td>
+          <td><div class="cat-cell">
+            <div class="cat-ic">${ph.icon}</div>
+            ${ph.name}${dlText}${chipHtml}
+          </div></td>
           <td class="check-td">
             <div class="tri">
               <button class="tri-b${v==='done'?' a-done':''}" data-type="ses" data-mi="${active}" data-si="${si}" data-pi="${pi}" data-v="done">✓ 완료</button>
@@ -439,7 +529,7 @@ function renderSessions(){
       </div>
       <table class="ses-table">
         <thead><tr>
-          <th>평가 영역</th>
+          <th>평가 영역 &amp; 마감일</th>
           <th class="check-th">수행일지</th>
         </tr></thead>
         <tbody>${rows}</tbody>
@@ -453,7 +543,6 @@ function renderSessions(){
     wrap.appendChild(card);
   });
 
-  // 수행일지 toggles
   wrap.querySelectorAll('.tri-b[data-type="ses"]').forEach(btn=>{
     btn.addEventListener('click',function(){
       const mi=+this.dataset.mi,si=+this.dataset.si,pi=+this.dataset.pi;
@@ -468,7 +557,7 @@ function renderSessions(){
     });
   });
 
-  wrap.querySelectorAll('input[type="date"]').forEach(inp=>{
+  wrap.querySelectorAll('input[type="date"].ses-date').forEach(inp=>{
     inp.addEventListener('change',function(){
       getMentor(+this.dataset.mi).sessions[+this.dataset.si].date=this.value;
       save();
@@ -487,9 +576,7 @@ function renderSessions(){
       const mi=+this.dataset.mi,si=+this.dataset.si;
       if(confirm(`${MENTORS[mi]} 멘토 ${si+1}회차를 삭제할까요?`)){
         getMentor(mi).sessions.splice(si,1);
-        save();
-        showToast('회차 삭제됨');
-        render();
+        save(); showToast('회차 삭제됨'); render();
       }
     });
   });
