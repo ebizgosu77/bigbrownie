@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>멘토링 체크일지</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f3ef;
+    --surface: #ffffff;
+    --surface2: #f9f8f5;
+    --border: #e4e2db;
+    --border2: #d0cec6;
+    --text: #1a1916;
+    --text2: #5a5850;
+    --text3: #9a9890;
+    --accent: #2a5c45;
+    --accent-light: #e8f2ed;
+    --accent2: #c8773a;
+    --accent2-light: #fdf0e6;
+    --danger: #c0392b;
+    --check-done: #2a5c45;
+    --check-todo: #e4e2db;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--text);
+    color: #f4f3ef;
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-title .dot {
+    width: 7px; height: 7px;
+    background: var(--accent2);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .header-meta {
+    font-size: 12px;
+    color: #9a9890;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* LAYOUT */
+  .app {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 56px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+
+  .sidebar-count {
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .mentor-list {
+    padding: 10px 0;
+    flex: 1;
+  }
+
+  .mentor-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+
+  .mentor-item:hover { background: var(--surface2); }
+
+  .mentor-item.active {
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+  }
+
+  .mentor-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+
+  .mentor-item.active .mentor-name { color: var(--accent); }
+
+  .mentor-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mentor-progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .mentor-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .mentor-progress-text {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .total-summary {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* MENTOR HEADER */
+  .mentor-header-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+  }
+
+  .mentor-title-group h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .mentor-title-group p {
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .mentor-stats {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .stat-box {
+    text-align: center;
+    padding: 10px 18px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+
+  /* ADD SESSION BTN */
+  .add-session-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 2px 6px rgba(42,92,69,0.25);
+  }
+
+  .add-session-btn:hover {
+    background: #1e4433;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(42,92,69,0.3);
+  }
+
+  .add-session-btn svg { flex-shrink: 0; }
+
+  /* SESSIONS */
+  .sessions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text3);
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+  }
+
+  .empty-state svg { margin-bottom: 12px; opacity: 0.4; }
+  .empty-state p { font-size: 14px; }
+
+  /* SESSION CARD */
+  .session-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .session-card:hover { box-shadow: var(--shadow-lg); }
+
+  .session-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .session-num-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--accent);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .session-date-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .session-date-label {
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  .session-date-input {
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    background: var(--surface);
+    cursor: pointer;
+    transition: border 0.15s;
+  }
+
+  .session-date-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .session-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .session-completion-badge {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .session-completion-badge.done {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .session-completion-badge.partial {
+    background: var(--accent2-light);
+    color: var(--accent2);
+  }
+
+  .session-completion-badge.empty {
+    background: var(--border);
+    color: var(--text3);
+  }
+
+  .delete-session-btn {
+    width: 26px; height: 26px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text3);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-size: 14px;
+  }
+
+  .delete-session-btn:hover {
+    background: #fef0f0;
+    border-color: #f5c6c6;
+    color: var(--danger);
+  }
+
+  /* CHECKLIST TABLE */
+  .checklist-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .checklist-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .checklist-table th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 10px 22px;
+    text-align: left;
+  }
+
+  .checklist-table th:not(:first-child) {
+    text-align: center;
+    width: 140px;
+  }
+
+  .checklist-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .checklist-table tbody tr:last-child { border-bottom: none; }
+  .checklist-table tbody tr:hover { background: var(--surface2); }
+
+  .category-cell {
+    padding: 14px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .category-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .cat-0 .category-icon { background: #e8f0fe; }
+  .cat-1 .category-icon { background: #e8f5e9; }
+  .cat-2 .category-icon { background: #fff3e0; }
+  .cat-3 .category-icon { background: #fce4ec; }
+
+  .check-cell {
+    text-align: center;
+    padding: 14px 22px;
+  }
+
+  /* CUSTOM CHECKBOX */
+  .custom-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .custom-check input[type="checkbox"] {
+    display: none;
+  }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border2);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+
+  .custom-check input:checked + .check-box {
+    background: var(--check-done);
+    border-color: var(--check-done);
+  }
+
+  .check-box svg {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.15s;
+  }
+
+  .custom-check input:checked + .check-box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .check-label-text {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  /* SESSION NOTES */
+  .session-notes-wrap {
+    padding: 12px 22px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+  }
+
+  .session-notes {
+    width: 100%;
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    background: var(--surface);
+    resize: vertical;
+    min-height: 44px;
+    transition: border 0.15s;
+  }
+
+  .session-notes:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .session-notes::placeholder { color: var(--text3); }
+
+  .notes-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--text);
+    color: #f4f3ef;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(10px);
+    opacity: 0;
+    transition: all 0.2s;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .app { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; min-width: unset; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    .mentor-list { display: flex; flex-wrap: wrap; padding: 10px; gap: 6px; }
+    .mentor-item { padding: 8px 14px; border-radius: 20px; border-left: none !important; }
+    .mentor-item.active { border: 2px solid var(--accent); }
+    .mentor-progress-row { display: none; }
+    .main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <span class="dot"></span>
+    멘토링 체크일지
+  </div>
+  <div class="header-meta" id="headerDate"></div>
+</header>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-label">멘토 목록</div>
+      <div class="sidebar-count" id="sidebarCount">5명</div>
+    </div>
+    <div class="mentor-list" id="mentorList"></div>
+    <div class="sidebar-footer">
+      <div class="total-summary" id="totalSummary"></div>
+    </div>
+  </aside>
+
+  <main class="main" id="mainContent"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const MENTORS = ['홍건의', '양지현', '석지민', '양재연', '이용준'];
+const CATEGORIES = [
+  { name: '프로젝트 기획평가', icon: '📋' },
+  { name: '백엔드 평가', icon: '⚙️' },
+  { name: '프론트엔드 평가', icon: '🖥️' },
+  { name: '시스템 통합평가', icon: '🔗' },
+];
+const CHECKS = ['수행일지', '산출물평가서'];
+
+const STORAGE_KEY = 'mentoring_check_v2';
+
+let state = loadState();
+let activeMentor = 0;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  // init
+  const s = {};
+  MENTORS.forEach((m, i) => { s[i] = []; });
+  return s;
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function calcProgress(mentorIdx) {
+  const sessions = state[mentorIdx] || [];
+  if (!sessions.length) return { done: 0, total: 0, pct: 0, sessions: 0 };
+  let done = 0, total = 0;
+  sessions.forEach(s => {
+    CATEGORIES.forEach((_, ci) => {
+      CHECKS.forEach((_, ki) => {
+        total++;
+        if (s.checks?.[ci]?.[ki]) done++;
+      });
+    });
+  });
+  return { done, total, pct: total ? Math.round(done / total * 100) : 0, sessions: sessions.length };
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function renderSidebar() {
+  const list = document.getElementById('mentorList');
+  list.innerHTML = '';
+  let totalDone = 0, totalAll = 0, totalSessions = 0;
+
+  MENTORS.forEach((name, i) => {
+    const prog = calcProgress(i);
+    totalDone += prog.done;
+    totalAll += prog.total;
+    totalSessions += prog.sessions;
+
+    const item = document.createElement('div');
+    item.className = 'mentor-item' + (i === activeMentor ? ' active' : '');
+    item.innerHTML = `
+      <div class="mentor-name">${name} 멘토</div>
+      <div class="mentor-progress-row">
+        <div class="mentor-progress-bar">
+          <div class="mentor-progress-fill" style="width:${prog.pct}%"></div>
+        </div>
+        <div class="mentor-progress-text">${prog.pct}%</div>
+      </div>
+    `;
+    item.onclick = () => { activeMentor = i; render(); };
+    list.appendChild(item);
+  });
+
+  const totalPct = totalAll ? Math.round(totalDone / totalAll * 100) : 0;
+  document.getElementById('totalSummary').innerHTML =
+    `전체 세션: <strong>${totalSessions}회</strong><br>전체 완료율: <strong>${totalPct}%</strong> (${totalDone}/${totalAll})`;
+}
+
+function renderMain() {
+  const main = document.getElementById('mainContent');
+  const mentorName = MENTORS[activeMentor];
+  const sessions = state[activeMentor] || [];
+  const prog = calcProgress(activeMentor);
+
+  const completedSessions = sessions.filter(s => {
+    let done = 0, total = CATEGORIES.length * CHECKS.length;
+    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => { if (s.checks?.[ci]?.[ki]) done++; }));
+    return done === total;
+  }).length;
+
+  main.innerHTML = `
+    <div class="mentor-header-card">
+      <div class="mentor-title-group">
+        <h2>${mentorName} 멘토</h2>
+        <p>멘토링 회차별 수행일지 및 산출물평가서 체크</p>
+      </div>
+      <div class="mentor-stats">
+        <div class="stat-box">
+          <div class="stat-num">${sessions.length}</div>
+          <div class="stat-label">총 회차</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">${completedSessions}</div>
+          <div class="stat-label">완료 회차</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">${prog.pct}%</div>
+          <div class="stat-label">체크 완료율</div>
+        </div>
+        <button class="add-session-btn" id="addSessionBtn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          회차 추가
+        </button>
+      </div>
+    </div>
+    <div class="sessions-container" id="sessionsContainer"></div>
+  `;
+
+  document.getElementById('addSessionBtn').onclick = addSession;
+
+  renderSessions();
+}
+
+function renderSessions() {
+  const container = document.getElementById('sessionsContainer');
+  if (!container) return;
+  const sessions = state[activeMentor] || [];
+  container.innerHTML = '';
+
+  if (!sessions.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="6" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.5"/>
+          <path d="M14 14h12M14 20h8" stroke="#9a9890" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <p>아직 멘토링 회차가 없습니다.<br>위의 <strong>회차 추가</strong> 버튼을 눌러 추가해주세요.</p>
+      </div>`;
+    return;
+  }
+
+  sessions.forEach((session, si) => {
+    let checksDone = 0, checksTotal = CATEGORIES.length * CHECKS.length;
+    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => { if (session.checks?.[ci]?.[ki]) checksDone++; }));
+    const isAllDone = checksDone === checksTotal;
+    const badgeClass = isAllDone ? 'done' : checksDone > 0 ? 'partial' : 'empty';
+    const badgeText = isAllDone ? '완료' : checksDone > 0 ? `${checksDone}/${checksTotal}` : '미시작';
+
+    const card = document.createElement('div');
+    card.className = 'session-card';
+    card.innerHTML = `
+      <div class="session-card-header">
+        <div class="session-num-badge">ROUND ${si + 1}</div>
+        <div class="session-date-wrap">
+          <span class="session-date-label">날짜</span>
+          <input type="date" class="session-date-input" value="${session.date || ''}" data-mentor="${activeMentor}" data-session="${si}">
+        </div>
+        <div class="session-header-right">
+          <span class="session-completion-badge ${badgeClass}">${badgeText}</span>
+          <button class="delete-session-btn" data-mentor="${activeMentor}" data-session="${si}" title="회차 삭제">✕</button>
+        </div>
+      </div>
+      <table class="checklist-table">
+        <thead>
+          <tr>
+            <th>평가 영역</th>
+            ${CHECKS.map(c => `<th>${c}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${CATEGORIES.map((cat, ci) => `
+            <tr class="cat-${ci}">
+              <td>
+                <div class="category-cell">
+                  <div class="category-icon">${cat.icon}</div>
+                  ${cat.name}
+                </div>
+              </td>
+              ${CHECKS.map((chk, ki) => `
+                <td class="check-cell">
+                  <label class="custom-check">
+                    <input type="checkbox" ${session.checks?.[ci]?.[ki] ? 'checked' : ''}
+                      data-mentor="${activeMentor}" data-session="${si}" data-cat="${ci}" data-key="${ki}">
+                    <span class="check-box">
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                        <path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <span class="check-label-text">${chk}</span>
+                  </label>
+                </td>
+              `).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div class="session-notes-wrap">
+        <div class="notes-label">메모</div>
+        <textarea class="session-notes" placeholder="멘토링 내용, 특이사항 등 메모를 입력하세요..." data-mentor="${activeMentor}" data-session="${si}">${session.notes || ''}</textarea>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Event delegation
+  container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const m = +this.dataset.mentor, s = +this.dataset.session, c = +this.dataset.cat, k = +this.dataset.key;
+      if (!state[m][s].checks) state[m][s].checks = {};
+      if (!state[m][s].checks[c]) state[m][s].checks[c] = {};
+      state[m][s].checks[c][k] = this.checked;
+      saveState();
+      renderSidebar();
+      renderSessions();
+    });
+  });
+
+  container.querySelectorAll('input[type="date"]').forEach(inp => {
+    inp.addEventListener('change', function() {
+      const m = +this.dataset.mentor, s = +this.dataset.session;
+      state[m][s].date = this.value;
+      saveState();
+    });
+  });
+
+  container.querySelectorAll('textarea.session-notes').forEach(ta => {
+    ta.addEventListener('input', function() {
+      const m = +this.dataset.mentor, s = +this.dataset.session;
+      state[m][s].notes = this.value;
+      saveState();
+    });
+  });
+
+  container.querySelectorAll('.delete-session-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const m = +this.dataset.mentor, s = +this.dataset.session;
+      if (confirm(`${MENTORS[m]} 멘토 ${s + 1}회차를 삭제할까요?`)) {
+        state[m].splice(s, 1);
+        saveState();
+        showToast('회차가 삭제되었습니다.');
+        render();
+      }
+    });
+  });
+}
+
+function addSession() {
+  if (!state[activeMentor]) state[activeMentor] = [];
+  state[activeMentor].push({ date: '', checks: {}, notes: '' });
+  saveState();
+  showToast(`${MENTORS[activeMentor]} 멘토 ${state[activeMentor].length}회차가 추가되었습니다.`);
+  render();
+  setTimeout(() => {
+    const container = document.getElementById('sessionsContainer');
+    if (container) container.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function setHeaderDate() {
+  const d = new Date();
+  document.getElementById('headerDate').textContent =
+    `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function render() {
+  renderSidebar();
+  renderMain();
+}
+
+setHeaderDate();
+render();
+</script>
+</body>
+</html>
