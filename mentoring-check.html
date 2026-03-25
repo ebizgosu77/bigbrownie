@@ -14,13 +14,13 @@
     --accent2:#c8773a; --accent2-light:#fdf0e6;
     --danger:#c0392b; --danger-light:#fdf0ef;
     --warn:#b5730a; --warn-light:#fef6e4;
+    --blue:#1a56a0; --blue-light:#e8f0fe;
     --shadow:0 1px 3px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.04);
     --shadow-lg:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 
-  /* HEADER */
   header{background:var(--text);color:#f4f3ef;padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:16px;}
   .hd-title{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:9px;white-space:nowrap;}
   .hd-dot{width:7px;height:7px;background:var(--accent2);border-radius:50%;}
@@ -33,7 +33,7 @@
   .app{display:flex;flex:1;height:calc(100vh - 54px);}
 
   /* SIDEBAR */
-  .sidebar{width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+  .sidebar{width:228px;min-width:228px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
   .sb-head{padding:18px 18px 12px;border-bottom:1px solid var(--border);}
   .sb-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;}
   .sb-sub{font-size:12px;color:var(--text2);}
@@ -41,8 +41,9 @@
   .m-item{padding:11px 18px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;}
   .m-item:hover{background:var(--surface2);}
   .m-item.active{background:var(--accent-light);border-left-color:var(--accent);}
-  .m-name{font-size:14px;font-weight:600;margin-bottom:5px;}
+  .m-name{font-size:14px;font-weight:600;margin-bottom:4px;}
   .m-item.active .m-name{color:var(--accent);}
+  .m-time-row{font-size:11px;font-family:'DM Mono',monospace;color:var(--blue);font-weight:600;margin-bottom:4px;}
   .m-pills{display:flex;gap:4px;flex-wrap:wrap;}
   .pill{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px;font-weight:500;}
   .pill.done{background:var(--accent-light);color:var(--accent);}
@@ -52,7 +53,6 @@
   .sb-foot{padding:14px 18px;border-top:1px solid var(--border);}
   .sb-sum{font-size:12px;color:var(--text2);line-height:1.9;}
 
-  /* MAIN */
   .main{flex:1;overflow-y:auto;padding:28px 32px;display:flex;flex-direction:column;gap:22px;}
 
   /* MENTOR HEADER */
@@ -61,16 +61,17 @@
   .mh-info p{font-size:13px;color:var(--text2);}
   .mh-stats{display:flex;gap:9px;align-items:center;flex-wrap:wrap;}
   .stat{text-align:center;padding:9px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;min-width:64px;}
+  .stat.time-stat{border-color:var(--blue);background:var(--blue-light);}
   .stat-n{font-size:19px;font-weight:700;font-family:'DM Mono',monospace;}
-  .stat-n.g{color:var(--accent);} .stat-n.r{color:var(--danger);} .stat-n.w{color:var(--warn);} .stat-n.gr{color:var(--text3);}
+  .stat-n.g{color:var(--accent);} .stat-n.r{color:var(--danger);} .stat-n.w{color:var(--warn);} .stat-n.gr{color:var(--text3);} .stat-n.b{color:var(--blue);}
   .stat-l{font-size:11px;color:var(--text3);margin-top:1px;}
+  .time-stat .stat-l{color:var(--blue);}
 
   .section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;}
   .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  /* PHASE CARDS (산출물평가서 + 마감일) */
+  /* PHASE CARDS */
   .phases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-
   .phase-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s;}
   .phase-card:hover{box-shadow:var(--shadow-lg);}
   .phase-card.status-overdue-incomplete{border-color:#f5c6c6;}
@@ -84,12 +85,9 @@
 
   .pc-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
   .pi-0{background:#e8f0fe;} .pi-1{background:#e8f5e9;} .pi-2{background:#fff3e0;} .pi-3{background:#fce4ec;}
-
   .pc-title{flex:1;}
   .pc-title .phase-name{font-size:13px;font-weight:600;margin-bottom:2px;}
   .pc-title .phase-sub{font-size:11px;color:var(--text3);}
-
-  /* D-DAY BADGE */
   .dday{font-size:11px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;}
   .dday.over-complete{background:var(--accent-light);color:var(--accent);}
   .dday.over-incomplete{background:var(--danger-light);color:var(--danger);}
@@ -100,14 +98,10 @@
   .dday.no-date{background:var(--border);color:var(--text3);}
 
   .pc-body{padding:13px 16px;display:flex;flex-direction:column;gap:11px;}
-
-  /* DEADLINE INPUT ROW */
   .deadline-row{display:flex;align-items:center;gap:8px;}
   .deadline-row label{font-size:11px;color:var(--text3);white-space:nowrap;}
   .deadline-input{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;flex:1;}
   .deadline-input:focus{outline:none;border-color:var(--accent);}
-
-  /* 산출물평가서 toggle */
   .output-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .output-label{font-size:12px;font-weight:500;color:var(--text2);}
 
@@ -120,10 +114,11 @@
   .tri-b.a-miss{background:var(--danger);color:#fff;font-weight:700;}
   .tri-b.a-pend{background:#e0dfd9;color:var(--text2);font-weight:700;}
 
-  /* ADD / SESSIONS */
+  /* ADD */
   .add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .15s;box-shadow:0 2px 6px rgba(42,92,69,.25);white-space:nowrap;}
   .add-btn:hover{background:#1e4433;transform:translateY(-1px);}
 
+  /* SESSION CARD */
   .sessions-wrap{display:flex;flex-direction:column;gap:14px;}
   .empty-box{text-align:center;padding:50px 20px;color:var(--text3);background:var(--surface);border:2px dashed var(--border);border-radius:12px;}
   .empty-box p{font-size:14px;margin-top:10px;}
@@ -132,14 +127,27 @@
   .ses-card:hover{box-shadow:var(--shadow-lg);}
   .ses-card.has-miss{border-color:#f5c6c6;}
 
-  .ses-head{display:flex;align-items:center;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap;}
+  .ses-head{display:flex;align-items:center;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;}
   .ses-card.has-miss .ses-head{background:#fff8f8;border-bottom-color:#f5c6c6;}
+
   .ses-num{font-size:10px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--accent);padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;white-space:nowrap;}
-  .ses-date-w{display:flex;align-items:center;gap:7px;flex:1;min-width:150px;}
-  .ses-date-l{font-size:12px;color:var(--text3);}
-  .ses-date{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:13px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;}
+
+  .ses-meta{display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;}
+
+  /* date */
+  .ses-field{display:flex;align-items:center;gap:6px;}
+  .ses-field-l{font-size:11px;color:var(--text3);white-space:nowrap;}
+  .ses-date{border:1px solid var(--border2);border-radius:6px;padding:5px 9px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);cursor:pointer;transition:border .15s;}
   .ses-date:focus{outline:none;border-color:var(--accent);}
-  .ses-head-r{display:flex;align-items:center;gap:9px;}
+
+  /* TIME INPUT */
+  .time-input-wrap{display:flex;align-items:center;gap:4px;}
+  .time-num{width:48px;border:1px solid var(--border2);border-radius:6px;padding:5px 7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text);background:var(--surface);text-align:center;transition:border .15s;}
+  .time-num:focus{outline:none;border-color:var(--blue);}
+  .time-unit{font-size:11px;color:var(--text3);}
+  .time-total-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;background:var(--blue-light);color:var(--blue);font-weight:600;white-space:nowrap;}
+
+  .ses-head-r{display:flex;align-items:center;gap:8px;}
   .ses-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px;font-weight:600;white-space:nowrap;}
   .sb-all{background:var(--accent-light);color:var(--accent);}
   .sb-miss{background:var(--danger-light);color:var(--danger);}
@@ -148,6 +156,7 @@
   .del-btn{width:26px;height:26px;border:1px solid var(--border2);border-radius:6px;background:var(--surface);color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:13px;flex-shrink:0;}
   .del-btn:hover{background:#fef0f0;border-color:#f5c6c6;color:var(--danger);}
 
+  /* TABLE */
   .ses-table{width:100%;border-collapse:collapse;}
   .ses-table thead tr{border-bottom:1px solid var(--border);}
   .ses-table th{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:9px 20px;text-align:left;}
@@ -159,14 +168,17 @@
   .cat-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
   .r0 .cat-ic{background:#e8f0fe;} .r1 .cat-ic{background:#e8f5e9;} .r2 .cat-ic{background:#fff3e0;} .r3 .cat-ic{background:#fce4ec;}
   td.check-td{text-align:center;padding:10px 16px;}
-
-  /* deadline warning in session table */
   .dl-chip{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap;margin-left:6px;}
   .dl-chip.over{background:var(--danger-light);color:var(--danger);}
   .dl-chip.soon{background:var(--warn-light);color:var(--warn);}
   .dl-chip.ok{background:var(--accent-light);color:var(--accent);}
 
   .miss-row{padding:8px 20px;background:#fff2f2;border-top:1px solid #f5c6c6;font-size:12px;color:var(--danger);display:flex;align-items:flex-start;gap:6px;line-height:1.7;flex-wrap:wrap;}
+
+  /* TIME SUMMARY BAR */
+  .time-summary-bar{padding:10px 20px;background:var(--blue-light);border-top:1px solid #c5d9f5;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--blue);font-weight:500;}
+  .time-summary-bar strong{font-family:'DM Mono',monospace;font-size:13px;}
+
   .notes-wrap{padding:11px 20px;background:var(--surface2);border-top:1px solid var(--border);}
   .notes-lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
   .notes-ta{width:100%;border:1px solid var(--border2);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Noto Sans KR',sans-serif;color:var(--text);background:var(--surface);resize:vertical;min-height:40px;transition:border .15s;}
@@ -176,10 +188,8 @@
   ::-webkit-scrollbar{width:5px;}
   ::-webkit-scrollbar-track{background:transparent;}
   ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px;}
-
   .toast{position:fixed;bottom:26px;right:26px;background:var(--text);color:#f4f3ef;padding:11px 18px;border-radius:8px;font-size:13px;box-shadow:var(--shadow-lg);transform:translateY(8px);opacity:0;transition:all .2s;z-index:999;pointer-events:none;}
   .toast.show{opacity:1;transform:translateY(0);}
-
   @media(max-width:900px){.phases-grid{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -216,13 +226,10 @@ const PHASES = [
   { name:'프론트엔드 평가',   icon:'🖥️', icCls:'pi-2' },
   { name:'시스템 통합평가',   icon:'🔗', icCls:'pi-3' },
 ];
-
-// 이용준(index 4) 초기 마감일 설정
 const DEFAULT_DEADLINES = {
-  4: { 0:'2025-04-04', 1:'2025-05-04', 2:'2025-04-19', 3:'2025-05-13' }
+  4:{ 0:'2025-04-04', 1:'2025-05-04', 2:'2025-04-19', 3:'2025-05-13' }
 };
-
-const KEY = 'mentoring_v5';
+const KEY = 'mentoring_v6';
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
 let state = loadState();
@@ -232,11 +239,7 @@ function loadState(){
   try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){}
   const s={};
   MENTORS.forEach((_,i)=>{
-    s[i]={
-      deadlines: DEFAULT_DEADLINES[i] || {},
-      output:{},
-      sessions:[]
-    };
+    s[i]={ deadlines:DEFAULT_DEADLINES[i]||{}, output:{}, sessions:[] };
   });
   return s;
 }
@@ -244,66 +247,68 @@ function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
 function getMentor(mi){
   if(!state[mi]) state[mi]={deadlines:{},output:{},sessions:[]};
-  if(!state[mi].deadlines) state[mi].deadlines={};
-  if(!state[mi].output) state[mi].output={};
-  if(!state[mi].sessions) state[mi].sessions=[];
+  ['deadlines','output','sessions'].forEach(k=>{ if(!state[mi][k]) state[mi][k]=k==='sessions'?[]:{};});
   return state[mi];
 }
 
-/* ── D-DAY UTILS ── */
-function parseDateStr(str){ if(!str) return null; const d=new Date(str); d.setHours(0,0,0,0); return d; }
-
-function getDdayInfo(deadlineStr, isDone){
-  const dl = parseDateStr(deadlineStr);
-  if(!dl) return { text:'마감일 미설정', cls:'no-date', cardCls:'' };
-  const diff = Math.round((dl - TODAY) / 86400000);
-  if(isDone) return { text:'✓ 완료', cls:'done-badge', cardCls:'status-done' };
-  if(diff < 0)  return { text:`D+${Math.abs(diff)} 초과`, cls:'over-incomplete', cardCls:'status-overdue-incomplete' };
-  if(diff === 0) return { text:'D-Day', cls:'today', cardCls:'status-warning' };
-  if(diff <= 7)  return { text:`D-${diff}`, cls:'soon', cardCls:'status-warning' };
-  return { text:`D-${diff}`, cls:'ok', cardCls:'' };
+/* ── TIME UTILS ── */
+// session.duration = { h: number, m: number }
+function sessionMinutes(ses){
+  const h=parseInt(ses.duration?.h)||0;
+  const m=parseInt(ses.duration?.m)||0;
+  return h*60+m;
+}
+function totalMinutes(mi){
+  return getMentor(mi).sessions.reduce((sum,s)=>sum+sessionMinutes(s),0);
+}
+function fmtMinutes(mins){
+  if(!mins) return '0분';
+  const h=Math.floor(mins/60), m=mins%60;
+  if(h && m) return `${h}시간 ${m}분`;
+  if(h) return `${h}시간`;
+  return `${m}분`;
 }
 
-function getPhaseChipInfo(deadlineStr, isDone){
-  const dl = parseDateStr(deadlineStr);
-  if(!dl) return null;
-  const diff = Math.round((dl - TODAY) / 86400000);
-  if(isDone) return null;
-  if(diff < 0)  return { text:`D+${Math.abs(diff)}초과`, cls:'over' };
-  if(diff <= 7)  return { text:`D-${diff}`, cls:'soon' };
-  return { text:`D-${diff}`, cls:'ok' };
+/* ── D-DAY ── */
+function parseDL(str){ if(!str) return null; const d=new Date(str); d.setHours(0,0,0,0); return d; }
+function getDdayInfo(dlStr, isDone){
+  const dl=parseDL(dlStr);
+  if(!dl) return {text:'마감일 미설정',cls:'no-date',cardCls:''};
+  const diff=Math.round((dl-TODAY)/86400000);
+  if(isDone) return {text:'✓ 완료',cls:'done-badge',cardCls:'status-done'};
+  if(diff<0)  return {text:`D+${Math.abs(diff)} 초과`,cls:'over-incomplete',cardCls:'status-overdue-incomplete'};
+  if(diff===0) return {text:'D-Day',cls:'today',cardCls:'status-warning'};
+  if(diff<=7)  return {text:`D-${diff}`,cls:'soon',cardCls:'status-warning'};
+  return {text:`D-${diff}`,cls:'ok',cardCls:''};
 }
-
-function formatDate(str){
-  if(!str) return '';
-  const d=new Date(str);
-  return `${d.getMonth()+1}/${d.getDate()}`;
+function getPhaseChip(dlStr, isDone){
+  const dl=parseDL(dlStr); if(!dl||isDone) return null;
+  const diff=Math.round((dl-TODAY)/86400000);
+  if(diff<0)  return {text:`D+${Math.abs(diff)}초과`,cls:'over'};
+  if(diff<=7)  return {text:`D-${diff}`,cls:'soon'};
+  return {text:`D-${diff}`,cls:'ok'};
 }
+function fmtDate(str){ if(!str) return ''; const d=new Date(str); return `${d.getMonth()+1}/${d.getDate()}`; }
 
 /* ── STATS ── */
-function calcMentorStats(mi){
+function calcStats(mi){
   const m=getMentor(mi);
-  let oDone=0,oMiss=0,oPend=0,overdue=0;
+  let oDone=0,oMiss=0,overdue=0;
   PHASES.forEach((_,pi)=>{
-    const v=m.output[pi];
-    const isDone=v==='done';
-    if(isDone) oDone++;
-    else if(v==='missing') oMiss++;
-    else oPend++;
-    // overdue = deadline passed and not done
-    const dl=parseDateStr(m.deadlines[pi]);
-    if(dl && dl < TODAY && !isDone) overdue++;
+    const v=m.output[pi]; const isDone=v==='done';
+    if(isDone) oDone++; else if(v==='missing') oMiss++;
+    const dl=parseDL(m.deadlines[pi]);
+    if(dl&&dl<TODAY&&!isDone) overdue++;
   });
-  let sDone=0,sMiss=0,sPend=0;
+  let sDone=0,sMiss=0;
   m.sessions.forEach(s=>{
     PHASES.forEach((_,pi)=>{
       const v=s.checks?.[pi];
-      if(v==='done') sDone++;
-      else if(v==='missing') sMiss++;
-      else sPend++;
+      if(v==='done') sDone++; else if(v==='missing') sMiss++;
     });
   });
-  return {oDone,oMiss,oPend,sDone,sMiss,sPend,overdue,sessions:m.sessions.length};
+  const totMins=totalMinutes(mi);
+  return {oDone,oMiss,sDone,sMiss,overdue,totMins,sessions:m.sessions.length};
 }
 
 function showToast(msg){
@@ -316,14 +321,12 @@ function showToast(msg){
 function renderSidebar(){
   const list=document.getElementById('mentorList');
   list.innerHTML='';
-  let tDone=0,tMiss=0,tOver=0,tSes=0;
+  let tDone=0,tMiss=0,tOver=0,tSes=0,tMins=0;
 
   MENTORS.forEach((name,i)=>{
-    const st=calcMentorStats(i);
-    tDone+=st.oDone+st.sDone;
-    tMiss+=st.oMiss+st.sMiss;
-    tOver+=st.overdue;
-    tSes+=st.sessions;
+    const st=calcStats(i);
+    tDone+=st.oDone+st.sDone; tMiss+=st.oMiss+st.sMiss;
+    tOver+=st.overdue; tSes+=st.sessions; tMins+=st.totMins;
 
     const el=document.createElement('div');
     el.className='m-item'+(i===active?' active':'');
@@ -332,12 +335,16 @@ function renderSidebar(){
     const pills=allEmpty
       ? `<span class="pill pend">미시작</span>`
       : [
-          (st.sDone+st.oDone)>0 ? `<span class="pill done">완료 ${st.sDone+st.oDone}</span>` : '',
-          (st.sMiss+st.oMiss)>0 ? `<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>` : '',
-          st.overdue>0 ? `<span class="pill warn">마감초과 ${st.overdue}</span>` : '',
+          (st.sDone+st.oDone)>0?`<span class="pill done">완료 ${st.sDone+st.oDone}</span>`:'',
+          (st.sMiss+st.oMiss)>0?`<span class="pill missing">미기입 ${st.sMiss+st.oMiss}</span>`:'',
+          st.overdue>0?`<span class="pill warn">마감초과 ${st.overdue}</span>`:'',
         ].join('');
 
-    el.innerHTML=`<div class="m-name">${name} 멘토</div><div class="m-pills">${pills}</div>`;
+    el.innerHTML=`
+      <div class="m-name">${name} 멘토</div>
+      ${st.totMins>0?`<div class="m-time-row">⏱ 누적 ${fmtMinutes(st.totMins)}</div>`:''}
+      <div class="m-pills">${pills}</div>
+    `;
     el.onclick=()=>{ active=i; render(); };
     list.appendChild(el);
   });
@@ -345,22 +352,27 @@ function renderSidebar(){
   document.getElementById('sbSum').innerHTML=
     `전체 세션: <strong>${tSes}회</strong><br>`+
     `완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; `+
-    `미기입: <strong style="color:var(--danger)">${tMiss}</strong>`+
+    `미기입: <strong style="color:var(--danger)">${tMiss}</strong><br>`+
+    `전체 누적시간: <strong style="color:var(--blue)">${fmtMinutes(tMins)}</strong>`+
     (tOver>0?`<br>⚠️ 마감초과: <strong style="color:var(--warn)">${tOver}건</strong>`:'');
 }
 
 /* ── MAIN ── */
 function renderMain(){
   const main=document.getElementById('mainContent');
-  const st=calcMentorStats(active);
+  const st=calcStats(active);
 
   main.innerHTML=`
     <div class="mh-card">
       <div class="mh-info">
         <h2>${MENTORS[active]} 멘토</h2>
-        <p>회차별 수행일지 · 단계별 산출물평가서 · 마감일 관리</p>
+        <p>회차별 수행일지 · 단계별 산출물평가서 · 마감일 · 멘토링 시간</p>
       </div>
       <div class="mh-stats">
+        <div class="stat time-stat">
+          <div class="stat-n b" style="font-size:16px;">${fmtMinutes(st.totMins)}</div>
+          <div class="stat-l">누적 멘토링 시간</div>
+        </div>
         <div class="stat"><div class="stat-n gr">${st.sessions}</div><div class="stat-l">멘토링 회차</div></div>
         <div class="stat"><div class="stat-n g">${st.sDone}</div><div class="stat-l">수행일지 완료</div></div>
         <div class="stat"><div class="stat-n r">${st.sMiss}</div><div class="stat-l">수행일지 미기입</div></div>
@@ -390,16 +402,12 @@ function renderMain(){
 
 /* ── PHASES GRID ── */
 function renderPhasesGrid(){
-  const grid=document.getElementById('phasesGrid');
-  if(!grid) return;
+  const grid=document.getElementById('phasesGrid'); if(!grid) return;
   const m=getMentor(active);
-
   grid.innerHTML=PHASES.map((ph,pi)=>{
     const v=m.output[pi]||null;
     const dl=m.deadlines[pi]||'';
-    const isDone=v==='done';
-    const dday=getDdayInfo(dl,isDone);
-
+    const dday=getDdayInfo(dl,v==='done');
     return `
       <div class="phase-card ${dday.cardCls}">
         <div class="pc-head">
@@ -413,8 +421,7 @@ function renderPhasesGrid(){
         <div class="pc-body">
           <div class="deadline-row">
             <label>📅 마감일</label>
-            <input type="date" class="deadline-input" value="${dl}"
-              data-mi="${active}" data-pi="${pi}">
+            <input type="date" class="deadline-input" value="${dl}" data-mi="${active}" data-pi="${pi}">
           </div>
           <div class="output-row">
             <span class="output-label">산출물평가서</span>
@@ -430,21 +437,17 @@ function renderPhasesGrid(){
 
   grid.querySelectorAll('.deadline-input').forEach(inp=>{
     inp.addEventListener('change',function(){
-      const mi=+this.dataset.mi, pi=+this.dataset.pi;
-      getMentor(mi).deadlines[pi]=this.value;
-      save();
-      render();
+      getMentor(+this.dataset.mi).deadlines[+this.dataset.pi]=this.value;
+      save(); render();
     });
   });
-
   grid.querySelectorAll('.tri-b[data-type="out"]').forEach(btn=>{
     btn.addEventListener('click',function(){
       const mi=+this.dataset.mi,pi=+this.dataset.pi;
       const val=this.dataset.v==='null'?null:this.dataset.v;
       getMentor(mi).output[pi]=val;
       save();
-      if(val==='missing') showToast('⚠️ 산출물평가서 미기입 표시');
-      else if(val==='done') showToast('✓ 산출물평가서 완료 표시');
+      showToast(val==='missing'?'⚠️ 산출물평가서 미기입 표시':val==='done'?'✓ 산출물평가서 완료 표시':'— 미확인으로 변경');
       render();
     });
   });
@@ -453,11 +456,7 @@ function renderPhasesGrid(){
 /* ── SESSIONS ── */
 function getSesBadge(ses){
   let done=0,miss=0,total=PHASES.length;
-  PHASES.forEach((_,pi)=>{
-    const v=ses.checks?.[pi];
-    if(v==='done') done++;
-    else if(v==='missing') miss++;
-  });
+  PHASES.forEach((_,pi)=>{ const v=ses.checks?.[pi]; if(v==='done') done++; else if(v==='missing') miss++; });
   const pend=total-done-miss;
   if(done===total) return {cls:'sb-all',label:'전체완료',hasMiss:false};
   if(miss>0&&pend===0&&done===0) return {cls:'sb-miss',label:`미기입 ${miss}건`,hasMiss:true};
@@ -467,8 +466,7 @@ function getSesBadge(ses){
 }
 
 function renderSessions(){
-  const wrap=document.getElementById('sesWrap');
-  if(!wrap) return;
+  const wrap=document.getElementById('sesWrap'); if(!wrap) return;
   const m=getMentor(active);
   wrap.innerHTML='';
 
@@ -481,26 +479,27 @@ function renderSessions(){
     return;
   }
 
+  // 누적 시간 계산용
+  let runningMins=0;
+
   m.sessions.forEach((ses,si)=>{
     const badge=getSesBadge(ses);
     const missItems=PHASES.filter((_,pi)=>ses.checks?.[pi]==='missing').map(ph=>ph.name);
+    const sesMins=sessionMinutes(ses);
+    runningMins+=sesMins;
 
     const card=document.createElement('div');
     card.className='ses-card'+(badge.hasMiss?' has-miss':'');
 
     const rows=PHASES.map((ph,pi)=>{
       const v=ses.checks?.[pi]||null;
-      // deadline chip in session row
-      const dl=m.deadlines[pi];
-      const chip=getPhaseChipInfo(dl, v==='done');
+      const chip=getPhaseChip(m.deadlines[pi],v==='done');
       const chipHtml=chip?`<span class="dl-chip ${chip.cls}">${chip.text}</span>`:'';
-      const dlText=dl?`<span style="font-size:10px;color:var(--text3);margin-left:4px;">(~${formatDate(dl)})</span>`:'';
-
+      const dlTxt=m.deadlines[pi]?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">(~${fmtDate(m.deadlines[pi])})</span>`:'';
       return `
         <tr class="r${pi}">
           <td><div class="cat-cell">
-            <div class="cat-ic">${ph.icon}</div>
-            ${ph.name}${dlText}${chipHtml}
+            <div class="cat-ic">${ph.icon}</div>${ph.name}${dlTxt}${chipHtml}
           </div></td>
           <td class="check-td">
             <div class="tri">
@@ -512,15 +511,31 @@ function renderSessions(){
         </tr>`;
     }).join('');
 
-    const alertHtml=missItems.length
-      ? `<div class="miss-row">⚠️ 미기입 : ${missItems.join(' · ')}</div>` : '';
+    const alertHtml=missItems.length?`<div class="miss-row">⚠️ 미기입 : ${missItems.join(' · ')}</div>`:'';
+
+    const durH=ses.duration?.h??'';
+    const durM=ses.duration?.m??'';
 
     card.innerHTML=`
       <div class="ses-head">
         <div class="ses-num">ROUND ${si+1}</div>
-        <div class="ses-date-w">
-          <span class="ses-date-l">날짜</span>
-          <input type="date" class="ses-date" value="${ses.date||''}" data-mi="${active}" data-si="${si}">
+        <div class="ses-meta">
+          <div class="ses-field">
+            <span class="ses-field-l">📅 날짜</span>
+            <input type="date" class="ses-date" value="${ses.date||''}" data-mi="${active}" data-si="${si}">
+          </div>
+          <div class="ses-field">
+            <span class="ses-field-l">⏱ 멘토링 시간</span>
+            <div class="time-input-wrap">
+              <input type="number" class="time-num time-h" min="0" max="23" placeholder="0"
+                value="${durH}" data-mi="${active}" data-si="${si}">
+              <span class="time-unit">시간</span>
+              <input type="number" class="time-num time-m" min="0" max="59" placeholder="0"
+                value="${durM}" data-mi="${active}" data-si="${si}">
+              <span class="time-unit">분</span>
+            </div>
+          </div>
+          ${sesMins>0?`<span class="time-total-badge">이 회차 ${fmtMinutes(sesMins)}</span>`:''}
         </div>
         <div class="ses-head-r">
           <span class="ses-badge ${badge.cls}">${badge.label}</span>
@@ -535,6 +550,10 @@ function renderSessions(){
         <tbody>${rows}</tbody>
       </table>
       ${alertHtml}
+      <div class="time-summary-bar">
+        ⏱ ${si+1}회차까지 누적 멘토링 시간: <strong>${fmtMinutes(runningMins)}</strong>
+        ${m.sessions.length===si+1&&runningMins>0?`&nbsp;(전체 합계)`:''}
+      </div>
       <div class="notes-wrap">
         <div class="notes-lbl">메모</div>
         <textarea class="notes-ta" placeholder="멘토링 내용, 미기입 사유 등..." data-mi="${active}" data-si="${si}">${ses.notes||''}</textarea>
@@ -543,6 +562,7 @@ function renderSessions(){
     wrap.appendChild(card);
   });
 
+  /* event listeners */
   wrap.querySelectorAll('.tri-b[data-type="ses"]').forEach(btn=>{
     btn.addEventListener('click',function(){
       const mi=+this.dataset.mi,si=+this.dataset.si,pi=+this.dataset.pi;
@@ -551,16 +571,37 @@ function renderSessions(){
       if(!ses.checks) ses.checks={};
       ses.checks[pi]=val;
       save();
-      if(val==='missing') showToast('⚠️ 수행일지 미기입 표시');
-      else if(val==='done') showToast('✓ 수행일지 완료 표시');
+      showToast(val==='missing'?'⚠️ 수행일지 미기입 표시':val==='done'?'✓ 수행일지 완료 표시':'— 미확인으로 변경');
       render();
     });
   });
 
-  wrap.querySelectorAll('input[type="date"].ses-date').forEach(inp=>{
+  wrap.querySelectorAll('input.ses-date').forEach(inp=>{
     inp.addEventListener('change',function(){
       getMentor(+this.dataset.mi).sessions[+this.dataset.si].date=this.value;
       save();
+    });
+  });
+
+  // TIME INPUTS
+  wrap.querySelectorAll('input.time-h').forEach(inp=>{
+    inp.addEventListener('change',function(){
+      const mi=+this.dataset.mi,si=+this.dataset.si;
+      const ses=getMentor(mi).sessions[si];
+      if(!ses.duration) ses.duration={};
+      ses.duration.h=Math.max(0,parseInt(this.value)||0);
+      this.value=ses.duration.h||'';
+      save(); render();
+    });
+  });
+  wrap.querySelectorAll('input.time-m').forEach(inp=>{
+    inp.addEventListener('change',function(){
+      const mi=+this.dataset.mi,si=+this.dataset.si;
+      const ses=getMentor(mi).sessions[si];
+      if(!ses.duration) ses.duration={};
+      ses.duration.m=Math.min(59,Math.max(0,parseInt(this.value)||0));
+      this.value=ses.duration.m||'';
+      save(); render();
     });
   });
 
@@ -583,13 +624,12 @@ function renderSessions(){
 }
 
 function addSession(){
-  getMentor(active).sessions.push({date:'',checks:{},notes:''});
+  getMentor(active).sessions.push({date:'',duration:{h:'',m:''},checks:{},notes:''});
   save();
   showToast(`${MENTORS[active]} 멘토 ${getMentor(active).sessions.length}회차 추가`);
   render();
   setTimeout(()=>{
-    document.getElementById('sesWrap')?.lastElementChild
-      ?.scrollIntoView({behavior:'smooth',block:'start'});
+    document.getElementById('sesWrap')?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'start'});
   },100);
 }
 
@@ -598,7 +638,6 @@ function render(){ renderSidebar(); renderMain(); }
 const d=new Date();
 document.getElementById('hDate').textContent=
   `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-
 render();
 </script>
 </body>
