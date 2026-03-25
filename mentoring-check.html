@@ -20,8 +20,7 @@
     --accent2: #c8773a;
     --accent2-light: #fdf0e6;
     --danger: #c0392b;
-    --check-done: #2a5c45;
-    --check-todo: #e4e2db;
+    --danger-light: #fdf0ef;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
     --shadow-lg: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
   }
@@ -37,7 +36,6 @@
     flex-direction: column;
   }
 
-  /* HEADER */
   header {
     background: var(--text);
     color: #f4f3ef;
@@ -49,6 +47,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    gap: 16px;
   }
 
   .header-title {
@@ -59,32 +58,38 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
   }
 
-  .header-title .dot {
-    width: 7px; height: 7px;
-    background: var(--accent2);
-    border-radius: 50%;
-    display: inline-block;
-  }
+  .header-title .dot { width: 7px; height: 7px; background: var(--accent2); border-radius: 50%; display: inline-block; }
 
-  .header-meta {
-    font-size: 12px;
-    color: #9a9890;
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* LAYOUT */
-  .app {
+  .header-legend {
     display: flex;
-    flex: 1;
-    height: calc(100vh - 56px);
+    align-items: center;
+    gap: 14px;
   }
 
-  /* SIDEBAR */
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #c0bdb6;
+    white-space: nowrap;
+  }
+
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+  .legend-dot.done { background: #2a5c45; }
+  .legend-dot.missing { background: #c0392b; }
+  .legend-dot.pending { background: #6b6960; }
+
+  .header-meta { font-size: 12px; color: #9a9890; font-family: 'DM Mono', monospace; white-space: nowrap; }
+
+  .app { display: flex; flex: 1; height: calc(100vh - 56px); }
+
   .sidebar {
-    width: 220px;
-    min-width: 220px;
+    width: 230px;
+    min-width: 230px;
     background: var(--surface);
     border-right: 1px solid var(--border);
     display: flex;
@@ -97,99 +102,41 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 4px;
-  }
-
-  .sidebar-count {
-    font-size: 13px;
-    color: var(--text2);
-  }
-
-  .mentor-list {
-    padding: 10px 0;
-    flex: 1;
-  }
+  .sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+  .sidebar-count { font-size: 13px; color: var(--text2); }
+  .mentor-list { padding: 10px 0; flex: 1; }
 
   .mentor-item {
     padding: 12px 20px;
     cursor: pointer;
     transition: background 0.15s;
     border-left: 3px solid transparent;
-    position: relative;
   }
 
   .mentor-item:hover { background: var(--surface2); }
-
-  .mentor-item.active {
-    background: var(--accent-light);
-    border-left-color: var(--accent);
-  }
-
-  .mentor-name {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: var(--text);
-  }
-
+  .mentor-item.active { background: var(--accent-light); border-left-color: var(--accent); }
+  .mentor-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
   .mentor-item.active .mentor-name { color: var(--accent); }
 
-  .mentor-progress-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .mentor-status-row { display: flex; gap: 4px; flex-wrap: wrap; }
 
-  .mentor-progress-bar {
-    flex: 1;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .mentor-progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.3s ease;
-  }
-
-  .mentor-progress-text {
+  .status-pill {
     font-size: 10px;
     font-family: 'DM Mono', monospace;
-    color: var(--text3);
-    white-space: nowrap;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 500;
   }
 
-  .sidebar-footer {
-    padding: 16px 20px;
-    border-top: 1px solid var(--border);
-  }
+  .status-pill.done { background: var(--accent-light); color: var(--accent); }
+  .status-pill.missing { background: var(--danger-light); color: var(--danger); }
+  .status-pill.pending { background: var(--border); color: var(--text3); }
 
-  .total-summary {
-    font-size: 12px;
-    color: var(--text2);
-    line-height: 1.7;
-  }
+  .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+  .total-summary { font-size: 12px; color: var(--text2); line-height: 1.8; }
 
-  /* MAIN */
-  .main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
+  .main { flex: 1; overflow-y: auto; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
 
-  /* MENTOR HEADER */
   .mentor-header-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -199,47 +146,30 @@
     align-items: center;
     justify-content: space-between;
     box-shadow: var(--shadow);
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
-  .mentor-title-group h2 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
+  .mentor-title-group h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .mentor-title-group p { font-size: 13px; color: var(--text2); }
 
-  .mentor-title-group p {
-    font-size: 13px;
-    color: var(--text2);
-  }
-
-  .mentor-stats {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
+  .mentor-stats { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
   .stat-box {
     text-align: center;
-    padding: 10px 18px;
+    padding: 10px 16px;
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 8px;
+    min-width: 68px;
   }
 
-  .stat-num {
-    font-size: 22px;
-    font-weight: 700;
-    font-family: 'DM Mono', monospace;
-    color: var(--accent);
-  }
+  .stat-num { font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace; }
+  .stat-num.green { color: var(--accent); }
+  .stat-num.red { color: var(--danger); }
+  .stat-num.gray { color: var(--text3); }
+  .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
 
-  .stat-label {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 2px;
-  }
-
-  /* ADD SESSION BTN */
   .add-session-btn {
     display: flex;
     align-items: center;
@@ -255,22 +185,12 @@
     cursor: pointer;
     transition: all 0.15s;
     box-shadow: 0 2px 6px rgba(42,92,69,0.25);
+    white-space: nowrap;
   }
 
-  .add-session-btn:hover {
-    background: #1e4433;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(42,92,69,0.3);
-  }
+  .add-session-btn:hover { background: #1e4433; transform: translateY(-1px); }
 
-  .add-session-btn svg { flex-shrink: 0; }
-
-  /* SESSIONS */
-  .sessions-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+  .sessions-container { display: flex; flex-direction: column; gap: 16px; }
 
   .empty-state {
     text-align: center;
@@ -280,11 +200,8 @@
     border: 2px dashed var(--border);
     border-radius: 12px;
   }
+  .empty-state p { font-size: 14px; margin-top: 12px; }
 
-  .empty-state svg { margin-bottom: 12px; opacity: 0.4; }
-  .empty-state p { font-size: 14px; }
-
-  /* SESSION CARD */
   .session-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -295,40 +212,35 @@
   }
 
   .session-card:hover { box-shadow: var(--shadow-lg); }
+  .session-card.has-missing { border-color: #f5c6c6; }
 
   .session-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 22px;
+    padding: 14px 22px;
     background: var(--surface2);
     border-bottom: 1px solid var(--border);
     gap: 12px;
+    flex-wrap: wrap;
   }
+
+  .session-card.has-missing .session-card-header { background: #fff8f8; border-bottom-color: #f5c6c6; }
 
   .session-num-badge {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: white;
     background: var(--accent);
     padding: 3px 10px;
     border-radius: 20px;
     font-family: 'DM Mono', monospace;
+    white-space: nowrap;
   }
 
-  .session-date-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-  }
-
-  .session-date-label {
-    font-size: 12px;
-    color: var(--text3);
-  }
+  .session-date-wrap { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 180px; }
+  .session-date-label { font-size: 12px; color: var(--text3); }
 
   .session-date-input {
     border: 1px solid var(--border2);
@@ -342,39 +254,23 @@
     transition: border 0.15s;
   }
 
-  .session-date-input:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
+  .session-date-input:focus { outline: none; border-color: var(--accent); }
 
-  .session-header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .session-header-right { display: flex; align-items: center; gap: 10px; }
 
-  .session-completion-badge {
+  .session-badge {
     font-size: 11px;
     font-family: 'DM Mono', monospace;
     padding: 3px 10px;
     border-radius: 20px;
-    font-weight: 500;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .session-completion-badge.done {
-    background: var(--accent-light);
-    color: var(--accent);
-  }
-
-  .session-completion-badge.partial {
-    background: var(--accent2-light);
-    color: var(--accent2);
-  }
-
-  .session-completion-badge.empty {
-    background: var(--border);
-    color: var(--text3);
-  }
+  .session-badge.all-done { background: var(--accent-light); color: var(--accent); }
+  .session-badge.has-missing { background: var(--danger-light); color: var(--danger); }
+  .session-badge.partial { background: var(--accent2-light); color: var(--accent2); }
+  .session-badge.empty { background: var(--border); color: var(--text3); }
 
   .delete-session-btn {
     width: 26px; height: 26px;
@@ -385,24 +281,14 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.15s;
-    font-size: 14px;
+    font-size: 13px;
+    flex-shrink: 0;
   }
 
-  .delete-session-btn:hover {
-    background: #fef0f0;
-    border-color: #f5c6c6;
-    color: var(--danger);
-  }
+  .delete-session-btn:hover { background: #fef0f0; border-color: #f5c6c6; color: var(--danger); }
 
-  /* CHECKLIST TABLE */
-  .checklist-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .checklist-table thead tr {
-    border-bottom: 1px solid var(--border);
-  }
+  .checklist-table { width: 100%; border-collapse: collapse; }
+  .checklist-table thead tr { border-bottom: 1px solid var(--border); }
 
   .checklist-table th {
     font-size: 11px;
@@ -414,16 +300,9 @@
     text-align: left;
   }
 
-  .checklist-table th:not(:first-child) {
-    text-align: center;
-    width: 140px;
-  }
+  .checklist-table th:not(:first-child) { text-align: center; }
 
-  .checklist-table tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
-
+  .checklist-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   .checklist-table tbody tr:last-child { border-bottom: none; }
   .checklist-table tbody tr:hover { background: var(--surface2); }
 
@@ -431,10 +310,10 @@
     padding: 14px 22px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--text);
     display: flex;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
   }
 
   .category-icon {
@@ -450,61 +329,58 @@
   .cat-2 .category-icon { background: #fff3e0; }
   .cat-3 .category-icon { background: #fce4ec; }
 
-  .check-cell {
-    text-align: center;
-    padding: 14px 22px;
-  }
+  .check-cell { text-align: center; padding: 12px 16px; }
 
-  /* CUSTOM CHECKBOX */
-  .custom-check {
+  /* ── 3-STATE TOGGLE ── */
+  .tri-toggle {
     display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tri-btn {
+    padding: 6px 11px;
     cursor: pointer;
-    user-select: none;
-  }
-
-  .custom-check input[type="checkbox"] {
-    display: none;
-  }
-
-  .check-box {
-    width: 20px; height: 20px;
-    border: 2px solid var(--border2);
-    border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
+    border: none;
     background: var(--surface);
-    flex-shrink: 0;
-  }
-
-  .custom-check input:checked + .check-box {
-    background: var(--check-done);
-    border-color: var(--check-done);
-  }
-
-  .check-box svg {
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.15s;
-  }
-
-  .custom-check input:checked + .check-box svg {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .check-label-text {
+    color: var(--text3);
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 12px;
-    color: var(--text2);
+    font-weight: 500;
+    transition: all 0.15s;
+    border-right: 1px solid var(--border2);
+    white-space: nowrap;
+    line-height: 1;
   }
 
-  /* SESSION NOTES */
+  .tri-btn:last-child { border-right: none; }
+  .tri-btn:hover:not(.active-done):not(.active-missing):not(.active-pending) { background: var(--surface2); }
+
+  .tri-btn.active-done { background: var(--accent); color: white; font-weight: 700; }
+  .tri-btn.active-missing { background: var(--danger); color: white; font-weight: 700; }
+  .tri-btn.active-pending { background: #e0dfd9; color: var(--text2); font-weight: 700; }
+
+  .missing-alert-row {
+    padding: 8px 22px;
+    background: #fff2f2;
+    border-top: 1px solid #f5c6c6;
+    font-size: 12px;
+    color: var(--danger);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.6;
+    flex-wrap: wrap;
+  }
+
   .session-notes-wrap {
     padding: 12px 22px;
     background: var(--surface2);
     border-top: 1px solid var(--border);
   }
+
+  .notes-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
 
   .session-notes {
     width: 100%;
@@ -520,28 +396,13 @@
     transition: border 0.15s;
   }
 
-  .session-notes:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-
+  .session-notes:focus { outline: none; border-color: var(--accent); }
   .session-notes::placeholder { color: var(--text3); }
 
-  .notes-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 6px;
-  }
-
-  /* SCROLLBAR */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
 
-  /* TOAST */
   .toast {
     position: fixed;
     bottom: 28px;
@@ -560,16 +421,6 @@
   }
 
   .toast.show { opacity: 1; transform: translateY(0); }
-
-  @media (max-width: 768px) {
-    .app { flex-direction: column; height: auto; }
-    .sidebar { width: 100%; min-width: unset; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
-    .mentor-list { display: flex; flex-wrap: wrap; padding: 10px; gap: 6px; }
-    .mentor-item { padding: 8px 14px; border-radius: 20px; border-left: none !important; }
-    .mentor-item.active { border: 2px solid var(--accent); }
-    .mentor-progress-row { display: none; }
-    .main { padding: 16px; }
-  }
 </style>
 </head>
 <body>
@@ -579,6 +430,11 @@
     <span class="dot"></span>
     멘토링 체크일지
   </div>
+  <div class="header-legend">
+    <div class="legend-item"><span class="legend-dot done"></span>제출완료</div>
+    <div class="legend-item"><span class="legend-dot missing"></span>미기입</div>
+    <div class="legend-item"><span class="legend-dot pending"></span>미확인</div>
+  </div>
   <div class="header-meta" id="headerDate"></div>
 </header>
 
@@ -586,14 +442,13 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-label">멘토 목록</div>
-      <div class="sidebar-count" id="sidebarCount">5명</div>
+      <div class="sidebar-count">5명</div>
     </div>
     <div class="mentor-list" id="mentorList"></div>
     <div class="sidebar-footer">
       <div class="total-summary" id="totalSummary"></div>
     </div>
   </aside>
-
   <main class="main" id="mainContent"></main>
 </div>
 
@@ -608,111 +463,90 @@ const CATEGORIES = [
   { name: '시스템 통합평가', icon: '🔗' },
 ];
 const CHECKS = ['수행일지', '산출물평가서'];
-
-const STORAGE_KEY = 'mentoring_check_v2';
+// val: null=미확인, 'done'=제출완료, 'missing'=미기입
+const STORAGE_KEY = 'mentoring_check_v3';
 
 let state = loadState();
 let activeMentor = 0;
 
 function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  // init
-  const s = {};
-  MENTORS.forEach((m, i) => { s[i] = []; });
-  return s;
+  try { const r = localStorage.getItem(STORAGE_KEY); if (r) return JSON.parse(r); } catch(e) {}
+  const s = {}; MENTORS.forEach((_, i) => { s[i] = []; }); return s;
 }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-function calcProgress(mentorIdx) {
-  const sessions = state[mentorIdx] || [];
-  if (!sessions.length) return { done: 0, total: 0, pct: 0, sessions: 0 };
-  let done = 0, total = 0;
+function calcStats(mi) {
+  const sessions = state[mi] || [];
+  let done = 0, missing = 0, pending = 0, total = 0;
   sessions.forEach(s => {
-    CATEGORIES.forEach((_, ci) => {
-      CHECKS.forEach((_, ki) => {
-        total++;
-        if (s.checks?.[ci]?.[ki]) done++;
-      });
-    });
+    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => {
+      total++;
+      const v = s.checks?.[ci]?.[ki];
+      if (v === 'done') done++;
+      else if (v === 'missing') missing++;
+      else pending++;
+    }));
   });
-  return { done, total, pct: total ? Math.round(done / total * 100) : 0, sessions: sessions.length };
+  return { done, missing, pending, total, sessions: sessions.length };
 }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 function renderSidebar() {
   const list = document.getElementById('mentorList');
   list.innerHTML = '';
-  let totalDone = 0, totalAll = 0, totalSessions = 0;
+  let tDone = 0, tMissing = 0, tSessions = 0;
 
   MENTORS.forEach((name, i) => {
-    const prog = calcProgress(i);
-    totalDone += prog.done;
-    totalAll += prog.total;
-    totalSessions += prog.sessions;
+    const st = calcStats(i);
+    tDone += st.done; tMissing += st.missing; tSessions += st.sessions;
 
     const item = document.createElement('div');
     item.className = 'mentor-item' + (i === activeMentor ? ' active' : '');
+
+    const pills = st.sessions === 0
+      ? `<span class="status-pill pending">세션 없음</span>`
+      : [
+          st.done   > 0 ? `<span class="status-pill done">완료 ${st.done}</span>` : '',
+          st.missing > 0 ? `<span class="status-pill missing">미기입 ${st.missing}</span>` : '',
+          st.pending > 0 ? `<span class="status-pill pending">미확인 ${st.pending}</span>` : '',
+        ].join('');
+
     item.innerHTML = `
       <div class="mentor-name">${name} 멘토</div>
-      <div class="mentor-progress-row">
-        <div class="mentor-progress-bar">
-          <div class="mentor-progress-fill" style="width:${prog.pct}%"></div>
-        </div>
-        <div class="mentor-progress-text">${prog.pct}%</div>
-      </div>
+      <div class="mentor-status-row">${pills}</div>
     `;
     item.onclick = () => { activeMentor = i; render(); };
     list.appendChild(item);
   });
 
-  const totalPct = totalAll ? Math.round(totalDone / totalAll * 100) : 0;
   document.getElementById('totalSummary').innerHTML =
-    `전체 세션: <strong>${totalSessions}회</strong><br>전체 완료율: <strong>${totalPct}%</strong> (${totalDone}/${totalAll})`;
+    `전체 세션: <strong>${tSessions}회</strong><br>` +
+    `제출완료: <strong style="color:var(--accent)">${tDone}</strong> &nbsp;·&nbsp; ` +
+    `미기입: <strong style="color:var(--danger)">${tMissing}</strong>`;
 }
 
 function renderMain() {
   const main = document.getElementById('mainContent');
-  const mentorName = MENTORS[activeMentor];
-  const sessions = state[activeMentor] || [];
-  const prog = calcProgress(activeMentor);
-
-  const completedSessions = sessions.filter(s => {
-    let done = 0, total = CATEGORIES.length * CHECKS.length;
-    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => { if (s.checks?.[ci]?.[ki]) done++; }));
-    return done === total;
-  }).length;
+  const st = calcStats(activeMentor);
 
   main.innerHTML = `
     <div class="mentor-header-card">
       <div class="mentor-title-group">
-        <h2>${mentorName} 멘토</h2>
-        <p>멘토링 회차별 수행일지 및 산출물평가서 체크</p>
+        <h2>${MENTORS[activeMentor]} 멘토</h2>
+        <p>멘토링 회차별 수행일지 및 산출물평가서 제출 현황</p>
       </div>
       <div class="mentor-stats">
-        <div class="stat-box">
-          <div class="stat-num">${sessions.length}</div>
-          <div class="stat-label">총 회차</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">${completedSessions}</div>
-          <div class="stat-label">완료 회차</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">${prog.pct}%</div>
-          <div class="stat-label">체크 완료율</div>
-        </div>
+        <div class="stat-box"><div class="stat-num gray">${st.sessions}</div><div class="stat-label">총 회차</div></div>
+        <div class="stat-box"><div class="stat-num green">${st.done}</div><div class="stat-label">제출완료</div></div>
+        <div class="stat-box"><div class="stat-num red">${st.missing}</div><div class="stat-label">미기입</div></div>
+        <div class="stat-box"><div class="stat-num gray">${st.pending}</div><div class="stat-label">미확인</div></div>
         <button class="add-session-btn" id="addSessionBtn">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
           회차 추가
@@ -723,8 +557,33 @@ function renderMain() {
   `;
 
   document.getElementById('addSessionBtn').onclick = addSession;
-
   renderSessions();
+}
+
+function getSessionMeta(session) {
+  let done = 0, missing = 0, total = CATEGORIES.length * CHECKS.length;
+  CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => {
+    const v = session.checks?.[ci]?.[ki];
+    if (v === 'done') done++;
+    else if (v === 'missing') missing++;
+  }));
+  const pending = total - done - missing;
+  const hasMissing = missing > 0;
+  let label, badgeCls;
+  if (done === total) { label = '전체완료'; badgeCls = 'all-done'; }
+  else if (hasMissing && pending === 0 && done === 0) { label = `미기입 ${missing}건`; badgeCls = 'has-missing'; }
+  else if (hasMissing) { label = `미기입 ${missing}건`; badgeCls = 'has-missing'; }
+  else if (done > 0) { label = `${done}/${total} 완료`; badgeCls = 'partial'; }
+  else { label = '미확인'; badgeCls = 'empty'; }
+  return { hasMissing, label, badgeCls };
+}
+
+function getMissingItems(session) {
+  const items = [];
+  CATEGORIES.forEach((cat, ci) => CHECKS.forEach((chk, ki) => {
+    if (session.checks?.[ci]?.[ki] === 'missing') items.push(`${cat.name} · ${chk}`);
+  }));
+  return items;
 }
 
 function renderSessions() {
@@ -736,110 +595,102 @@ function renderSessions() {
   if (!sessions.length) {
     container.innerHTML = `
       <div class="empty-state">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="6" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.5"/>
-          <path d="M14 14h12M14 20h8" stroke="#9a9890" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <p>아직 멘토링 회차가 없습니다.<br>위의 <strong>회차 추가</strong> 버튼을 눌러 추가해주세요.</p>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="6" width="24" height="28" rx="3" stroke="#9a9890" stroke-width="1.5"/><path d="M14 14h12M14 20h8" stroke="#9a9890" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p>아직 멘토링 회차가 없습니다.<br><strong>회차 추가</strong> 버튼을 눌러 시작하세요.</p>
       </div>`;
     return;
   }
 
   sessions.forEach((session, si) => {
-    let checksDone = 0, checksTotal = CATEGORIES.length * CHECKS.length;
-    CATEGORIES.forEach((_, ci) => CHECKS.forEach((_, ki) => { if (session.checks?.[ci]?.[ki]) checksDone++; }));
-    const isAllDone = checksDone === checksTotal;
-    const badgeClass = isAllDone ? 'done' : checksDone > 0 ? 'partial' : 'empty';
-    const badgeText = isAllDone ? '완료' : checksDone > 0 ? `${checksDone}/${checksTotal}` : '미시작';
+    const meta = getSessionMeta(session);
+    const missingItems = getMissingItems(session);
 
     const card = document.createElement('div');
-    card.className = 'session-card';
+    card.className = `session-card${meta.hasMissing ? ' has-missing' : ''}`;
+
+    const rows = CATEGORIES.map((cat, ci) => `
+      <tr class="cat-${ci}">
+        <td><div class="category-cell"><div class="category-icon">${cat.icon}</div>${cat.name}</div></td>
+        ${CHECKS.map((_, ki) => {
+          const v = session.checks?.[ci]?.[ki] || null;
+          return `<td class="check-cell">
+            <div class="tri-toggle">
+              <button class="tri-btn${v === 'done' ? ' active-done' : ''}"
+                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="done">✓ 완료</button>
+              <button class="tri-btn${v === 'missing' ? ' active-missing' : ''}"
+                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="missing">✕ 미기입</button>
+              <button class="tri-btn${v === null ? ' active-pending' : ''}"
+                data-m="${activeMentor}" data-s="${si}" data-c="${ci}" data-k="${ki}" data-v="null">— 미확인</button>
+            </div>
+          </td>`;
+        }).join('')}
+      </tr>`).join('');
+
+    const alertHtml = missingItems.length
+      ? `<div class="missing-alert-row">⚠️ 미기입 항목 : ${missingItems.join('  /  ')}</div>` : '';
+
     card.innerHTML = `
       <div class="session-card-header">
         <div class="session-num-badge">ROUND ${si + 1}</div>
         <div class="session-date-wrap">
           <span class="session-date-label">날짜</span>
-          <input type="date" class="session-date-input" value="${session.date || ''}" data-mentor="${activeMentor}" data-session="${si}">
+          <input type="date" class="session-date-input" value="${session.date || ''}"
+            data-m="${activeMentor}" data-s="${si}">
         </div>
         <div class="session-header-right">
-          <span class="session-completion-badge ${badgeClass}">${badgeText}</span>
-          <button class="delete-session-btn" data-mentor="${activeMentor}" data-session="${si}" title="회차 삭제">✕</button>
+          <span class="session-badge ${meta.badgeCls}">${meta.label}</span>
+          <button class="delete-session-btn" data-m="${activeMentor}" data-s="${si}">✕</button>
         </div>
       </div>
       <table class="checklist-table">
-        <thead>
-          <tr>
-            <th>평가 영역</th>
-            ${CHECKS.map(c => `<th>${c}</th>`).join('')}
-          </tr>
-        </thead>
-        <tbody>
-          ${CATEGORIES.map((cat, ci) => `
-            <tr class="cat-${ci}">
-              <td>
-                <div class="category-cell">
-                  <div class="category-icon">${cat.icon}</div>
-                  ${cat.name}
-                </div>
-              </td>
-              ${CHECKS.map((chk, ki) => `
-                <td class="check-cell">
-                  <label class="custom-check">
-                    <input type="checkbox" ${session.checks?.[ci]?.[ki] ? 'checked' : ''}
-                      data-mentor="${activeMentor}" data-session="${si}" data-cat="${ci}" data-key="${ki}">
-                    <span class="check-box">
-                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                        <path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-                    <span class="check-label-text">${chk}</span>
-                  </label>
-                </td>
-              `).join('')}
-            </tr>
-          `).join('')}
-        </tbody>
+        <thead><tr>
+          <th>평가 영역</th>
+          ${CHECKS.map(c => `<th>${c}</th>`).join('')}
+        </tr></thead>
+        <tbody>${rows}</tbody>
       </table>
+      ${alertHtml}
       <div class="session-notes-wrap">
         <div class="notes-label">메모</div>
-        <textarea class="session-notes" placeholder="멘토링 내용, 특이사항 등 메모를 입력하세요..." data-mentor="${activeMentor}" data-session="${si}">${session.notes || ''}</textarea>
+        <textarea class="session-notes" placeholder="멘토링 내용, 미기입 사유 등 메모..."
+          data-m="${activeMentor}" data-s="${si}">${session.notes || ''}</textarea>
       </div>
     `;
     container.appendChild(card);
   });
 
-  // Event delegation
-  container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', function() {
-      const m = +this.dataset.mentor, s = +this.dataset.session, c = +this.dataset.cat, k = +this.dataset.key;
+  container.querySelectorAll('.tri-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const m = +this.dataset.m, s = +this.dataset.s, c = +this.dataset.c, k = +this.dataset.k;
+      const val = this.dataset.v === 'null' ? null : this.dataset.v;
       if (!state[m][s].checks) state[m][s].checks = {};
       if (!state[m][s].checks[c]) state[m][s].checks[c] = {};
-      state[m][s].checks[c][k] = this.checked;
+      state[m][s].checks[c][k] = val;
       saveState();
-      renderSidebar();
-      renderSessions();
+      if (val === 'missing') showToast('⚠️ 미기입으로 표시되었습니다');
+      else if (val === 'done') showToast('✓ 제출완료로 표시되었습니다');
+      else showToast('— 미확인으로 변경되었습니다');
+      render();
     });
   });
 
   container.querySelectorAll('input[type="date"]').forEach(inp => {
     inp.addEventListener('change', function() {
-      const m = +this.dataset.mentor, s = +this.dataset.session;
-      state[m][s].date = this.value;
+      state[+this.dataset.m][+this.dataset.s].date = this.value;
       saveState();
     });
   });
 
   container.querySelectorAll('textarea.session-notes').forEach(ta => {
     ta.addEventListener('input', function() {
-      const m = +this.dataset.mentor, s = +this.dataset.session;
-      state[m][s].notes = this.value;
+      state[+this.dataset.m][+this.dataset.s].notes = this.value;
       saveState();
     });
   });
 
   container.querySelectorAll('.delete-session-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-      const m = +this.dataset.mentor, s = +this.dataset.session;
+      const m = +this.dataset.m, s = +this.dataset.s;
       if (confirm(`${MENTORS[m]} 멘토 ${s + 1}회차를 삭제할까요?`)) {
         state[m].splice(s, 1);
         saveState();
@@ -854,26 +705,20 @@ function addSession() {
   if (!state[activeMentor]) state[activeMentor] = [];
   state[activeMentor].push({ date: '', checks: {}, notes: '' });
   saveState();
-  showToast(`${MENTORS[activeMentor]} 멘토 ${state[activeMentor].length}회차가 추가되었습니다.`);
+  showToast(`${MENTORS[activeMentor]} 멘토 ${state[activeMentor].length}회차 추가`);
   render();
   setTimeout(() => {
-    const container = document.getElementById('sessionsContainer');
-    if (container) container.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('sessionsContainer')?.lastElementChild
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
 }
 
-function setHeaderDate() {
-  const d = new Date();
-  document.getElementById('headerDate').textContent =
-    `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-}
+function render() { renderSidebar(); renderMain(); }
 
-function render() {
-  renderSidebar();
-  renderMain();
-}
+const d = new Date();
+document.getElementById('headerDate').textContent =
+  `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
 
-setHeaderDate();
 render();
 </script>
 </body>
